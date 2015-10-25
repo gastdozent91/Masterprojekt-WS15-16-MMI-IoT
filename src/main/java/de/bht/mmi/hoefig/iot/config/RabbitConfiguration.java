@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
 @Configuration
 @EnableRabbit
 @PropertySource("classpath:rabbit.properties")
-public class AmqpConfiguration {
+public class RabbitConfiguration {
 
     @Autowired
     private Environment env;
