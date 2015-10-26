@@ -6,17 +6,19 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.ContentTypeDelegatingMessageConverter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.MediaType;
 
 @Configuration
 @EnableRabbit
 @PropertySource("classpath:rabbit.properties")
-public class RabbitConfiguration {
+public class AmqpConfiguration {
 
     @Autowired
     private Environment env;
@@ -43,14 +45,29 @@ public class RabbitConfiguration {
         factory.setConnectionFactory(connectionFactory());
         factory.setConcurrentConsumers(Integer.valueOf(env.getProperty("rabbit.concurrent_consumers")));
         factory.setMaxConcurrentConsumers(Integer.valueOf(env.getProperty("rabbit.max_concurrent_consumers")));
+        factory.setMessageConverter(contentTypeConverter());
         return factory;
     }
 
     @Bean
     public RabbitTemplate rabbitTemplate() {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
-        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        rabbitTemplate.setMessageConverter(jsonMessageConverter());
         return rabbitTemplate;
+    }
+
+    @Bean
+    public ContentTypeDelegatingMessageConverter contentTypeConverter() {
+        final ContentTypeDelegatingMessageConverter contentTypeDelegatingMessageConverter =
+                new ContentTypeDelegatingMessageConverter();
+        contentTypeDelegatingMessageConverter.addDelgate(
+                MediaType.APPLICATION_JSON_VALUE, jsonMessageConverter());
+        return contentTypeDelegatingMessageConverter;
+    }
+
+    @Bean
+    public Jackson2JsonMessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 
 }
