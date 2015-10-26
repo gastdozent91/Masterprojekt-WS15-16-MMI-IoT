@@ -8,5 +8,5 @@ Masterprojekt
 
 ## Run system local
 
-    $ docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3
+    $ docker run -d -p 5672:5672 --hostname mmi-rabbit --name mmi-rabbit rabbitmq:3
     $ ./gradlew tomcatRunWar
