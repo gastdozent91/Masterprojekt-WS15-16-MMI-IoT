@@ -4,7 +4,7 @@
 
 * JDK 8
 * Docker
-* Set `JAVA_HOME` to a local DK 8 installation
+* Set `JAVA_HOME` to a local JDK 8 installation
 
 ## Setup IDE
 
@@ -15,6 +15,11 @@
     $ docker run -d -p 5672:5672 --hostname mmi-rabbit --name mmi-rabbit rabbitmq:3
     $ ./gradlew tomcatRunWar
     
+Call Test-REST-Controller and watch console
+
+    http://localhost:8080/iot/send/bar
+    http://localhost:8080/iot/send/topic
+    http://localhost:8080/iot/send/test
     
 ## Docker usage
 Pull image and start container
