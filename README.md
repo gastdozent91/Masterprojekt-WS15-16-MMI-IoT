@@ -6,6 +6,10 @@
 * Docker
 * Set `JAVA_HOME` to a local DK 8 installation
 
+## Setup IDE
+
+* Install [Lombok](https://projectlombok.org/download.html)
+
 ## Run system local
 
     $ docker run -d -p 5672:5672 --hostname mmi-rabbit --name mmi-rabbit rabbitmq:3
@@ -33,7 +37,8 @@ Other useful docker commands
     $ docker top CONTAINER # Display running processes of CONTAINER
 
     
-## Useful links, infos etc.
+## Useful links, infos, programms etc.
 * [AMQP Model - RabbitMQ](https://www.rabbitmq.com/tutorials/amqp-concepts.html)
 * [Spring AMQP](http://docs.spring.io/spring-amqp/reference/html/)
 * [Docker Hub - RabbitMQ](https://hub.docker.com/_/rabbitmq/)
+* [Postman - REST Client](https://www.getpostman.com/)

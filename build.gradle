@@ -20,11 +20,14 @@ repositories {
 }
 
 dependencies {
+    providedCompile 'org.projectlombok:lombok:1.16.6'
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1',
                     'javax.servlet.jsp:jsp-api:2.2'
     compile 'org.slf4j:slf4j-api:1.7.12',
+            'org.apache.logging.log4j:log4j-slf4j-impl:2.4.1',
             'org.apache.logging.log4j:log4j-core:2.4.1',
             'org.apache.logging.log4j:log4j-api:2.4.1',
+            'org.apache.logging.log4j:log4j-web:2.4.1',
             'org.springframework:spring-webmvc:4.2.2.RELEASE',
             'org.springframework.amqp:spring-rabbit:1.5.1.RELEASE',
             'com.fasterxml.jackson.core:jackson-databind:2.6.3'
