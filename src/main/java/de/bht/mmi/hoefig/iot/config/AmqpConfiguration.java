@@ -1,5 +1,6 @@
 package de.bht.mmi.hoefig.iot.config;
 
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -13,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.http.MediaType;
 
 @Configuration
 @EnableRabbit
@@ -61,7 +61,7 @@ public class AmqpConfiguration {
         final ContentTypeDelegatingMessageConverter contentTypeDelegatingMessageConverter =
                 new ContentTypeDelegatingMessageConverter();
         contentTypeDelegatingMessageConverter.addDelgate(
-                MediaType.APPLICATION_JSON_VALUE, jsonMessageConverter());
+                MessageProperties.CONTENT_TYPE_JSON, jsonMessageConverter());
         return contentTypeDelegatingMessageConverter;
     }
 
