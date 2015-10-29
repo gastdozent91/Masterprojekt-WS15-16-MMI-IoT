@@ -47,3 +47,8 @@ Other useful docker commands
 * [Spring AMQP](http://docs.spring.io/spring-amqp/reference/html/)
 * [Docker Hub - RabbitMQ](https://hub.docker.com/_/rabbitmq/)
 * [Postman - REST Client](https://www.getpostman.com/)
+
+## mac config bei "connection refused" exception
+in docker terminal: docker-machine ip default
+in resources/rabbit.properties:
+change localhost in rabbit.host=localhost mit IP

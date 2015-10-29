@@ -10,6 +10,8 @@ public final class AmqpConstants {
 
     public static final String DATA_TOPIC_EXCHANGE_NAME = "topic_logs";
 
+    public static final String DATA_TOPIC_EXCHANGE_NAME2 = "topic_logs2";
+
     public static final String ALL_MESSAGE_ROUTING_KEY = "#";
 
     public static final String DATA_TOPIC_ROUTING_KEY = "data.*";

@@ -26,10 +26,10 @@ public class JsonTopicListener {
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(),
-            exchange = @Exchange(value = AmqpConstants.DATA_TOPIC_EXCHANGE_NAME, type = ExchangeTypes.TOPIC),
+            exchange = @Exchange(value = AmqpConstants.DATA_TOPIC_EXCHANGE_NAME2, type = ExchangeTypes.TOPIC),
             key = AmqpConstants.DATA_GEO_TOPIC_ROUTING_KEY))
-    public void processGeoDataMessages(@Headers Map<String, String> amqpHeaders, String data) {
-        log.info("Received message with payload: {} and amqpHeaders: {}.", data, amqpHeaders);
+         public void processGeoDataMessages(@Headers Map<String, String> amqpHeaders, String data) {
+        log.info("{}", data);
     }
 
 }
