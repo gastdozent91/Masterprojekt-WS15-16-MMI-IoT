@@ -18,6 +18,8 @@ public final class AmqpConstants {
 
     public static final String DATA_GEO_TOPIC_ROUTING_KEY = "data.geo";
 
+    public static final String SENOR_EXCHANGE_NAME = "senor_exch";
+
     private AmqpConstants() { }
 
 }
