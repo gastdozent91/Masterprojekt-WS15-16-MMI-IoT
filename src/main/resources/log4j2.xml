@@ -6,7 +6,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="de.bht.mmi.hoefig.iot" level="INFO" additivity="false">
+        <Logger name="de.bht.mmi.iot" level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Root level="error">

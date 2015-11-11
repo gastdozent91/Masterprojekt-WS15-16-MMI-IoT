@@ -1,4 +1,4 @@
-package de.bht.mmi.hoefig.iot.model;
+package de.bht.mmi.iot.model;
 
 public final class AmqpConstants {
 
@@ -18,7 +18,7 @@ public final class AmqpConstants {
 
     public static final String DATA_GEO_TOPIC_ROUTING_KEY = "data.geo";
 
-    public static final String SENOR_EXCHANGE_NAME = "senor_exch";
+    public static final String SENSOR_EXCHANGE_NAME = "sensor_exch";
 
     private AmqpConstants() { }
 

@@ -1,6 +1,6 @@
-package de.bht.mmi.hoefig.iot.listener;
+package de.bht.mmi.iot.listener;
 
-import de.bht.mmi.hoefig.iot.model.AmqpConstants;
+import de.bht.mmi.iot.model.AmqpConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;

@@ -1,4 +1,4 @@
-package de.bht.mmi.hoefig.iot.model;
+package de.bht.mmi.iot.model;
 
 import lombok.ToString;
 

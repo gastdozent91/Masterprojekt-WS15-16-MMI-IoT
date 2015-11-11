@@ -1,9 +1,9 @@
-package de.bht.mmi.hoefig.iot.rest;
+package de.bht.mmi.iot.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.bht.mmi.hoefig.iot.model.AmqpConstants;
-import de.bht.mmi.hoefig.iot.model.Bar;
+import de.bht.mmi.iot.model.AmqpConstants;
+import de.bht.mmi.iot.model.Bar;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;

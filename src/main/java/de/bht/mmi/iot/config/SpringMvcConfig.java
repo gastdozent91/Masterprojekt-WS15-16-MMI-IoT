@@ -1,4 +1,4 @@
-package de.bht.mmi.hoefig.iot.config;
+package de.bht.mmi.iot.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;

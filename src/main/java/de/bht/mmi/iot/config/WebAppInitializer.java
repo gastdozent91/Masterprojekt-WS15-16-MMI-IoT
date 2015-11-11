@@ -1,4 +1,4 @@
-package de.bht.mmi.hoefig.iot.config;
+package de.bht.mmi.iot.config;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -24,7 +24,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
     private AnnotationConfigWebApplicationContext getContext() {
         final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.setConfigLocation("de.bht.mmi.hoefig.iot.config");
+        context.setConfigLocation("de.bht.mmi.iot.config");
         return context;
     }
 

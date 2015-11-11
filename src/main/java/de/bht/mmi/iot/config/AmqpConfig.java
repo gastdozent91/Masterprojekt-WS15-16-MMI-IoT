@@ -1,4 +1,4 @@
-package de.bht.mmi.hoefig.iot.config;
+package de.bht.mmi.iot.config;
 
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
@@ -18,7 +18,7 @@ import org.springframework.core.env.Environment;
 @Configuration
 @EnableRabbit
 @PropertySource("classpath:rabbit.properties")
-public class AmqpConfiguration {
+public class AmqpConfig {
 
     @Autowired
     private Environment env;
