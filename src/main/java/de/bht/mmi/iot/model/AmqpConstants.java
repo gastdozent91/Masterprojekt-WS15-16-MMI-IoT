@@ -20,6 +20,12 @@ public final class AmqpConstants {
 
     public static final String SENSOR_EXCHANGE_NAME = "sensor_exch";
 
+    // TODO: Check if name friss is correct
+
+    public static final String FRISS_EXCHANGE_NAME = "friss_exch";
+
+    public static final String FRISS_EDITED_EXCHANGE_NAME = "friss_edited_exch";
+
     private AmqpConstants() { }
 
 }
