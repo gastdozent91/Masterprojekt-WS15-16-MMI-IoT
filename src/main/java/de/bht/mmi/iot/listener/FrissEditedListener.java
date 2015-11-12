@@ -17,7 +17,7 @@ import java.util.Map;
 public class FrissEditedListener {
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(),
+            value = @Queue(AmqpConstants.FRISS_EDITED_QUEUE_NAME),
             exchange = @Exchange(value = AmqpConstants.FRISS_EDITED_EXCHANGE_NAME, type = ExchangeTypes.TOPIC),
             key = AmqpConstants.ALL_MESSAGE_ROUTING_KEY)
     )

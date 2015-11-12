@@ -26,6 +26,8 @@ public final class AmqpConstants {
 
     public static final String FRISS_EDITED_EXCHANGE_NAME = "friss_edited_exch";
 
+    public static final String FRISS_EDITED_QUEUE_NAME = "friss_edited_queue";
+
     private AmqpConstants() { }
 
 }
