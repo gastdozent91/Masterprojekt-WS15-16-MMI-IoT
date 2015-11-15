@@ -14,13 +14,7 @@ public final class AmqpConstants {
 
     public static final String ALL_MESSAGE_ROUTING_KEY = "#";
 
-    public static final String DATA_TOPIC_ROUTING_KEY = "data.*";
-
     public static final String DATA_GEO_TOPIC_ROUTING_KEY = "data.geo";
-
-    public static final String SENSOR_EXCHANGE_NAME = "sensor_exch";
-
-    // TODO: Check if name friss is correct
 
     public static final String FRISS_EXCHANGE_NAME = "friss_exch";
 

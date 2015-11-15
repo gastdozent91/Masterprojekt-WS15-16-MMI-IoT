@@ -1,4 +1,4 @@
-group 'de.bht.mmi.masterproject.hoefig'
+group 'de.bht.mmi'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -20,7 +20,6 @@ repositories {
 }
 
 dependencies {
-    providedCompile 'org.projectlombok:lombok:1.16.6'
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1',
                     'javax.servlet.jsp:jsp-api:2.2'
     compile 'org.slf4j:slf4j-api:1.7.12',

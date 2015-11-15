@@ -1,10 +1,7 @@
 package de.bht.mmi.iot.model;
 
-import lombok.ToString;
-
 import java.util.UUID;
 
-@ToString
 public final class Bar {
 
     private String id;
@@ -29,4 +26,10 @@ public final class Bar {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Bar{" +
+                "id='" + id + '\'' +
+                '}';
+    }
 }
