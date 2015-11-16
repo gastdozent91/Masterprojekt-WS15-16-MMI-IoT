@@ -1,7 +1,8 @@
 package de.bht.mmi.iot.listener;
 
 import de.bht.mmi.iot.model.AmqpConstants;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
@@ -13,8 +14,9 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-@Slf4j
 public class FrissEditedListener {
+
+    private static final Logger log = LoggerFactory.getLogger(FrissEditedListener.class);
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(AmqpConstants.FRISS_EDITED_QUEUE_NAME),

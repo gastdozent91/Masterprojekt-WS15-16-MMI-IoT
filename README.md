@@ -6,10 +6,6 @@
 * Docker
 * Set `JAVA_HOME` to a local JDK 8 installation
 
-## Setup IDE
-
-* Install [Lombok](https://projectlombok.org/download.html)
-
 ## Run system local
 
     $ docker run -d -p 5672:5672 --hostname mmi-rabbit --name mmi-rabbit rabbitmq:3
