@@ -1,3 +1,6 @@
 [submodule "iot-sensordata-generator"]
 	path = iot-sensordata-generator
 	url = git://github.com/steven-maasch/iot-sensordata-generator.git
+[submodule "mmi-iot-infrastructure"]
+	path = mmi-iot-infrastructure
+	url = git@github.com:steven-maasch/mmi-iot-infrastructure.git
