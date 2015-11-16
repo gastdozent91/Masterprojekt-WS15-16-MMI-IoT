@@ -1,4 +1,4 @@
-#db.properties
+db.properties
 
 ### Java template
 *.class
