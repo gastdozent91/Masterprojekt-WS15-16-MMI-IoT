@@ -6,6 +6,11 @@
 * Docker
 * Set `JAVA_HOME` to a local JDK 8 installation
 
+## Git submodules
+
+    $ git submodule init
+    $ git submodule update
+
 ## Run system local
 
     $ docker run -d -p 5672:5672 --hostname mmi-rabbit --name mmi-rabbit rabbitmq:3
