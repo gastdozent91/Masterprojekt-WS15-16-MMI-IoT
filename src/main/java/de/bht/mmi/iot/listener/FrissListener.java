@@ -28,8 +28,9 @@ public class FrissListener {
     private static final Logger log = LoggerFactory.getLogger(FrissListener.class);
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "abc_queue", durable = "true"),
-            exchange = @Exchange(value = AmqpConstants.FRISS_EXCHANGE_NAME, type = ExchangeTypes.TOPIC))
+            value = @Queue(),
+            exchange = @Exchange(value = AmqpConstants.FRISS_EXCHANGE_NAME, type = ExchangeTypes.TOPIC),
+            key = "#")
     )
     public void processFriss(@Headers Map<String, String> amqpHeaders, String data) {
         log.info("Received message with payload: {} and amqpHeaders: {}.", data, amqpHeaders);
