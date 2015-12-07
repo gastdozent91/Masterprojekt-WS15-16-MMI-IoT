@@ -1,0 +1,121 @@
+#%RAML 0.8
+title: Masterprojekt IoT
+version: 1
+baseUri: http://localhost:3000
+/users:
+ /all:
+  get:
+   description: Show all registered User
+   headers:
+    Authorization:
+     description: TODO
+   responses:
+    200:
+     body:
+      application/json:
+       example: |
+         {
+          „users“:[
+          {
+           „id“:“99“,
+           „firstname“:“Max“,
+           „lastname“:“Mustermann“,
+           „E-Mail“:“max@mustermann.de“
+           „creation_date“:329012390123,
+           „role“:1
+          },
+          {
+           „id“:“100“,
+           „firstname“:“Max2“,
+           „lastname“:“Mustermann2“,
+           „E-Mail“:“max2@mustermann2.de“
+           „creation_date“:329012490123,
+           „role“:0
+          }]
+         }
+ /register:
+   post:
+    description: Register new User
+    headers:
+     Authorization:
+      description: TODO
+    body:
+     application/json:
+      example: |
+         {
+          „firstname“:“Max“,
+          „lastname“:“Mustermann“,
+          „E-Mail“:“max@mustermann.de“,
+          „password“:“abc123“,
+          „password_repetition“:“abc123“,
+          „creation_date“:329012390123
+          }
+    responses:
+     200:
+      description: user successfully registered
+ /login:
+   get:
+    description: Log in user
+    headers:
+     Authorization:
+      description: TODO
+    body:
+     application/json:
+      example: |
+         {
+          „E-Mail“:“max@mustermann.de“,
+          „password“:“abc123“
+          }
+    responses:
+     200:
+      description: user access granted
+ /delete/:id:
+   delete:
+    description: Delete user
+    headers:
+     Authorization:
+      description: TODO
+    queryParameters:
+     id:
+      description: user id
+      type: number
+      required: true
+      example: 99
+    responses:
+     200:
+      description: user successfully deleted
+ /admin/delete/:id:
+   delete:
+    description: Admin can delete user
+    headers:
+     Authorization:
+      description: TODO
+    queryParameters:
+     id:
+      description: user id
+      type: number
+      required: true
+      example: 99
+    responses:
+     200:
+      description: user successfully deleted
+ /admin/change/:id/:role:
+   put:
+    description: Admin change users role
+    headers:
+     Authorization:
+      description: TODO
+    queryParameters:
+     id:
+      description: user id
+      type: number
+      required: true
+      example: 99
+     role:
+      description: user role
+      type: number
+      required: true
+      example: 1
+    responses:
+     200:
+      description: user role successfully changed
