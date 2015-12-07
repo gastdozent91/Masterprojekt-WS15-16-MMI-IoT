@@ -47,3 +47,7 @@ dependencies {
             "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
             "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 }
+
+war {
+    webXml = file('src/main/resources/web.xml')
+}
