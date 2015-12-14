@@ -52,7 +52,7 @@ baseUri: http://localhost:3000
           }
     responses:
      200:
-      description: user successfully registered
+      description: User successfully registered
  /login:
    get:
     description: Log in user
@@ -68,7 +68,7 @@ baseUri: http://localhost:3000
           }
     responses:
      200:
-      description: user access granted
+      description: User access granted
  /delete/:id:
    delete:
     description: Delete user
@@ -77,45 +77,383 @@ baseUri: http://localhost:3000
       description: TODO
     queryParameters:
      id:
-      description: user id
+      description: User id
       type: number
       required: true
       example: 99
     responses:
      200:
-      description: user successfully deleted
- /admin/delete/:id:
-   delete:
-    description: Admin can delete user
-    headers:
-     Authorization:
-      description: TODO
-    queryParameters:
-     id:
-      description: user id
-      type: number
-      required: true
-      example: 99
-    responses:
-     200:
-      description: user successfully deleted
- /admin/change/:id/:role:
+      description: User successfully deleted
+ /change/:id:
    put:
-    description: Admin change users role
+    description: Admin change user
+    headers:
+     Authorization:
+      description: TODO
+    body:
+     application/json:
+      example: |
+         {
+          „firstname“:“Max“,
+          „lastname“:“Mustermann“,
+          „E-Mail“:“max@mustermann.de“,
+          „creation_date“:329012390123,
+          „role“:1
+          }
+    queryParameters:
+     id:
+      description: User id
+      type: number
+      required: true
+      example: 99
+    responses:
+     200:
+      description: User data successfully changed
+ /sensor/add/:sensorid/:id:
+   put:
+    description: Attach created sensor to user by id
+    headers:
+     Authorization:
+      description: TODO
+    queryParameters:
+     sensorid:
+      description: Sensor id
+      type: number
+      required: true
+      example: 12
+     id:
+      description: User id
+      type: number
+      required: true
+      example: 99
+    responses:
+     200:
+      description: Sensor 12 added successfully to user 99
+ /sensor/all/:id:
+   get:
+    description: Get all attached sensors from specific user by id
     headers:
      Authorization:
       description: TODO
     queryParameters:
      id:
-      description: user id
+      description: User id
       type: number
       required: true
       example: 99
-     role:
-      description: user role
+    responses:
+     200:
+      body:
+       application/json:
+        example: |
+         {
+          „sensors“:[
+          {
+           „id“:“12“,
+           „name“:“Sensor12“,
+           „isActive“:“true“,
+           „creation_date“:329012390123,
+           „location“:“Berlin, Mitte“,
+           „clusterID“:1,
+           „addedBy“:99,
+           „sensortype“:111
+          },
+          {
+           „id“:“13“,
+           „name“:“Sensor13“,
+           „isActive“:“true“,
+           „creation_date“:329012391225,
+           „location“:“Berlin, Mitte“,
+           „clusterID“:1,
+           „addedBy“:99,
+           „sensortype“:112
+          }]
+         }
+/sensors:
+ /all:
+  get:
+   description: Show all added sensors
+   headers:
+    Authorization:
+     description: TODO
+   responses:
+    200:
+     body:
+      application/json:
+       example: |
+         {
+          „sensors“:[
+          {
+           „id“:“12“,
+           „name“:“Sensor12“,
+           „isActive“:“true“,
+           „creation_date“:329012390123,
+           „location“:“Berlin, Mitte“,
+           „clusterID“:1,
+           „addedBy“:99,
+           „sensortype“:111
+          },
+          {
+           „id“:“13“,
+           „name“:“Sensor13“,
+           „isActive“:“true“,
+           „creation_date“:329012391225,
+           „location“:“Berlin, Mitte“,
+           „clusterID“:1,
+           „addedBy“:99,
+           „sensortype“:112
+          }]
+         }
+ /add:
+  post:
+    description: Add new sensor
+    headers:
+     Authorization:
+      description: TODO
+    body:
+     application/json:
+      example: |
+         {
+           „name“:“Sensor14“,
+           „isActive“:“true“,
+           „creation_date“:329012391225,
+           „location“:“Berlin, Mitte“,
+           „clusterID“:1,
+           „addedBy“:99,
+           „sensortype“:111
+          }
+    responses:
+     200:
+      description: Sensor successfully added
+ /delete/:sensorid:
+   delete:
+    description: Delete sensor
+    headers:
+     Authorization:
+      description: TODO
+    queryParameters:
+     sensorid:
+      description: sensor id
+      type: number
+      required: true
+      example: 14
+    responses:
+     200:
+      description: Sensor successfully deleted
+ /change/:sensorid:
+   put:
+    description: User changes sensor
+    headers:
+     Authorization:
+      description: TODO
+    body:
+     application/json:
+      example: |
+         {
+           „name“:“TomsSensor“,
+           „isActive“:“true“,
+           „creation_date“:329012391225,
+           „location“:“Berlin, Mitte“,
+           „clusterID“:1,
+           „addedBy“:99,
+           „sensortype“:111
+          }
+    queryParameters:
+     sensorid:
+      description: Sensor id
+      type: number
+      required: true
+      example: 14
+    responses:
+     200:
+      description: Sensor data successfully changed
+ /live/:sensorid/:id:
+  get:
+   description: Show live data for sensor
+   headers:
+    Authorization:
+     description: TODO
+   queryParameters:
+     sensorid:
+      description: Sensor id
+      type: number
+      required: true
+      example: 14
+     id:
+      description: User id
+      type: number
+      required: true
+      example: 99
+   responses:
+    200:
+     body:
+      application/json:
+       example: |
+         {
+          "data": [
+           {
+            "acceleration": [5.55555555,6.6666666,7.7777777],
+            "location": "Berlin, Germany",
+            "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+            "time": "2012-04-23T18:25:43.511Z"
+           },
+           {
+            "acceleration": [5.55555555,6.6666666,7.7777777],
+            "location": [13.301172256,52.44152832,33.4],
+            "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+            "time": "2012-04-23T18:25:43.521Z"
+           },
+           {
+            "acceleration": [5.55555555,6.6666666,7.7777777],
+            "location": "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50",
+            "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+            "time": "2012-04-23T18:25:43.521Z"
+           }],
+          "id": "e0567770-8977-4518-9e56-f86f0037ec60"
+         }
+/gateways:
+ /all:
+  get:
+   description: Show all added gateways
+   headers:
+    Authorization:
+     description: TODO
+   responses:
+    200:
+     body:
+      application/json:
+       example: |
+         {
+          „gateways“:[
+          {
+           „id“:“1“,
+           „name“:“Gateway01“,
+           „creation_date“:329012390123
+          },
+          {
+           „id“:“2“,
+           „name“:“Gateway02“,
+           „creation_date“:329012394225
+          }]
+         }
+ /sensor/add/:sensorid/:gatewayid:
+   put:
+    description: Attach created sensor to gateway by id
+    headers:
+     Authorization:
+      description: TODO
+    queryParameters:
+     sensorid:
+      description: Sensor id
+      type: number
+      required: true
+      example: 12
+     gatewayid:
+      description: Gateway id
       type: number
       required: true
       example: 1
     responses:
      200:
-      description: user role successfully changed
+      description: Sensor 12 added successfully to gateway 1
+ /live/:gatewayid/:id:
+  get:
+   description: Show live all subscribed data from gateway
+   headers:
+    Authorization:
+     description: TODO
+   queryParameters:
+     gatewayid:
+      description: Gateway id
+      type: number
+      required: true
+      example: 1
+     id:
+      description: User id
+      type: number
+      required: true
+      example: 99
+   responses:
+    200:
+     body:
+      application/json:
+       example: |
+         {
+          "data": [
+           {
+            "acceleration": [5.55555555,6.6666666,7.7777777],
+            "location": "Berlin, Germany",
+            "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+            "time": "2012-04-23T18:25:43.511Z"
+           },
+           {
+            "acceleration": [5.55555555,6.6666666,7.7777777],
+            "location": [13.301172256,52.44152832,33.4],
+            "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+            "time": "2012-04-23T18:25:43.521Z"
+           },
+           {
+            "acceleration": [5.55555555,6.6666666,7.7777777],
+            "location": "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50",
+            "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+            "time": "2012-04-23T18:25:43.521Z"
+           }],
+          "id": "e0567770-8977-4518-9e56-f86f0037ec60"
+         }
+/query:
+  get:
+   description: Get data from query
+   headers:
+    Authorization:
+     description: TODO
+   responses:
+    200:
+     body:
+      application/json:
+       example: |
+        {[
+          {
+           "data": [
+            {
+             "acceleration": [5.55555555,6.6666666,7.7777777],
+             "location": "Berlin, Germany",
+             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+             "time": "2012-04-23T18:25:43.511Z"
+            },
+            {
+             "acceleration": [5.55555555,6.6666666,7.7777777],
+             "location": [13.301172256,52.44152832,33.4],
+             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+             "time": "2012-04-23T18:25:43.521Z"
+            },
+            {
+             "acceleration": [5.55555555,6.6666666,7.7777777],
+             "location": "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50",
+             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+             "time": "2012-04-23T18:25:43.521Z"
+            }],
+           "id": "e0567770-8977-4518-9e56-f86f0037ec60"
+          },
+          {
+           "data": [
+            {
+             "acceleration": [5.55555555,6.6666666,7.7777777],
+             "location": "Berlin, Germany",
+             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+             "time": "2012-04-23T18:25:43.511Z"
+            },
+            {
+             "acceleration": [5.55555555,6.6666666,7.7777777],
+             "location": [13.301172256,52.44152832,33.4],
+             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+             "time": "2012-04-23T18:25:43.521Z"
+            },
+            {
+             "acceleration": [5.55555555,6.6666666,7.7777777],
+             "location": "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50",
+             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
+             "time": "2012-04-23T18:25:43.521Z"
+            }],
+           "id": "e0567770-8977-4518-9e56-f86f0037ec60"
+          }
+         ]}
