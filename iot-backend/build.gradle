@@ -5,3 +5,7 @@ allprojects {
         mavenCentral()
     }
 }
+
+task friss(dependsOn: ':iot-friss:tomcatRunWar')
+
+task gen(dependsOn: ':iot-generator:run')
