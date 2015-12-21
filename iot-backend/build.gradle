@@ -1,0 +1,7 @@
+allprojects {
+    apply plugin: 'java'
+    group 'de.bht.mmi.iot'
+    repositories {
+        mavenCentral()
+    }
+}

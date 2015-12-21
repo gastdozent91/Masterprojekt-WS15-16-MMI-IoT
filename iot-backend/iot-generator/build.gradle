@@ -1,0 +1,18 @@
+version '1.0-SNAPSHOT'
+
+apply plugin: 'application'
+
+mainClassName = 'de.bht.mmi.iot.main.Main'
+
+sourceCompatibility = 1.8
+
+dependencies {
+    compile 'org.springframework.amqp:spring-rabbit:1.5.1.RELEASE',
+            'com.fasterxml.jackson.core:jackson-databind:2.6.3',
+            'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.3'
+}
+
+run {
+    jvmArgs '-DminNumValues=60', '-DmaxNumValues=180','-DschedulePeriod=1000'
+    enableAssertions = true
+}

@@ -1,0 +1,49 @@
+{
+  "name": "iot-frontend",
+  "version": "1.0.0",
+  "description": "IoT-Frontend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "dependencies": {
+    "aws-sdk": "^2.2.17",
+    "body-parser": "^1.14.1",
+    "d3": "^3.5.6",
+    "express": "^4.13.3",
+    "express-session": "^1.12.1",
+    "jade": "^1.11.0",
+    "nib": "^1.1.0",
+    "node-jsx": "^0.13.3",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
+    "sockjs-client": "^1.0.3",
+    "stompjs": "^2.3.3",
+    "stylus": "^0.52.4",
+    "superagent": "^1.6.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-jade": "^1.1.0",
+    "gulp-jshint": "^1.12.0",
+    "gulp-minify": "0.0.5",
+    "gulp-react": "^3.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-stylus": "^2.1.0",
+    "gulp-sync": "^0.1.4",
+    "gulp-uglify": "^1.4.2",
+    "gulp-watch": "^4.3.5",
+    "reactify": "^1.1.1"
+  }
+}

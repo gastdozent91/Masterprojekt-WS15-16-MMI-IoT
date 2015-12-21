@@ -1,0 +1,6 @@
+extend layout
+
+block content
+  #dashboard= body
+
+  script(type='json/application')#rdt !{JSON.stringify(reactData)}

@@ -1,0 +1,53 @@
+
+body
+  margin 0
+  padding 0
+  font 10px sans-serif
+
+textarea
+  resize none
+  background steelblue
+
+.textarea
+  height 100%
+
+.callout
+  box-shadow: 0 0 .5em gray;
+
+.seperator-line
+  margin 5px
+
+.realtime
+  height 400px
+
+#console
+  overflow scroll
+  border grey solid 1px
+  padding 10px
+
+.docs-page-title
+  margin-top 1rem
+  margin-bottom 1rem
+
+/*
+ * d3
+ */
+path {
+  stroke-width: 2;
+  fill: none;
+}
+
+.axis path,
+.axis line
+  fill none
+  stroke #000
+  shape-rendering crispEdges
+
+.y.axis path
+  display none
+
+.y.axis line
+  stroke #777
+  stroke-dasharray 2,2
+
+@import "login"
