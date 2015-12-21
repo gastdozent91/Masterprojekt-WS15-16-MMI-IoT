@@ -98,9 +98,9 @@ app.post('/login',
   //gateways.render
 //);
 
-//app.get('/createTest',
-  //test.createTable
-//);
+app.get('/createTest',
+  test.createTable
+);
 
 app.get('/getUser',
   test.getUser
