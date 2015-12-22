@@ -54,9 +54,9 @@ app.set('trust proxy', 1);
 
 app.use(session({
   secret: 'keyboard cat',
-  cookie: {maxAge: 1000 * 60 * 60 * 24 * 365}
-  //resave: false,
-  //saveUninitialized: true,
+  cookie: {maxAge: 1000 * 60 * 60 * 24 * 365},
+  resave: false,
+  saveUninitialized: true,
   //cookie: { secure: true }
 }));
 app.use(passport.initialize());
@@ -67,7 +67,7 @@ app.use(passport.session());
 app.get('/login',
   function(req, res, next) {
     if (req.user) res.redirect('/');
-    next();
+    else next();
   },
   login.render
 );
@@ -75,7 +75,7 @@ app.get('/login',
 app.get('/',
   function(req, res, next) {
     if (!req.user) res.redirect('/login');
-    next();
+    else next();
   },
   dashboard.render
 );
