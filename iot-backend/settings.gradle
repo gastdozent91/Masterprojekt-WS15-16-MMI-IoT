@@ -1,1 +1,1 @@
-include 'iot-friss'include 'iot-generator'
+include 'iot-friss'include 'iot-generator'include 'iot-rest'

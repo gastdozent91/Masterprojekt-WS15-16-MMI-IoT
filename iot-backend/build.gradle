@@ -9,3 +9,5 @@ allprojects {
 task friss(dependsOn: ':iot-friss:tomcatRunWar')
 
 task gen(dependsOn: ':iot-generator:run')
+
+task rest(dependsOn: ':iot-rest:tomcatRunWar')
