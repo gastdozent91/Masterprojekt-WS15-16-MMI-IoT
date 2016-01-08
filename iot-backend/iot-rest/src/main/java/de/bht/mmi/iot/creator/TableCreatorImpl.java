@@ -4,8 +4,13 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.*;
+import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 @Component
@@ -16,7 +21,7 @@ public class TableCreatorImpl implements TableCreator {
 
     public TableCreatorImpl() {
         client = new AmazonDynamoDBClient();
-        client.setEndpoint("http://localhost:8000");
+        client.setEndpoint("http://192.168.99.100:8000");
         dynamoDB = new DynamoDB(client);
     }
 
