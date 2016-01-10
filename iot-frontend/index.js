@@ -96,7 +96,8 @@ app.post('/login',
 });
 
 app.get('/createTest',
-  test.createTable
+  test.createTable,
+  test.createDummyUser
 );
 
 app.get('/getUser',

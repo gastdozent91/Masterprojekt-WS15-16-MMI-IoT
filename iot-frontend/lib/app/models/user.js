@@ -25,6 +25,26 @@ me.find = function(name, cb) {
   });
 };
 
+me.createDummyUser = function(cb) {
+  var params = {
+      TableName: "Users",
+      Item: {
+          "name": "Guest",
+          "password": "password"
+      }
+  };
+
+  doc.put(params, function(err, data) {
+      if (err) {
+        console.log(JSON.stringify(err, null, 2));
+        cb(err);
+      } else {
+        console.log(JSON.stringify(data, null, 2));
+        cb(null, data);
+      }
+  });
+};
+
 me.createTable = function(name, cb) {
   var params = {
     TableName : "Users",
