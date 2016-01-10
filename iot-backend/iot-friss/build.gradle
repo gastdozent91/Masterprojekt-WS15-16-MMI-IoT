@@ -41,7 +41,3 @@ war {
     webXml = file('src/main/resources/web.xml')
 }
 
-
-tomcat {
-    httpPort = 8001
-}
