@@ -3,6 +3,9 @@ allprojects {
     group 'de.bht.mmi.iot'
     repositories {
         mavenCentral()
+        maven {
+            url 'http://repo.opensourceagility.com/release/'
+        }
     }
 }
 

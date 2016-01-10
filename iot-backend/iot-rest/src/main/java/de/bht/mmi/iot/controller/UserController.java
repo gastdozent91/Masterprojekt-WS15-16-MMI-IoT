@@ -1,9 +1,9 @@
 package de.bht.mmi.iot.controller;
 
 import de.bht.mmi.iot.creator.TableCreator;
-import de.bht.mmi.iot.model.Sensor;
+import de.bht.mmi.iot.model.Sensor2;
 import de.bht.mmi.iot.model.User;
-import de.bht.mmi.iot.repository.SensorRepository;
+import de.bht.mmi.iot.repository.SensorRepository2;
 import de.bht.mmi.iot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private SensorRepository sensorRepository;
+    private SensorRepository2 sensorRepository;
 
     @Autowired
     private TableCreator userTableCreator;
@@ -83,10 +83,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}/sensor", method = RequestMethod.GET)
-    public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id) {
+    public Iterable<Sensor2> getAllAttachedSensors(@PathVariable("id") String id) {
         try {
             User user = userRepository.findOne(id);
-            ArrayList<Sensor> sensorList = new ArrayList<Sensor>();
+            ArrayList<Sensor2> sensorList = new ArrayList<Sensor2>();
             if (user.getSensorList() != null) {
                 for (String sensorID : user.getSensorList()) {
                     sensorList.add(sensorRepository.findOne(sensorID));

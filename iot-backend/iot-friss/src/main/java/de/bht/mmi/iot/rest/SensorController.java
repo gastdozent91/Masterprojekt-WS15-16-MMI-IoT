@@ -1,7 +1,7 @@
 package de.bht.mmi.iot.rest;
 
-import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.repository.SensorRepository;
+import de.bht.mmi.iot.model.Sensor2;
+import de.bht.mmi.iot.repository.SensorRepository2;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class SensorController {
 
     @Autowired
-    private SensorRepository sensorRepository;
+    private SensorRepository2 sensorRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Sensor> getAllSensors() {
+    public Iterable<Sensor2> getAllSensors() {
         return sensorRepository.findAll();
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Sensor createSensor() {
-        final Sensor sensor = new Sensor("yolo", new DateTime());
+    public Sensor2 createSensor() {
+        final Sensor2 sensor = new Sensor2("yolo", new DateTime());
         return sensorRepository.save(sensor);
     }
 
