@@ -1,0 +1,7 @@
+extend layout
+
+block content
+  #gateway= body
+
+  script(type='json/application')#rdt !{JSON.stringify(reactData)}
+
