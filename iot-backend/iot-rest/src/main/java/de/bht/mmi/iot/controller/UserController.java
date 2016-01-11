@@ -57,7 +57,6 @@ public class UserController {
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     public String deleteUser(@PathVariable("id") String id) {
         try {
-            User user = userRepository.findOne(id);
             userRepository.delete(id);
             return "User with id: " + id + " succussfully deleted";
         } catch (EntityNotFoundException e) {
@@ -86,13 +85,17 @@ public class UserController {
     public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id) {
         try {
             User user = userRepository.findOne(id);
-            ArrayList<Sensor> sensorList = new ArrayList<Sensor>();
-            if (user.getSensorList() != null) {
-                for (String sensorID : user.getSensorList()) {
-                    sensorList.add(sensorRepository.findOne(sensorID));
+            if (user != null) {
+                ArrayList<Sensor> sensorList = new ArrayList<Sensor>();
+                if (user.getSensorList() != null) {
+                    for (String sensorID : user.getSensorList()) {
+                        sensorList.add(sensorRepository.findOne(sensorID));
+                    }
                 }
+                return sensorList;
+            } else {
+                throw new EntityNotFoundException();
             }
-            return  sensorList;
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
             System.err.println("Error requesting sensorList for User: "+id);

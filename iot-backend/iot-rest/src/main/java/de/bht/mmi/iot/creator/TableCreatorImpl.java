@@ -47,6 +47,18 @@ public class TableCreatorImpl implements TableCreator {
         return "Table status: " + table.getDescription().getTableStatus();
     }
 
+    @Override
+    public String createGatewayTable() throws Exception {
+        Table table = dynamoDB.createTable(TABLENAME_GATEWAY,
+                Arrays.asList(
+                        new KeySchemaElement("gatewayID", KeyType.HASH)),
+                Arrays.asList(
+                        new AttributeDefinition("gatewayID", ScalarAttributeType.S)),
+                new ProvisionedThroughput(10L, 10L));
+
+        return "Table status: " + table.getDescription().getTableStatus();
+    }
+
     public String deleteTable(String tableName) throws Exception {
         Table table = dynamoDB.getTable(tableName);
         try {

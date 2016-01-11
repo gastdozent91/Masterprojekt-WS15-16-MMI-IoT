@@ -51,7 +51,6 @@ public class SensorController {
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     public String deleteSensor(@PathVariable("id") String id) {
         try {
-            Sensor sensor = sensorRepository.findOne(id);
             sensorRepository.delete(id);
             return "Sensor with id: " + id + " succussfully deleted";
         } catch (EntityNotFoundException e) {
