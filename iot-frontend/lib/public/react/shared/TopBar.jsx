@@ -2,6 +2,10 @@ var React = require('react');
 
 var TopBar = React.createClass({
 
+  propTypes: {
+    user: React.PropTypes.string
+  },
+
   getInitialState: function() {
     return {
     };

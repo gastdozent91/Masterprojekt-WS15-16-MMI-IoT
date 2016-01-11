@@ -7,7 +7,37 @@ var React = require('react')
 module.exports = me = {};
 
 me.render = function(req, res) {
-  var out = {user: req.user.name};
+  var sensors = [];
+  var sensor = {
+    name: 'gyrosensor',
+    location: 'Berlin',
+    active: true,
+    type: 'gyro',
+    gateway: 'supergateway'
+  };
+  var sensor2 = {
+    name: 'accelerationsensor',
+    location: 'Berlin',
+    active: false,
+    type: 'acceleration',
+    gateway: 'supergateway'
+  };
+  var sensor3 = {
+    name: 'accelerationsensor',
+    location: 'Berlin',
+    active: true,
+    type: 'acceleration',
+    gateway: 'dupergateway'
+  };
+  sensors.push(sensor);
+  if (req.query && req.query.size !== '1') {
+    sensors.push(sensor2);
+    sensors.push(sensor3);
+  }
+  var out = {
+    user: req.user.firstname,
+    sensors: sensors
+  };
   var sensor = new Sensor(out);
   var body = ReactDOM.renderToStaticMarkup(sensor);
 

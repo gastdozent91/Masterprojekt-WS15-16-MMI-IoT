@@ -7,10 +7,10 @@ var doc = dynamodb.doc;
 
 me.find = function(name, cb) {
   var params = {
-    TableName: 'Users',
+    TableName: 'User',
     KeyConditionExpression: '#n = :n',
     ExpressionAttributeNames:{
-      "#n": 'name'
+      "#n": 'userID'
     },
     ExpressionAttributeValues: {
       ":n": name

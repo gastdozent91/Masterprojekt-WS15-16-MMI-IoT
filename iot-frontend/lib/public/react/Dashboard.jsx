@@ -6,6 +6,10 @@ var React = require('react')
 
 var Dashboard = React.createClass({
 
+  propTypes: {
+    user: React.PropTypes.string
+  },
+
   getInitialState: function() {
     return {
     };

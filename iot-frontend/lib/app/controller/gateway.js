@@ -7,7 +7,29 @@ var React = require('react')
 module.exports = me = {};
 
 me.render = function(req, res) {
-  var out = {user: req.user.name};
+  var gateways = [];
+  var gateway = {
+    name: 'Paul',
+    location: 'Berlin',
+    active: true
+  };
+  var gateway2 = {
+    name: 'Gerd',
+    location: 'Berlin',
+    active: false
+  };
+  var gateway3 = {
+    name: 'Michael',
+    location: 'Berlin',
+    active: true
+  };
+  gateways.push(gateway);
+  gateways.push(gateway2);
+  gateways.push(gateway3);
+  var out = {
+    user: req.user.firstname,
+    gateways: gateways
+  };
   var gateway = new Gateway(out);
   var body = ReactDOM.renderToStaticMarkup(gateway);
 
