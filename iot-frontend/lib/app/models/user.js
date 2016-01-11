@@ -7,10 +7,10 @@ var doc = dynamodb.doc;
 
 me.find = function(name, cb) {
   var params = {
-    TableName: 'Users',
+    TableName: 'User',
     KeyConditionExpression: '#n = :n',
     ExpressionAttributeNames:{
-      "#n": 'name'
+      "#n": 'userID'
     },
     ExpressionAttributeValues: {
       ":n": name
@@ -22,6 +22,26 @@ me.find = function(name, cb) {
     } else {
       cb(null, data.Items[0]);
     }
+  });
+};
+
+me.createDummyUser = function(cb) {
+  var params = {
+      TableName: "Users",
+      Item: {
+          "name": "Guest",
+          "password": "password"
+      }
+  };
+
+  doc.put(params, function(err, data) {
+      if (err) {
+        console.log(JSON.stringify(err, null, 2));
+        cb(err);
+      } else {
+        console.log(JSON.stringify(data, null, 2));
+        cb(null, data);
+      }
   });
 };
 

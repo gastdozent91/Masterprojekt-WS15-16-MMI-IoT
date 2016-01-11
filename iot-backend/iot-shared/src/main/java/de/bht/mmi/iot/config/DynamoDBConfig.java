@@ -4,6 +4,7 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import org.apache.commons.lang3.StringUtils;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.core.env.Environment;
 import javax.annotation.PostConstruct;
 
 @Configuration
-@PropertySource("classpath:db.properties")
+@PropertySource("classpath:app.properties")
 @EnableDynamoDBRepositories(basePackages = "de.bht.mmi.iot.repository")
 public class DynamoDBConfig {
 

@@ -17,7 +17,7 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 @EnableRabbit
-@PropertySource("classpath:rabbit.properties")
+@PropertySource("classpath:app.properties")
 public class AmqpConfig {
 
     @Autowired

@@ -1,9 +1,14 @@
 var React = require('react')
   , Console = require('./Console')
   , Chart = require('./Chart')
+  , TopBar = require('./shared/TopBar')
   , rabbit = require('../js/rabbit');
 
 var Dashboard = React.createClass({
+
+  propTypes: {
+    user: React.PropTypes.string
+  },
 
   getInitialState: function() {
     return {
@@ -38,31 +43,7 @@ var Dashboard = React.createClass({
   render: function() {
     return (
       <div>
-      {/* Top Bar */}
-        <div className="top-bar">
-          <div className='row'>
-            <div className="top-bar-left">
-              <ul className="dropdown menu" data-dropdown-menu>
-                <li className="menu-text">FRISS</li>
-                <li className="has-submenu">
-                  <a href="#">Sensors</a>
-                  <ul className="submenu menu vertical" data-submenu>
-                    <li><a href="#">One</a></li>
-                    <li><a href="#">Two</a></li>
-                    <li><a href="#">Three</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Gateways</a></li>
-              </ul>
-            </div>
-            <div className='top-bar-right'>
-              <ul className='menu'>
-                <li><a href='#'>{this.props.user}</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        {/* Top Bar end */}
+        <TopBar user={this.props.user} />
         <div className='row column'>
           <h1 className='docs-page-title'>Dashboard</h1>
         </div>

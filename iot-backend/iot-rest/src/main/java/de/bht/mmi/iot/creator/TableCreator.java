@@ -1,7 +1,6 @@
 package de.bht.mmi.iot.creator;
 
 import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
-import org.springframework.context.annotation.Bean;
 
 @EnableScan
 public interface TableCreator {
@@ -10,11 +9,12 @@ public interface TableCreator {
     final String TABLENAME_SENSOR = "Sensor";
     final String TABLENAME_GATEWAY = "Gateway";
 
-    public String createUserTable() throws Exception;
+    String createUserTable();
 
-    public String createSensorTable() throws Exception;
+    String createSensorTable();
 
-    public String createGatewayTable() throws Exception;
+    String createGatewayTable();
 
-    public String deleteTable(String tableName) throws Exception;
+    String deleteTable(String tableName);
+
 }

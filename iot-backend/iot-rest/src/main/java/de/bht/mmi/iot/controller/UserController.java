@@ -2,8 +2,10 @@ package de.bht.mmi.iot.controller;
 
 import de.bht.mmi.iot.creator.TableCreator;
 import de.bht.mmi.iot.model.Sensor;
+import de.bht.mmi.iot.model.Sensor2;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.SensorRepository;
+import de.bht.mmi.iot.repository.SensorRepository2;
 import de.bht.mmi.iot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -107,12 +109,12 @@ public class UserController {
 
 
     @RequestMapping(value = "/createTable")
-    public String createTable() throws Exception {
+    public String createTable() {
         return userTableCreator.createUserTable();
     }
 
     @RequestMapping(value = "/deleteTable")
-    public String deleteTable() throws Exception {
+    public String deleteTable() {
         return userTableCreator.deleteTable(TableCreator.TABLENAME_USER);
     }
 

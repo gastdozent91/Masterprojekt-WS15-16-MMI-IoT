@@ -7,11 +7,12 @@ var express = require('express')
 
 var chart = require('./lib/app/controller/chart')
   , login = require('./lib/app/controller/login')
-  //, gateways = require('./lib/app/controller/gateways')
+  , sensor = require('./lib/app/controller/sensor')
+  , gateway = require('./lib/app/controller/gateway')
   , dashboard = require('./lib/app/controller/dashboard')
   , test = require('./lib/app/controller/test')
-  , User = require('./lib/app/models/user')
-  , usercontroller = require('./lib/app/controller/usercontroller');
+  , sensor = require('./lib/app/controller/sensor')
+  , User = require('./lib/app/models/user');
 
 var app = express();
 
@@ -24,7 +25,7 @@ app.use(bodyParser.json());
 passport.use(new LocalStrategy(
   function(username, password, done) {
     console.log('use');
-    User.find('Guest', function(err, user) {
+    User.find(username, function(err, user) {
       if (err) {return done(err);}
       if (!user) {
         return done(null, false, {message: 'Incorrect Username'});
@@ -32,7 +33,6 @@ passport.use(new LocalStrategy(
       if (user.password !== password) {
         return done(null, false, {message: 'Incorrect password'});
       }
-      console.log('done');
       return done(null, user);
     });
   }
@@ -40,7 +40,7 @@ passport.use(new LocalStrategy(
 
 passport.serializeUser(function(user, done) {
   console.log('serialize');
-    done(null, user.name);
+    done(null, user.userID);
 });
 
 passport.deserializeUser(function(name, done) {
@@ -65,19 +65,23 @@ app.use(passport.session());
 // Frontend
 
 app.get('/login',
-  function(req, res, next) {
-    if (req.user) res.redirect('/');
-    else next();
-  },
+  login.isAlreadyLoggedIn,
   login.render
 );
 
 app.get('/',
-  function(req, res, next) {
-    if (!req.user) res.redirect('/login');
-    else next();
-  },
+  login.shouldBeLoggedIn,
   dashboard.render
+);
+
+app.get('/gateways',
+  login.shouldBeLoggedIn,
+  gateway.render
+);
+
+app.get('/sensors',
+  login.shouldBeLoggedIn,
+  sensor.render
 );
 
 app.get('/chart',
@@ -90,48 +94,14 @@ app.post('/login',
     if (req.user) res.json({status: 'success'});
 });
 
-//app.get('/login',
-  //login.render
-//);
-
-//app.get('/gateways',
-  //gateways.render
-//);
-
 app.get('/createTest',
-  test.createTable
+  test.createTable,
+  test.createDummyUser
 );
 
 app.get('/getUser',
   test.getUser
 );
-
-// Api
-
-app.get('/users/all',
-  usercontroller.allUsers
-);
-
-app.post('/users/register',
-  usercontroller.registerUser
-);
-
-app.get('/users/login',
-  usercontroller.loginUser
-);
-
-app.delete('/users/delete/:id',
-  usercontroller.deleteUser
-);
-
-app.delete('/users/admin/delete/:id',
-  usercontroller.deleteUser
-);
-
-app.put('/users/admin/change/:id/:role',
-  usercontroller.changeUserRole
-);
-
 
 var server = app.listen(3000, function() {
   var host = server.address().address

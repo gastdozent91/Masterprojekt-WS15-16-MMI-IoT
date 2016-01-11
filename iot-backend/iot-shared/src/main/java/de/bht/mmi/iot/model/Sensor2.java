@@ -7,8 +7,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
 import org.joda.time.DateTime;
 
-@DynamoDBTable(tableName = "sensor")
-public class Sensor {
+@Deprecated
+@DynamoDBTable(tableName = "sensor_old")
+public class Sensor2 {
 
     private String id;
 
@@ -54,11 +55,11 @@ public class Sensor {
         isActive = active;
     }
 
-    public Sensor(String name, DateTime created) {
+    public Sensor2(String name, DateTime created) {
         this.name = name;
         this.created = created;
     }
 
-    public Sensor() { }
+    public Sensor2() { }
 
 }
