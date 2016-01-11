@@ -15,9 +15,9 @@ public class TableCreatorImpl implements TableCreator {
 
     public String createUserTable() {
         final CreateTableResult createTableResult = dynamoDB.createTable(
-                Arrays.asList(new AttributeDefinition("userID", ScalarAttributeType.S)),
+                Arrays.asList(new AttributeDefinition("username", ScalarAttributeType.S)),
                 TABLENAME_USER,
-                Arrays.asList(new KeySchemaElement("userID", KeyType.HASH)),
+                Arrays.asList(new KeySchemaElement("username", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
         return "Table status: " + createTableResult.getTableDescription().getTableStatus();
     }

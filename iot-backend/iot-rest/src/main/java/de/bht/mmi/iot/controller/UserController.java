@@ -1,24 +1,35 @@
 package de.bht.mmi.iot.controller;
 
 import de.bht.mmi.iot.creator.TableCreator;
+import de.bht.mmi.iot.dto.UserPostDto;
+import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.model.Sensor2;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.SensorRepository;
-import de.bht.mmi.iot.repository.SensorRepository2;
 import de.bht.mmi.iot.repository.UserRepository;
+import de.bht.mmi.iot.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 
+// TODO: Replace all sysouts with logger
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private SensorRepository sensorRepository;
@@ -27,8 +38,9 @@ public class UserController {
     private TableCreator userTableCreator;
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    @ResponseStatus(HttpStatus.CREATED)
+    public User createUser(@RequestBody @Validated UserPostDto dto) {
+        return userService.saveUser(dto);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -36,41 +48,33 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.PUT, consumes = "application/json")
-    public User updateUser(@PathVariable("id") String id, @RequestBody User user) {
+    @RequestMapping(value = "/{username}", method = RequestMethod.PUT, consumes = "application/json")
+    public User updateUser(@PathVariable("username") String username, @RequestBody @Validated UserPutDto dto) {
+        // TODO: check if user has role admin or is the user as he logged in
         try {
-            User oldUser = userRepository.findOne(id);
-            if (oldUser != null && !oldUser.equals(user)) {
-                oldUser.setFirstname(user.getFirstname());
-                oldUser.setLastname(user.getLastname());
-                oldUser.setMail(user.getMail());
-                oldUser.setUserRole(user.getUserRole());
-                return userRepository.save(oldUser);
-            } else {
-                throw new Exception("User not found with id: "+id);
-            }
+            return userService.updateUser(username, dto);
         } catch (Exception  e) {
             e.printStackTrace();
-            System.err.println("Error updating User: "+id);
+            System.err.println("Error updating User: "+ username);
             return null;
         }
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public String deleteUser(@PathVariable("id") String id) {
+    @RequestMapping(value = "/{username}",method = RequestMethod.DELETE)
+    public String deleteUser(@PathVariable("username") String username) {
         try {
-            userRepository.delete(id);
-            return "User with id: " + id + " succussfully deleted";
+            userRepository.delete(username);
+            return "User with username: " + username + " succussfully deleted";
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
-            return "Error deleting User: "+id;
+            return "Error deleting User: "+ username;
         }
     }
 
-    @RequestMapping(value = "/{id}/sensor",method = RequestMethod.PUT, consumes = "application/json")
-    public User updateUserSensorList(@PathVariable("id") String id, @RequestBody ArrayList<String> sensorList) {
+    @RequestMapping(value = "/{username}/sensor",method = RequestMethod.PUT, consumes = "application/json")
+    public User updateUserSensorList(@PathVariable("username") String username, @RequestBody ArrayList<String> sensorList) {
         try {
-            User user = userRepository.findOne(id);
+            User user = userRepository.findOne(username);
 
             if (user != null) {
                 user.setSensorList(sensorList);
@@ -78,15 +82,15 @@ public class UserController {
             return userRepository.save(user);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
-            System.err.println("Error attaching Sensor to User: "+id);
+            System.err.println("Error attaching Sensor to User: "+username);
             return null;
         }
     }
 
-    @RequestMapping(value = "/{id}/sensor", method = RequestMethod.GET)
-    public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id) {
+    @RequestMapping(value = "/{username}/sensor", method = RequestMethod.GET)
+    public Iterable<Sensor> getAllAttachedSensors(@PathVariable("username") String username) {
         try {
-            User user = userRepository.findOne(id);
+            User user = userRepository.findOne(username);
             if (user != null) {
                 ArrayList<Sensor> sensorList = new ArrayList<Sensor>();
                 if (user.getSensorList() != null) {
@@ -100,7 +104,7 @@ public class UserController {
             }
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
-            System.err.println("Error requesting sensorList for User: "+id);
+            System.err.println("Error requesting sensorList for User: "+username);
         }
         return null;
     }

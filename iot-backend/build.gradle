@@ -1,6 +1,9 @@
 allprojects {
-    apply plugin: 'java'
     group 'de.bht.mmi.iot'
+    apply plugin: 'java'
+    compileJava {
+        options.deprecation = true
+    }
     repositories {
         mavenCentral()
         maven {
