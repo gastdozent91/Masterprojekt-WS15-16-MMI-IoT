@@ -23,7 +23,7 @@ dependencies {
             'org.apache.logging.log4j:log4j-core:2.4.1',
             'org.apache.logging.log4j:log4j-api:2.4.1',
             'org.apache.logging.log4j:log4j-web:2.4.1',
-            'org.springframework:spring-webmvc:4.2.2.RELEASE',
+            'org.springframework:spring-webmvc:4.2.4.RELEASE',
             'org.springframework.amqp:spring-rabbit:1.5.1.RELEASE',
             'org.jscience:jscience:4.3.1',
             'org.yaml:snakeyaml:1.16'
