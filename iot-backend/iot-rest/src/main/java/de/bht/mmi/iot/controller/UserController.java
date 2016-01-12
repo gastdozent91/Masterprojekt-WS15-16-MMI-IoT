@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,42 +39,32 @@ public class UserController {
     @Autowired
     private TableCreator userTableCreator;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public Iterable<User> getAllUser() {
+        return userService.getAllUsers();
+    }
+
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody @Validated UserPostDto dto) {
         return userService.saveUser(dto);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Iterable<User> getAllUser() {
-        return userRepository.findAll();
-    }
-
     @RequestMapping(value = "/{username}", method = RequestMethod.PUT, consumes = "application/json")
-    public User updateUser(@PathVariable("username") String username, @RequestBody @Validated UserPutDto dto) {
-        // TODO: check if user has role admin or is the user as he logged in
-        try {
-            return userService.updateUser(username, dto);
-        } catch (Exception  e) {
-            e.printStackTrace();
-            System.err.println("Error updating User: "+ username);
-            return null;
-        }
+    public User updateUser(@PathVariable("username") String username, @RequestBody @Validated UserPutDto dto,
+                           @AuthenticationPrincipal UserDetails userDetails) {
+        return userService.updateUser(username, dto, userDetails);
     }
 
-    @RequestMapping(value = "/{username}",method = RequestMethod.DELETE)
-    public String deleteUser(@PathVariable("username") String username) {
-        try {
-            userRepository.delete(username);
-            return "User with username: " + username + " succussfully deleted";
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return "Error deleting User: "+ username;
-        }
+    @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
+    public void deleteUser(@PathVariable("username") String username) {
+        userService.deleteUser(username);
     }
 
     @RequestMapping(value = "/{username}/sensor",method = RequestMethod.PUT, consumes = "application/json")
     public User updateUserSensorList(@PathVariable("username") String username, @RequestBody ArrayList<String> sensorList) {
+        // TODO: May be we need a new roles for people wich can add sensors
+        // TODO: admin can edit data from every user
         try {
             User user = userRepository.findOne(username);
 
@@ -89,6 +81,7 @@ public class UserController {
 
     @RequestMapping(value = "/{username}/sensor", method = RequestMethod.GET)
     public Iterable<Sensor> getAllAttachedSensors(@PathVariable("username") String username) {
+        // TODO: see todo updateUserSensorList
         try {
             User user = userRepository.findOne(username);
             if (user != null) {
@@ -110,8 +103,6 @@ public class UserController {
     }
 
     // Table Create/Delete
-
-
     @RequestMapping(value = "/createTable")
     public String createTable() {
         return userTableCreator.createUserTable();

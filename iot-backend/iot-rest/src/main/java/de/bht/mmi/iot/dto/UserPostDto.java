@@ -2,6 +2,8 @@ package de.bht.mmi.iot.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.bht.mmi.iot.model.RoleConstants;
+import de.bht.mmi.iot.validator.Contain;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -23,12 +25,15 @@ public final class UserPostDto {
 
     private final String lastname;
 
+    @NotNull
+    @Size(min = 1)
+    @Contain({RoleConstants.ROLE_ADMIN, RoleConstants.ROLE_USER})
     private final Set<String> roles;
 
     @JsonCreator
     public UserPostDto(@JsonProperty("username") String username, @JsonProperty("password") String password,
                        @JsonProperty("firstname") String firstname, @JsonProperty("lastname") String lastname,
-                       @JsonProperty("authorities") Set<String> roles) {
+                       @JsonProperty("roles") Set<String> roles) {
         this.username = username;
         this.password = password;
         this.firstname = firstname;

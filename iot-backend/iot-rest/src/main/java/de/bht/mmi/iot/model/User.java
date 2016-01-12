@@ -32,7 +32,7 @@ public class User implements UserDetails {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        addRole("USER");
+        addRole(RoleConstants.ROLE_USER);
     }
 
     public User() { }
@@ -90,15 +90,11 @@ public class User implements UserDetails {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
-        // TODO: ensure that the user is in role user or admin
-        this.roles.add("USER");
     }
 
     public boolean addRole(String role) {
         return this.roles.add(role.toUpperCase());
     }
-
-    // TODO: Remove role method -> avoid user with no role; at least the user has role user or admin
 
     public ArrayList<String> getSensorList() {
         return sensorList;
