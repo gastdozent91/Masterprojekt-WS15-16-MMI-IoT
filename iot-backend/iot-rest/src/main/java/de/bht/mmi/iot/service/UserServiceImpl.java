@@ -5,6 +5,7 @@ import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.model.RoleConstants;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.UserRepository;
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,9 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityExistsException;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private SensorService sensorService;
 
     @Autowired
     private UserRepository userRepository;
@@ -64,6 +69,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String username) {
         userRepository.delete(username);
+    }
+
+    @Override
+    public User updateUserSensors(String username, Iterable<String> ids, User user) {
+        if (!(isRolePresent(user, RoleConstants.ROLE_ADMIN) || user.getUsername().equals(username))) {
+            // TODO: More meaningfuel exception message
+            throw new AccessDeniedException("Operation not permitted");
+        }
+
+        final User userToUpdate = userRepository.findOne(username);
+        if (userToUpdate == null) {
+            throw new UsernameNotFoundException(String.format("User with username '%s' not found", username));
+        }
+
+        final List<String> idsAsList = IteratorUtils.toList(ids.iterator());
+        userToUpdate.setSensorList(idsAsList);
+        userRepository.save(userToUpdate);
+        return userToUpdate;
     }
 
     @Override

@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 @EnableScan
 public interface SensorRepository extends CrudRepository<Sensor, String> {
+
+
 }
