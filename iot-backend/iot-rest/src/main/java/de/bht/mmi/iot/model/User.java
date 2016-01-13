@@ -8,10 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @DynamoDBTable(tableName = "User")
 public class User implements UserDetails {
@@ -27,7 +24,7 @@ public class User implements UserDetails {
 
     private Set<String> roles = new HashSet<String>();
 
-    private ArrayList<String> sensorList;
+    private List<String> sensorList;
 
     public User(String username, String password) {
         this.username = username;
@@ -96,11 +93,11 @@ public class User implements UserDetails {
         return this.roles.add(role.toUpperCase());
     }
 
-    public ArrayList<String> getSensorList() {
+    public List<String> getSensorList() {
         return sensorList;
     }
 
-    public void setSensorList(ArrayList<String> sensorList) {
+    public void setSensorList(List<String> sensorList) {
         this.sensorList = sensorList;
     }
 

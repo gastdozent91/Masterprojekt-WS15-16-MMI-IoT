@@ -21,6 +21,9 @@ public interface UserService {
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     void deleteUser(String username);
 
+    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
+    User updateUserSensors(String username, Iterable<String> ids, User user);
+
     boolean isRolePresent(UserDetails userDetails, String role);
 
 }
