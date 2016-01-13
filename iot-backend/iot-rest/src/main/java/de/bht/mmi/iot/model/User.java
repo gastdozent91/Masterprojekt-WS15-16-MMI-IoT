@@ -24,7 +24,7 @@ public class User implements UserDetails {
 
     private Set<String> roles = new HashSet<String>();
 
-    private List<String> sensorList;
+    private List<String> sensorList = Collections.emptyList();
 
     public User(String username, String password) {
         this.username = username;
