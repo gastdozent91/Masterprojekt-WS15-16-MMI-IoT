@@ -1,19 +1,103 @@
 var dynamodb = require('../plugins/dynamodb');
+var request = require('superagent');
 
 module.exports = me = {};
+
+me.getAll = (user, cb) => {
+  var authBuffer= new Buffer('admin:admin');
+  //var authBuffer= new Buffer(user.username + ':' + user.password);
+  var auth = authBuffer.toString('base64');
+  request
+    .get('http://localhost:8080/iot-rest/user')
+    .set('Authorization', 'Basic ' + auth)
+    .end((err, res) => {
+      if (err) cb(err);
+      cb(null, res);
+    });
+};
+
+me.update = (user, userToUpdate, cb) => {
+  var authBuffer= new Buffer(user.username + ':' + user.password);
+  var auth = authBuffer.toString('base64');
+  request
+    .put('http://localhost:8080/iot-rest/user/' + userToUpdate.username)
+    .send(user)
+    .set('Authorization', 'Basic ' + auth)
+    .end((err, res) => {
+      if (err) cb(err);
+      cb(null, res);
+    });
+};
+
+me.delete = (user, userToDelete, cb) => {
+  var authBuffer= new Buffer('admin:admin');
+  //var authBuffer= new Buffer(user.username + ':' + user.password);
+  var auth = authBuffer.toString('base64');
+  request
+    .delete('http://localhost:8080/iot-rest/user/' + userToDelete)
+    .set('Authorization', 'Basic ' + auth)
+    .end((err, res) => {
+      if (err) cb(err);
+      cb(null, res);
+    });
+};
+
+me.create = (user, userToCreate, cb) => {
+  var authBuffer= new Buffer('admin:admin');
+  //var authBuffer= new Buffer(user.username + ':' + user.password);
+  var auth = authBuffer.toString('base64');
+  request
+    .post('http://localhost:8080/iot-rest/user')
+    .send(userToCreate)
+    .set('Authorization', 'Basic ' + auth)
+    .end((err, res) => {
+      if (err) cb(err);
+      cb(null, res);
+    });
+};
+
+me.getSensors = (user, userWithSensors, cb) => {
+  //var authBuffer= new Buffer('admin:admin');
+  var authBuffer= new Buffer(user.username + ':' + user.password);
+  var auth = authBuffer.toString('base64');
+  request
+    .get('http://localhost:8080/iot-rest/user/' + userWithSensors + '/sensor')
+    .set('Authorization', 'Basic ' + auth)
+    .end((err, res) => {
+      if (err) cb(err);
+      cb(null, res);
+    });
+};
+
+me.setSensors = (user, userWithSensors, sensors, cb) => {
+  //var authBuffer= new Buffer('admin:admin');
+  var authBuffer= new Buffer(user.username + ':' + user.password);
+  var auth = authBuffer.toString('base64');
+  request
+    .put('http://localhost:8080/iot-rest/user/' + userWithSensors + '/sensor')
+    .send(sensors)
+    .set('Authorization', 'Basic ' + auth)
+    .end((err, res) => {
+      if (err) cb(err);
+      cb(null, res);
+    });
+};
+
+
+// access dynamo directly for frontend authentification
 
 var db = dynamodb.db;
 var doc = dynamodb.doc;
 
-me.find = function(name, cb) {
+me.find = function(username, cb) {
   var params = {
     TableName: 'User',
     KeyConditionExpression: '#n = :n',
     ExpressionAttributeNames:{
-      "#n": 'userID'
+      "#n": 'username'
     },
     ExpressionAttributeValues: {
-      ":n": name
+      ":n": username
     }
   };
   doc.query(params, function(err, data) {
@@ -23,55 +107,4 @@ me.find = function(name, cb) {
       cb(null, data.Items[0]);
     }
   });
-};
-
-me.createDummyUser = function(cb) {
-  var params = {
-      TableName: "Users",
-      Item: {
-          "name": "Guest",
-          "password": "password"
-      }
-  };
-
-  doc.put(params, function(err, data) {
-      if (err) {
-        console.log(JSON.stringify(err, null, 2));
-        cb(err);
-      } else {
-        console.log(JSON.stringify(data, null, 2));
-        cb(null, data);
-      }
-  });
-};
-
-me.createTable = function(name, cb) {
-  var params = {
-    TableName : "Users",
-    KeySchema: [
-      { AttributeName: "name", KeyType: "HASH"},  //Partition key
-      //{ AttributeName: "name", KeyType: "RANGE" }  //Sort key
-    ],
-    AttributeDefinitions: [
-      { AttributeName: "name", AttributeType: "S" },
-      //{ AttributeName: "password", AttributeType: "S" }
-    ],
-    ProvisionedThroughput: {
-      ReadCapacityUnits: 10,
-      WriteCapacityUnits: 10
-    }
-  };
-
-  db.createTable(params, function(err, data) {
-    if (err) {
-      console.log('Unable to create table. Error JSON: '
-                  , JSON.stringify(err, null, 2))
-      cb(err);
-    } else {
-      console.log('Created table. Table description JSON: '
-                  , JSON.stringify(data, null, 2));
-      cb(null, data);
-    }
-  });
-
 };

@@ -12,7 +12,8 @@ var chart = require('./lib/app/controller/chart')
   , dashboard = require('./lib/app/controller/dashboard')
   , test = require('./lib/app/controller/test')
   , sensor = require('./lib/app/controller/sensor')
-  , User = require('./lib/app/models/user');
+  , user = require('./lib/app/controller/user')
+  , User = require('./lib/app/models/user'); // only used by passport
 
 var app = express();
 
@@ -24,7 +25,6 @@ app.use(bodyParser.json());
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log('use');
     User.find(username, function(err, user) {
       if (err) {return done(err);}
       if (!user) {
@@ -40,12 +40,12 @@ passport.use(new LocalStrategy(
 
 passport.serializeUser(function(user, done) {
   console.log('serialize');
-    done(null, user.userID);
+    done(null, user.username);
 });
 
-passport.deserializeUser(function(name, done) {
+passport.deserializeUser(function(username, done) {
   console.log('deserialize');
-    User.find(name, function(err, user) {
+    User.find(username, function(err, user) {
       done(err, user);
     });
 });
@@ -101,6 +101,30 @@ app.get('/createTest',
 
 app.get('/getUser',
   test.getUser
+);
+
+app.get('/listUser',
+  user.getAll
+);
+
+app.get('/updateUser',
+  user.update
+);
+
+app.get('/deleteUser',
+  user.delete
+);
+
+app.get('/createUser',
+  user.create
+);
+
+app.get('/listUserSensors',
+  user.getSensors
+);
+
+app.get('/updateUserSensors',
+  user.setSensors
 );
 
 var server = app.listen(3000, function() {
