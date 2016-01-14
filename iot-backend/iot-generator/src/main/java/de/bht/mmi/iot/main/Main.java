@@ -7,6 +7,8 @@ import de.bht.mmi.iot.model.AmqpConstants;
 import de.bht.mmi.iot.model.BulkMessage;
 import de.bht.mmi.iot.model.SensorType;
 import de.bht.mmi.iot.service.BulkMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -37,6 +39,8 @@ public final class Main {
         // time in milliseconds between send message - see build.gradle
         final int schedulePeriod = Integer.parseInt(System.getProperty("schedulePeriod", "100"));
 
+        final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         ctx.register(AppConfig.class);
         ctx.register(AmqpConfiguration.class);
@@ -63,7 +67,7 @@ public final class Main {
 
                         rabbitTemplate.send(AmqpConstants.FRISS_EXCHANGE_NAME, "", message);
 
-                        System.out.printf("Send %s-bulk with %d values at %s%n",
+                        LOGGER.info("Send %s-bulk with %d values at %s%n",
                                 sensorType.getLabel(),
                                 bulkMessage.getValues().size(),
                                 LocalTime.now());
@@ -72,7 +76,7 @@ public final class Main {
                         System.exit(1);
                     }
                 });
-                System.out.println("------------------------------------------------------------------------------------------");
+                LOGGER.info("------------------------------------------------------------------------------------------");
             }
         };
         timer.schedule(task, 0, schedulePeriod);
