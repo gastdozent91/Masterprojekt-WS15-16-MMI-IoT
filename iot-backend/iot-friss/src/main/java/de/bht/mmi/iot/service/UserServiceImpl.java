@@ -32,7 +32,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(@Validated UserPostDto dto) {
+    public User createUser(@Validated User user) {
+        final String username = user.getUsername();
+        if (isUsernameAlreadyInUse((username))) {
+            throw new EntityExistsException(String.format("Username '%s' already in use", username));
+        }
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User createUser(@Validated UserPostDto dto) {
         final String dtoUsername = dto.getUsername();
         if (isUsernameAlreadyInUse((dtoUsername))) {
             throw new EntityExistsException(String.format("Username '%s' already in use", dtoUsername));

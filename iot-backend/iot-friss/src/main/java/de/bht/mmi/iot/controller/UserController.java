@@ -37,7 +37,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody @Validated UserPostDto dto) {
-        return userService.saveUser(dto);
+        return userService.createUser(dto);
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.PUT, consumes = "application/json")

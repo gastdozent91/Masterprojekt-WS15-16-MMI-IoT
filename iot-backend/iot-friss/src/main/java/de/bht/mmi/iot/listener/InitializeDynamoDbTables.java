@@ -6,6 +6,7 @@ import de.bht.mmi.iot.controller.UserController;
 import de.bht.mmi.iot.creator.TableCreator;
 import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.model.RoleConstants;
+import de.bht.mmi.iot.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,8 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     @Autowired
     private TableCreator tableCreator;
 
-    private UserController userController = new UserController();
-    private SensorController sensorController = new SensorController();
-    private GatewayController gatewayController = new GatewayController();
+    @Autowired
+    private UserService userService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -44,7 +44,8 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     }
 
     private void addDummyData() {
-        userController.createUser(new UserPostDto("maxi", "qwertz", "max", "mustermann", new HashSet<String>(Arrays.asList(RoleConstants.ROLE_ADMIN))));
+        //userService.createUser();
+        //userController.createUser(new UserPostDto("maxi", "qwertz", "max", "mustermann", new HashSet<String>(Arrays.asList(RoleConstants.ROLE_ADMIN))));
     }
 
 }

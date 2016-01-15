@@ -10,9 +10,3 @@
     or
     ./gradlew :iot-generator:run
     
-## iot-rest
-
-    ./gradlew rest
-    or
-    ./gradlew :iot-rest:tRW
-    

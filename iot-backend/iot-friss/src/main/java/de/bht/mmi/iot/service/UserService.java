@@ -12,8 +12,11 @@ public interface UserService {
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     Iterable<User> getAllUsers();
 
+    @PreAuthorize(RoleConstants.ROLE_ADMIN)
+    User createUser(User user);
+
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    User saveUser(UserPostDto dto);
+    User createUser(UserPostDto dto);
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
     User updateUser(String username, UserPutDto dto, UserDetails userDetails);
