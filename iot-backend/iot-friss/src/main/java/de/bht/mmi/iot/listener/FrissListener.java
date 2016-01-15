@@ -1,5 +1,7 @@
 package de.bht.mmi.iot.listener;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.model.BatchWriteItemRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bht.mmi.iot.model.AmqpConstants;
 import org.slf4j.Logger;
@@ -23,6 +25,9 @@ public class FrissListener {
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
+    private AmazonDynamoDB dbConnector;
+    
+    @Autowired
     private ObjectMapper objectMapper;
 
     private static final Logger log = LoggerFactory.getLogger(FrissListener.class);
@@ -34,6 +39,7 @@ public class FrissListener {
     )
     public void processFriss(@Headers Map<String, String> amqpHeaders, String data) {
         log.info("Received message with payload: {} and amqpHeaders: {}.", data, amqpHeaders);
+        //dbConnector.batchWriteItem(new BatchWriteItemRequest());
     }
 
 }
