@@ -17,8 +17,7 @@ sourceCompatibility = 1.8
 dependencies {
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1',
                     'javax.servlet.jsp:jsp-api:2.2'
-    compile project(':iot-shared'),
-            'org.slf4j:slf4j-api:1.7.12',
+    compile 'org.slf4j:slf4j-api:1.7.12',
             'org.apache.logging.log4j:log4j-slf4j-impl:2.4.1',
             'org.apache.logging.log4j:log4j-core:2.4.1',
             'org.apache.logging.log4j:log4j-api:2.4.1',
@@ -26,7 +25,17 @@ dependencies {
             'org.springframework:spring-webmvc:4.2.4.RELEASE',
             'org.springframework.amqp:spring-rabbit:1.5.1.RELEASE',
             'org.jscience:jscience:4.3.1',
-            'org.yaml:snakeyaml:1.16'
+            'org.yaml:snakeyaml:1.16',
+            'org.springframework:spring-context:4.2.4.RELEASE',
+            'org.socialsignin:spring-data-dynamodb:1.0.2.RELEASE',
+            'org.hibernate:hibernate-entitymanager:4.2.0.Final',
+            'org.hibernate:hibernate-validator:5.1.3.Final',
+            'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final',
+            'com.fasterxml.jackson.core:jackson-databind:2.6.3',
+            'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.6.3',
+            'org.apache.commons:commons-collections4:4.1',
+            'org.springframework.security:spring-security-web:4.0.3.RELEASE',
+            'org.springframework.security:spring-security-config:4.0.3.RELEASE'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
     def tomcatVersion = '7.0.59'

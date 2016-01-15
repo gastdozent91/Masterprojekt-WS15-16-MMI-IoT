@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sensor")
-public class SensorController {
+@RequestMapping("/sensor2")
+public class Sensor2Controller {
 
     @Autowired
     private SensorRepository2 sensorRepository;
