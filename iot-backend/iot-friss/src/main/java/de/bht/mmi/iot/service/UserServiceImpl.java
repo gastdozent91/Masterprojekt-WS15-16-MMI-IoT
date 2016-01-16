@@ -6,6 +6,8 @@ import de.bht.mmi.iot.model.RoleConstants;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.UserRepository;
 import org.apache.commons.collections4.IteratorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public Iterable<User> getAllUsers() {
@@ -75,6 +79,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String username) {
         userRepository.delete(username);
+        LOGGER.debug("User with username: " + username + " succussfully deleted");
     }
 
     @Override

@@ -1,10 +1,18 @@
 package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.RoleConstants;
 import de.bht.mmi.iot.model.Sensor;
+import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import de.bht.mmi.iot.repository.SensorRepository;
+import de.bht.mmi.iot.repository.UserRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +29,11 @@ public class GatewayServiceImpl implements GatewayService{
     @Autowired
     private SensorRepository sensorRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private Logger LOGGER = LoggerFactory.getLogger(GatewayServiceImpl.class);
+
     @Override
     public Iterable<Gateway> getAll() {
         return gatewayRepository.findAll();
@@ -32,64 +45,25 @@ public class GatewayServiceImpl implements GatewayService{
     }
 
     @Override
-    public Gateway updateGateway(@PathVariable("id") String id, @RequestBody Gateway gateway) {
-        try {
-            Gateway oldGateway = gatewayRepository.findOne(id);
-            if (oldGateway != null && !oldGateway.equals(gateway)) {
+    public Gateway updateGateway(@PathVariable("id") String id, @RequestBody Gateway gateway, UserDetails userDetails) {
+        Gateway oldGateway = gatewayRepository.findOne(id);
+        User user = userRepository.findOne(userDetails.getUsername());
+        if (oldGateway != null && !oldGateway.equals(gateway)) {
+            if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)) {
                 oldGateway.setName(gateway.getName());
+                oldGateway.setSensorList(gateway.getSensorList());
                 return gatewayRepository.save(oldGateway);
             } else {
-                throw new Exception("Gateway not found with id: "+id);
+                throw new AccessDeniedException(String.format("No rights to access!"));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error updating Gateway");
-            return null;
+        } else {
+            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found",id));
         }
     }
 
     @Override
-    public String deleteGateway(@PathVariable("id") String id) {
-        try {
+    public void deleteGateway(@PathVariable("id") String id) {
             gatewayRepository.delete(id);
-            return "Gateway with id: " + id + " succussfully deleted";
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return "Error deleting Gateway";
-        }
-    }
-
-    @Override
-    public Gateway updateGatewaySensorList(@PathVariable("id") String id, @RequestBody ArrayList<String> sensorList) {
-        try {
-            Gateway gateway = gatewayRepository.findOne(id);
-
-            if (gateway != null) {
-                gateway.setSensorList(sensorList);
-            }
-            return gatewayRepository.save(gateway);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            System.err.println("Error attaching Sensor to Gateway: "+id);
-            return null;
-        }
-    }
-
-    @Override
-    public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id) {
-        try {
-            Gateway gateway = gatewayRepository.findOne(id);
-            ArrayList<Sensor> sensorList = new ArrayList<Sensor>();
-            if (gateway.getSensorList() != null) {
-                for (String sensorID : gateway.getSensorList()) {
-                    sensorList.add(sensorRepository.findOne(sensorID));
-                }
-            }
-            return  sensorList;
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            System.err.println("Error requesting sensorList for Gateway: "+id);
-        }
-        return null;
+            LOGGER.debug(String.format("Gateway with id '%s' successfull deleted",id));
     }
 }

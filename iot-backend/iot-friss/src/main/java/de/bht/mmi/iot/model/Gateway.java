@@ -18,8 +18,9 @@ public class Gateway {
     public Gateway() {
     }
 
-    public Gateway(String name) {
+    public Gateway(String name, ArrayList<String> sensorList) {
         this.name = name;
+        this.sensorList = sensorList;
     }
 
     @DynamoDBHashKey(attributeName = "gatewayID")

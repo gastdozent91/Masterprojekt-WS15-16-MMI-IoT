@@ -1,6 +1,7 @@
 package de.bht.mmi.iot.controller;
 
 import de.bht.mmi.iot.service.GatewayService;
+import de.bht.mmi.iot.service.SensorService;
 import de.bht.mmi.iot.service.TableCreatorService;
 import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.Sensor;
@@ -9,6 +10,8 @@ import de.bht.mmi.iot.repository.SensorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -19,13 +22,10 @@ import java.util.ArrayList;
 public class GatewayController {
 
     @Autowired
-    private GatewayRepository gatewayRepository;
-
-    @Autowired
     private GatewayService gatewayService;
 
     @Autowired
-    private SensorRepository sensorRepository;
+    private SensorService sensorService;
 
     @Autowired
     private TableCreatorService tableCreator;
@@ -41,23 +41,19 @@ public class GatewayController {
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
-    public Gateway updateGateway(@PathVariable("id") String id, @RequestBody Gateway gateway) {
-        return gatewayService.updateGateway(id,gateway);
+    public Gateway updateGateway(@PathVariable("id") String id,
+                                 @RequestBody Gateway gateway,
+                                 @AuthenticationPrincipal UserDetails userDetails) {
+        return gatewayService.updateGateway(id, gateway, userDetails);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public String deleteGateway(@PathVariable("id") String id) {
-        return gatewayService.deleteGateway(id);
-    }
-
-    @RequestMapping(value = "/{id}/sensor",method = RequestMethod.PUT, consumes = "application/json")
-    public Gateway updateGatewaySensorList(@PathVariable("id") String id, @RequestBody ArrayList<String> sensorList) {
-        return gatewayService.updateGatewaySensorList(id, sensorList);
+    public void deleteGateway(@PathVariable("id") String id) { gatewayService.deleteGateway(id);
     }
 
     @RequestMapping(value = "/{id}/sensor", method = RequestMethod.GET)
     public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id) {
-        return gatewayService.getAllAttachedSensors(id);
+        return sensorService.getAllSensorsByGatewayId(id);
     }
 
     // Table Create/Delete

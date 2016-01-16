@@ -2,9 +2,11 @@ package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
+import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.RoleConstants;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
+import de.bht.mmi.iot.repository.GatewayRepository;
 import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
 import org.joda.time.DateTime;
@@ -29,16 +31,20 @@ public class SensorServiceImpl implements SensorService {
     private SensorRepository sensorRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
+    private GatewayRepository gatewayRepository;
 
+    Logger LOGGER = LoggerFactory.getLogger(SensorServiceImpl.class);
+
+    @Override
     public Iterable<Sensor> getAll() {
         return sensorRepository.findAll();
     }
-
-    Logger LOGGER = LoggerFactory.getLogger(SensorServiceImpl.class);
 
     @Override
     public Iterable<Sensor> getAllSensorsByUsername(String username, User user) {
@@ -47,6 +53,16 @@ public class SensorServiceImpl implements SensorService {
             throw new AccessDeniedException("Operation not permitted! Access denied!");
         }
         return sensorRepository.findAll(user.getSensorList());
+    }
+
+    @Override
+    public Iterable<Sensor> getAllSensorsByGatewayId(String gatewayID) {
+        Gateway gateway = gatewayRepository.findOne(gatewayID);
+        if (gateway != null) {
+            return sensorRepository.findAll(gateway.getSensorList());
+        } else {
+            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found"));
+        }
     }
 
     @Override
@@ -98,12 +114,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public void deleteSensor(String sensorID) {
-        try {
             sensorRepository.delete(sensorID);
             LOGGER.debug("Sensor with id: " + sensorID + " succussfully deleted");
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            LOGGER.debug("Error deleting Sensor");
-        }
     }
 }

@@ -2,8 +2,10 @@ package de.bht.mmi.iot.listener;
 
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.UserPostDto;
+import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.RoleConstants;
 import de.bht.mmi.iot.model.User;
+import de.bht.mmi.iot.service.GatewayService;
 import de.bht.mmi.iot.service.SensorService;
 import de.bht.mmi.iot.service.TableCreatorService;
 import de.bht.mmi.iot.service.UserService;
@@ -46,7 +48,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     private SensorService sensorService;
 
     @Autowired
-    private HttpServletRequest httpServletRequest;
+    private GatewayService gatewayService;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -81,6 +83,9 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         sensorService.createSensor(new SensorPostDto(true,"Berlin, Germany",null,0),userDetailsService.loadUserByUsername("admin"));
         sensorService.createSensor(new SensorPostDto(true,"13.301172256,52.44152832,33.4",null,0), userDetailsService.loadUserByUsername("admin"));
         sensorService.createSensor(new SensorPostDto(true,"$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50",null,0), userDetailsService.loadUserByUsername("admin"));
+
+        gatewayService.createGateway(new Gateway("gateway1", new ArrayList<String>()));
+        gatewayService.createGateway(new Gateway("gateway2", new ArrayList<String>()));
     }
 
     private void deleteTables(ArrayList<String> tableNames) {
