@@ -22,25 +22,18 @@ public class Sensor {
 
     private String clusterID;
 
-    private String ownerID;
+    private String ownerName;
 
     private int sensorType;
 
     private ArrayList<String> userList;
 
-
-    public Sensor(boolean isActive, String location, String ownerID, int sensorType) {
+    public Sensor(boolean isActive, DateTime creationDate, String location, String clusterID, String ownerName, int sensorType) {
         this.isActive = isActive;
-        this.location = location;
-        this.ownerID = ownerID;
-        this.sensorType = sensorType;
-    }
-
-    public Sensor(boolean isActive, String location, String clusterID, String ownerID, int sensorType) {
-        this.isActive = isActive;
+        this.creationDate = creationDate;
         this.location = location;
         this.clusterID = clusterID;
-        this.ownerID = ownerID;
+        this.ownerName = ownerName;
         this.sensorType = sensorType;
     }
 
@@ -90,12 +83,12 @@ public class Sensor {
         this.clusterID = clusterID;
     }
 
-    public String getOwnerID() {
-        return ownerID;
+    public String getOwnerName() {
+        return ownerName;
     }
 
-    public void setOwnerID(String ownerID) {
-        this.ownerID = ownerID;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public int getSensorType() {

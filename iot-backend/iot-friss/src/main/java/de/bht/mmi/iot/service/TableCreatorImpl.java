@@ -1,17 +1,21 @@
-package de.bht.mmi.iot.creator;
+package de.bht.mmi.iot.service;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
-@Component
-public class TableCreatorImpl implements TableCreator {
+@Service
+public class TableCreatorImpl implements TableCreatorService {
 
     @Autowired
     private AmazonDynamoDB dynamoDB;
+
+    Logger LOGGER = LoggerFactory.getLogger(TableCreatorImpl.class);
 
     public String createUserTable() {
         final CreateTableResult createTableResult = dynamoDB.createTable(
@@ -19,6 +23,7 @@ public class TableCreatorImpl implements TableCreator {
                 TABLENAME_USER,
                 Arrays.asList(new KeySchemaElement("username", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
+        LOGGER.info("Table: User created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
         return "Table status: " + createTableResult.getTableDescription().getTableStatus();
     }
 
@@ -28,6 +33,7 @@ public class TableCreatorImpl implements TableCreator {
                 TABLENAME_SENSOR,
                 Arrays.asList(new KeySchemaElement("sensorID", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
+        LOGGER.info("Table: Sensor created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
         return "Table status: " + createTableResult.getTableDescription().getTableStatus();
     }
 
@@ -38,12 +44,13 @@ public class TableCreatorImpl implements TableCreator {
                 TABLENAME_GATEWAY,
                 Arrays.asList(new KeySchemaElement("gatewayID", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
-
+        LOGGER.info("Table: Gateway created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
         return "Table status: " + createTableResult.getTableDescription().getTableStatus();
     }
 
     public String deleteTable(String tableName) {
         final DeleteTableResult deleteTableResult = dynamoDB.deleteTable(tableName);
+        LOGGER.info("Table: "+tableName+" deleted -- Table status: " + deleteTableResult.getTableDescription().getTableStatus());
         return "Table status: " + deleteTableResult.getTableDescription().getTableStatus();
     }
 }

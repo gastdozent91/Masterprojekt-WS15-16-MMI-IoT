@@ -21,9 +21,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private SensorService sensorService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Override

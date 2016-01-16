@@ -1,19 +1,19 @@
-package de.bht.mmi.iot.controller;
+package de.bht.mmi.iot.service;
 
-import de.bht.mmi.iot.creator.TableCreator;
 import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import de.bht.mmi.iot.repository.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 
-@RestController
-@RequestMapping("/gateway")
-public class GatewayController {
+@Service
+public class GatewayServiceImpl implements GatewayService{
 
     @Autowired
     private GatewayRepository gatewayRepository;
@@ -21,20 +21,17 @@ public class GatewayController {
     @Autowired
     private SensorRepository sensorRepository;
 
-    @Autowired
-    private TableCreator tableCreator;
+    @Override
+    public Iterable<Gateway> getAll() {
+        return gatewayRepository.findAll();
+    }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @Override
     public Gateway createGateway(@RequestBody Gateway gateway) {
         return gatewayRepository.save(gateway);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Gateway> getAllGateways() {
-        return gatewayRepository.findAll();
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
+    @Override
     public Gateway updateGateway(@PathVariable("id") String id, @RequestBody Gateway gateway) {
         try {
             Gateway oldGateway = gatewayRepository.findOne(id);
@@ -51,7 +48,7 @@ public class GatewayController {
         }
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @Override
     public String deleteGateway(@PathVariable("id") String id) {
         try {
             gatewayRepository.delete(id);
@@ -62,7 +59,7 @@ public class GatewayController {
         }
     }
 
-    @RequestMapping(value = "/{id}/sensor",method = RequestMethod.PUT, consumes = "application/json")
+    @Override
     public Gateway updateGatewaySensorList(@PathVariable("id") String id, @RequestBody ArrayList<String> sensorList) {
         try {
             Gateway gateway = gatewayRepository.findOne(id);
@@ -78,7 +75,7 @@ public class GatewayController {
         }
     }
 
-    @RequestMapping(value = "/{id}/sensor", method = RequestMethod.GET)
+    @Override
     public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id) {
         try {
             Gateway gateway = gatewayRepository.findOne(id);
@@ -94,18 +91,5 @@ public class GatewayController {
             System.err.println("Error requesting sensorList for Gateway: "+id);
         }
         return null;
-    }
-
-    // Table Create/Delete
-
-
-    @RequestMapping(value = "/createTable")
-    public String createTable() throws Exception {
-        return tableCreator.createGatewayTable();
-    }
-
-    @RequestMapping(value = "/deleteTable")
-    public String deleteTable() throws Exception {
-        return tableCreator.deleteTable(TableCreator.TABLENAME_GATEWAY);
     }
 }

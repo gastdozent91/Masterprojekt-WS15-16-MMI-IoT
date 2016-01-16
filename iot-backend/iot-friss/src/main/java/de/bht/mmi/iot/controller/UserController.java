@@ -1,6 +1,6 @@
 package de.bht.mmi.iot.controller;
 
-import de.bht.mmi.iot.creator.TableCreator;
+import de.bht.mmi.iot.service.TableCreatorService;
 import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.model.Sensor;
@@ -27,7 +27,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private TableCreator userTableCreator;
+    private TableCreatorService userTableCreator;
 
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<User> getAllUser() {
@@ -71,7 +71,7 @@ public class UserController {
 
     @RequestMapping(value = "/deleteTable")
     public String deleteTable() {
-        return userTableCreator.deleteTable(TableCreator.TABLENAME_USER);
+        return userTableCreator.deleteTable(TableCreatorService.TABLENAME_USER);
     }
 
 }

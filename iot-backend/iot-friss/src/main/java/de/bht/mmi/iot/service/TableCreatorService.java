@@ -1,9 +1,6 @@
-package de.bht.mmi.iot.creator;
+package de.bht.mmi.iot.service;
 
-import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
-
-@EnableScan
-public interface TableCreator {
+public interface TableCreatorService {
 
     final String TABLENAME_USER = "User";
     final String TABLENAME_SENSOR = "Sensor";
