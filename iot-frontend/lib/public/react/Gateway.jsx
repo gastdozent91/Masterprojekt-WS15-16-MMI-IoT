@@ -4,7 +4,7 @@ var React = require('react')
 var Gateway = React.createClass({
 
   propTypes: {
-    user: React.PropTypes.string,
+    user: React.PropTypes.object,
     gateways: React.PropTypes.array
   },
 

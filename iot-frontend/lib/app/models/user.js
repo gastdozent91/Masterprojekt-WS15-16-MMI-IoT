@@ -1,86 +1,85 @@
+var request = require('superagent')
+  , Promise = require('bluebird');
+
 var dynamodb = require('../plugins/dynamodb');
-var request = require('superagent');
 
 module.exports = me = {};
 
-me.getAll = (user, cb) => {
-  var authBuffer= new Buffer('admin:admin');
-  //var authBuffer= new Buffer(user.username + ':' + user.password);
-  var auth = authBuffer.toString('base64');
-  request
-    .get('http://localhost:8080/iot-rest/user')
-    .set('Authorization', 'Basic ' + auth)
-    .end((err, res) => {
-      if (err) cb(err);
-      cb(null, res);
-    });
+var endpoint = 'http://localhost:8080/iot-friss';
+
+me.getAll = (user) => {
+  return new Promise((resolve, reject) => {
+    request
+      .get(endpoint + '/user')
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body);
+      });
+  });
 };
 
-me.update = (user, userToUpdate, cb) => {
-  var authBuffer= new Buffer(user.username + ':' + user.password);
-  var auth = authBuffer.toString('base64');
-  request
-    .put('http://localhost:8080/iot-rest/user/' + userToUpdate.username)
-    .send(user)
-    .set('Authorization', 'Basic ' + auth)
-    .end((err, res) => {
-      if (err) cb(err);
-      cb(null, res);
-    });
+me.update = (user, userToUpdate) => {
+  return new Promise((resolve, reject) => {
+    request
+      .put(endpoint + '/user/' + userToUpdate.username)
+      .send(user)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+  });
 };
 
-me.delete = (user, userToDelete, cb) => {
-  var authBuffer= new Buffer('admin:admin');
-  //var authBuffer= new Buffer(user.username + ':' + user.password);
-  var auth = authBuffer.toString('base64');
-  request
-    .delete('http://localhost:8080/iot-rest/user/' + userToDelete)
-    .set('Authorization', 'Basic ' + auth)
-    .end((err, res) => {
-      if (err) cb(err);
-      cb(null, res);
-    });
+me.delete = (user, userToDelete) => {
+  return new Promise((resolve, reject) => {
+    request
+      .delete(endpoint + '/user/' + userToDelete)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+  });
 };
 
-me.create = (user, userToCreate, cb) => {
-  var authBuffer= new Buffer('admin:admin');
-  //var authBuffer= new Buffer(user.username + ':' + user.password);
-  var auth = authBuffer.toString('base64');
-  request
-    .post('http://localhost:8080/iot-rest/user')
-    .send(userToCreate)
-    .set('Authorization', 'Basic ' + auth)
-    .end((err, res) => {
-      if (err) cb(err);
-      cb(null, res);
-    });
+me.create = (user, userToCreate) => {
+  return new Promise((resolve, reject) => {
+    request
+      .post(endpoint + '/user')
+      .send(userToCreate)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+  });
 };
 
-me.getSensors = (user, userWithSensors, cb) => {
-  //var authBuffer= new Buffer('admin:admin');
-  var authBuffer= new Buffer(user.username + ':' + user.password);
-  var auth = authBuffer.toString('base64');
-  request
-    .get('http://localhost:8080/iot-rest/user/' + userWithSensors + '/sensor')
-    .set('Authorization', 'Basic ' + auth)
-    .end((err, res) => {
-      if (err) cb(err);
-      cb(null, res);
-    });
+me.getSensors = (user, userWithSensors) => {
+  return new Promise((resolve, reject) => {
+    request
+      .get(endpoint + '/user/' + userWithSensors + '/sensor')
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+  });
 };
 
-me.setSensors = (user, userWithSensors, sensors, cb) => {
-  //var authBuffer= new Buffer('admin:admin');
-  var authBuffer= new Buffer(user.username + ':' + user.password);
-  var auth = authBuffer.toString('base64');
-  request
-    .put('http://localhost:8080/iot-rest/user/' + userWithSensors + '/sensor')
-    .send(sensors)
-    .set('Authorization', 'Basic ' + auth)
-    .end((err, res) => {
-      if (err) cb(err);
-      cb(null, res);
-    });
+me.setSensors = (user, userWithSensors, sensors) => {
+  return new Promise((resolve, reject) => {
+    request
+      .put(endpoint + '/user/' + userWithSensors + '/sensor')
+      .send(sensors)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+  });
 };
 
 

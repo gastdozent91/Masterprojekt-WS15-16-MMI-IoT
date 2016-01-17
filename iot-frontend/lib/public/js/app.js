@@ -1,6 +1,8 @@
 var chart = require('./chart')
   , login = require('./login')
   , sensor = require('./sensor')
+  , users = require('./users')
+  , user = require('./user')
   , gateway = require('./gateway')
   , dashboard = require('./dashboard');
 
@@ -9,5 +11,7 @@ window.onload = function() {
   chart.render();
   dashboard.render();
   sensor.render();
+  users.render();
+  user.render();
   gateway.render();
 };

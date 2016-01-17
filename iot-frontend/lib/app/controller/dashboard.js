@@ -7,7 +7,9 @@ var React = require('react')
 module.exports = me = {};
 
 me.render = function(req, res) {
-  var out = {user: req.user.firstname};
+  var out = {
+    user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+  };
   var dashboard = new Dashboard(out);
   var body = ReactDOM.renderToString(dashboard);
 

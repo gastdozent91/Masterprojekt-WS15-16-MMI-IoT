@@ -6,7 +6,7 @@ var React = require('react')
 var Sensor = React.createClass({
 
   propTypes: {
-    user: React.PropTypes.string,
+    user: React.PropTypes.object,
     sensors: React.PropTypes.array
   },
 

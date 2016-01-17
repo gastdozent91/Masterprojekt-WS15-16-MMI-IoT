@@ -3,7 +3,7 @@ var React = require('react');
 var TopBar = React.createClass({
 
   propTypes: {
-    user: React.PropTypes.string
+    user: React.PropTypes.object
   },
 
   getInitialState: function() {
@@ -30,11 +30,14 @@ var TopBar = React.createClass({
                 </ul>
               </li>
               <li><a href="/gateways">Gateways</a></li>
+              { this.props.user.isAdmin
+              ? <li><a href="/users">Users</a></li>
+              : null}
             </ul>
           </div>
           <div className='top-bar-right'>
             <ul className='menu'>
-              <li><a href='#'>{this.props.user}</a></li>
+              <li><a href='#'>{this.props.user.firstname}</a></li>
             </ul>
           </div>
         </div>

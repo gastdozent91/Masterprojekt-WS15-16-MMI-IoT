@@ -35,7 +35,7 @@ me.render = function(req, res) {
     sensors.push(sensor3);
   }
   var out = {
-    user: req.user.firstname,
+    user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
     sensors: sensors
   };
   var sensor = new Sensor(out);

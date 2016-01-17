@@ -6,9 +6,9 @@ var Login = React.createClass({
   getInitialState: function() {
     return {
       //user: 'Guest',
-      user: 'max',
+      user: 'admin',
       //password: 'password'
-      password: 'test123'
+      password: 'admin'
     };
   },
 

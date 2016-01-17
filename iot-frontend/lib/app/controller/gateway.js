@@ -27,7 +27,7 @@ me.render = function(req, res) {
   gateways.push(gateway2);
   gateways.push(gateway3);
   var out = {
-    user: req.user.firstname,
+    user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
     gateways: gateways
   };
   var gateway = new Gateway(out);

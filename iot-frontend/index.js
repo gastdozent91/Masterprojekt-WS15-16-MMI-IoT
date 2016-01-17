@@ -84,6 +84,17 @@ app.get('/sensors',
   sensor.render
 );
 
+app.get('/users',
+  login.shouldBeLoggedIn,
+  user.getAll,
+  user.renderUsers
+);
+
+app.get('/user',
+  login.shouldBeLoggedIn,
+  user.renderUser
+);
+
 app.get('/chart',
   chart.render
 );
