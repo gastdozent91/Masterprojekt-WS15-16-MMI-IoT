@@ -1,6 +1,6 @@
 package de.bht.mmi.iot.listener;
 
-import de.bht.mmi.iot.model.AmqpConstants;
+import de.bht.mmi.iot.constants.AmqpConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.ExchangeTypes;

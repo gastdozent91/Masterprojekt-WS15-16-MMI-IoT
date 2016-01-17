@@ -2,7 +2,7 @@ package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
-import de.bht.mmi.iot.model.RoleConstants;
+import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.UserRepository;
 import org.apache.commons.collections4.IteratorUtils;

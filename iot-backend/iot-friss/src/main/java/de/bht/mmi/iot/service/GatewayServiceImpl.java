@@ -1,8 +1,7 @@
 package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.model.Gateway;
-import de.bht.mmi.iot.model.RoleConstants;
-import de.bht.mmi.iot.model.Sensor;
+import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import de.bht.mmi.iot.repository.SensorRepository;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 
 @Service
 public class GatewayServiceImpl implements GatewayService{

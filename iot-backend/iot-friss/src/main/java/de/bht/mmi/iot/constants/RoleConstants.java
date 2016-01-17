@@ -1,4 +1,4 @@
-package de.bht.mmi.iot.model;
+package de.bht.mmi.iot.constants;
 
 public final class RoleConstants {
 

@@ -2,8 +2,7 @@ package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
-import de.bht.mmi.iot.model.Gateway;
-import de.bht.mmi.iot.model.RoleConstants;
+import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;

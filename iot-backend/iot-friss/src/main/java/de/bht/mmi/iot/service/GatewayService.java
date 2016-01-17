@@ -1,14 +1,11 @@
 package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.model.Gateway;
-import de.bht.mmi.iot.model.RoleConstants;
-import de.bht.mmi.iot.model.Sensor;
+import de.bht.mmi.iot.constants.RoleConstants;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.ArrayList;
 
 public interface GatewayService {
 

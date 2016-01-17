@@ -3,7 +3,7 @@ package de.bht.mmi.iot.service;
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
 import de.bht.mmi.iot.model.Gateway;
-import de.bht.mmi.iot.model.RoleConstants;
+import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
@@ -14,15 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 
 @Service
 public class SensorServiceImpl implements SensorService {
