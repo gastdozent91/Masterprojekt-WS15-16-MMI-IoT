@@ -62,9 +62,8 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     }
 
     private void recreateTables() {
-        deleteTables(new ArrayList<String>(Arrays.asList(TableCreatorService.TABLENAME_USER,
-                                                         TableCreatorService.TABLENAME_SENSOR,
-                                                         TableCreatorService.TABLENAME_GATEWAY)));
+        final ArrayList<String> tableNames = getTableNames();
+        deleteTables(tableNames);
         tableCreator.createUserTable();
         tableCreator.createSensorTable();
         tableCreator.createGatewayTable();
@@ -79,6 +78,10 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
 
         gatewayService.createGateway(new Gateway("gateway1", new ArrayList<String>()));
         gatewayService.createGateway(new Gateway("gateway2", new ArrayList<String>()));
+    }
+
+    private ArrayList<String> getTableNames() {
+        return tableCreator.getTableNames();
     }
 
     private void deleteTables(ArrayList<String> tableNames) {

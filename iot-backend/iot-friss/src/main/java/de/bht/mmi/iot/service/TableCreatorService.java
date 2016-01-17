@@ -1,5 +1,7 @@
 package de.bht.mmi.iot.service;
 
+import java.util.ArrayList;
+
 public interface TableCreatorService {
 
     final String TABLENAME_USER = "User";
@@ -11,6 +13,8 @@ public interface TableCreatorService {
     String createSensorTable();
 
     String createGatewayTable();
+
+    ArrayList<String> getTableNames();
 
     String deleteTable(String tableName);
 

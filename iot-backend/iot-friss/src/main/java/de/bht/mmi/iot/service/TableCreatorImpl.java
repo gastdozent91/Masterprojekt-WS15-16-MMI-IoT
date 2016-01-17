@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @Service
@@ -46,6 +47,17 @@ public class TableCreatorImpl implements TableCreatorService {
                 new ProvisionedThroughput(10L, 10L));
         LOGGER.info("Table: Gateway created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
         return "Table status: " + createTableResult.getTableDescription().getTableStatus();
+    }
+
+    public ArrayList<String> getTableNames() {
+        final ListTablesResult listTablesResult = dynamoDB.listTables();
+        ArrayList<String> tableNames = new ArrayList<String>();
+        for (String tableName : listTablesResult.getTableNames()) {
+            if (tableName.equals(TABLENAME_GATEWAY) || tableName.equals(TABLENAME_SENSOR) || tableName.equals(TABLENAME_USER)) {
+                tableNames.add(tableName);
+            }
+        }
+        return tableNames;
     }
 
     public String deleteTable(String tableName) {
