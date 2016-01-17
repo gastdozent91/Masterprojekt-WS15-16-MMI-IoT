@@ -90,8 +90,9 @@ app.get('/users',
   user.renderUsers
 );
 
-app.get('/user',
+app.get('/user/:username',
   login.shouldBeLoggedIn,
+  user.getOne,
   user.renderUser
 );
 

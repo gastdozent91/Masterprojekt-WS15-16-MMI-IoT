@@ -107,7 +107,7 @@ var Users = React.createClass({
 
   renderUser: function(user, i) {
     return (
-      <a href='/user' key={'user #'+i}>
+      <a href={'/user/' + user.username} key={'user #'+i}>
         <div className='row'>
           <div className='large-3 columns'>
             {user.username}

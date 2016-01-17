@@ -18,6 +18,18 @@ me.getAll = (req, res, next) => {
   });
 };
 
+me.getOne = (req, res, next) => {
+  Model.getOne(req.user, req.params.username)
+  .then(user => {
+    req.userToCheck = user;
+    next();
+    //res.json(users);
+  })
+  .catch(err => {
+    res.json(err);
+  });
+};
+
 me.update = (req, res, next) => {
   var changedUser = req.user;
   changedUser.firstname = 'Ray';
@@ -94,7 +106,7 @@ me.setSensors = (req, res, next) => {
 me.renderUser = (req, res) => {
   var out = {
     user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-    userToCheck: req.user
+    userToCheck: req.userToCheck
   };
   var user = new User(out);
   var body = ReactDOM.renderToStaticMarkup(user);

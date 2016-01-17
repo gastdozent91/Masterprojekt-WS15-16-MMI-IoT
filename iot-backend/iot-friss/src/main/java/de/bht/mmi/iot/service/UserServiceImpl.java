@@ -33,6 +33,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUser(String username, UserDetails userDetails) {
+        if (!(isRolePresent(userDetails, RoleConstants.ROLE_ADMIN) || userDetails.getUsername().equals(username))) {
+            // TODO: More meaningfuel exception message
+            throw new AccessDeniedException("Operation not permitted");
+        }
+        return userRepository.findOne(username);
+    }
+
+    @Override
     public User createUser(@Validated User user) {
         final String username = user.getUsername();
         if (isUsernameAlreadyInUse((username))) {

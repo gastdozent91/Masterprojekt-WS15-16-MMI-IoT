@@ -34,6 +34,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    public User getUser(@PathVariable("username") String username, @AuthenticationPrincipal UserDetails userDetails) {
+        return userService.getUser(username, userDetails);
+    }
+
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody @Validated UserPostDto dto) {
@@ -54,7 +59,7 @@ public class UserController {
     @RequestMapping(value = "/{username}/sensor",method = RequestMethod.PUT, consumes = "application/json")
     public User updateUserSensorList(@PathVariable("username") String username, @RequestBody List<String> sensorList,
                                      @AuthenticationPrincipal User user) {
-        // TODO: May be we need a new roles for people wich can add sensors
+        // TODO: May be we need a new roles for people which can add sensors
         return userService.updateUserSensors(username, sensorList, user);
     }
 

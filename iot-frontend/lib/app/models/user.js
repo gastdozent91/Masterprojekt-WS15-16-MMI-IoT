@@ -19,6 +19,18 @@ me.getAll = (user) => {
   });
 };
 
+me.getOne = (user, username) => {
+  return new Promise((resolve, reject) => {
+    request
+      .get(endpoint + '/user/' + username)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body);
+      });
+  });
+};
+
 me.update = (user, userToUpdate) => {
   return new Promise((resolve, reject) => {
     request
