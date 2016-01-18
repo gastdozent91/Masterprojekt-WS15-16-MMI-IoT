@@ -31,9 +31,9 @@ public class TableCreatorImpl implements TableCreatorService {
 
     public String createSensorTable() {
         final CreateTableResult createTableResult = dynamoDB.createTable(
-                Arrays.asList(new AttributeDefinition("sensorID", ScalarAttributeType.S)),
+                Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.S)),
                 TABLENAME_SENSOR,
-                Arrays.asList(new KeySchemaElement("sensorID", KeyType.HASH)),
+                Arrays.asList(new KeySchemaElement("id", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
         LOGGER.info("Table: Sensor created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
         return "Table status: " + createTableResult.getTableDescription().getTableStatus();
@@ -42,11 +42,22 @@ public class TableCreatorImpl implements TableCreatorService {
     @Override
     public String createGatewayTable() {
         final CreateTableResult createTableResult = dynamoDB.createTable(
-                Arrays.asList(new AttributeDefinition("gatewayID", ScalarAttributeType.S)),
+                Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.S)),
                 TABLENAME_GATEWAY,
-                Arrays.asList(new KeySchemaElement("gatewayID", KeyType.HASH)),
+                Arrays.asList(new KeySchemaElement("id", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
         LOGGER.info("Table: Gateway created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
+        return "Table status: " + createTableResult.getTableDescription().getTableStatus();
+    }
+
+    @Override
+    public String createClusterTable() {
+        final CreateTableResult createTableResult = dynamoDB.createTable(
+                Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.S)),
+                TABLENAME_CLUSTER,
+                Arrays.asList(new KeySchemaElement("id", KeyType.HASH)),
+                new ProvisionedThroughput(10L, 10L));
+        LOGGER.info("Table: Cluster created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
         return "Table status: " + createTableResult.getTableDescription().getTableStatus();
     }
 
@@ -54,9 +65,7 @@ public class TableCreatorImpl implements TableCreatorService {
         final ListTablesResult listTablesResult = dynamoDB.listTables();
         ArrayList<String> tableNames = new ArrayList<String>();
         for (String tableName : listTablesResult.getTableNames()) {
-            if (tableName.equals(TABLENAME_GATEWAY) || tableName.equals(TABLENAME_SENSOR) || tableName.equals(TABLENAME_USER)) {
-                tableNames.add(tableName);
-            }
+            tableNames.add(tableName);
         }
         return tableNames;
     }

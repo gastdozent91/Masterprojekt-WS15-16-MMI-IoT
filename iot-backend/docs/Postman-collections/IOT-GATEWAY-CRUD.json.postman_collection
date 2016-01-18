@@ -49,12 +49,12 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1452972703198,
+			"time": 1453123107669,
 			"name": "CREATE GATEWAY",
 			"description": "",
 			"collectionId": "73111fed-a57e-98ec-6aef-76c4bda32eb6",
 			"responses": [],
-			"rawModeData": "{\n  \"name\":\"Gateway1\",\n  \"sensorList\":[]\n }\n"
+			"rawModeData": "{\n  \"name\":\"Gateway1\",\n  \"clusterList\":[]\n }\n"
 		},
 		{
 			"id": "75d7b148-fd5b-efdf-5185-a724bfe54061",
@@ -108,12 +108,12 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1452972791868,
+			"time": 1453123117013,
 			"name": "UPDATE GATEWAY",
 			"description": "",
 			"collectionId": "73111fed-a57e-98ec-6aef-76c4bda32eb6",
 			"responses": [],
-			"rawModeData": "{\n  \"name\":\"TestNameFürGateway\",\n  \"sensorList\":[]\n }"
+			"rawModeData": "{\n  \"name\":\"TestNameFürGateway\",\n  \"clusterList\":[]\n }"
 		},
 		{
 			"id": "e4b202f6-c89f-af22-c3cd-60442b16a1f0",

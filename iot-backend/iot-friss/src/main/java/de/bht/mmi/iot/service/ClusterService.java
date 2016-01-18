@@ -1,26 +1,26 @@
 package de.bht.mmi.iot.service;
 
-import de.bht.mmi.iot.model.rest.Gateway;
 import de.bht.mmi.iot.constants.RoleConstants;
+import de.bht.mmi.iot.model.rest.Cluster;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public interface GatewayService {
+public interface ClusterService {
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Iterable<Gateway> getAll();
+    public Iterable<Cluster> getAll();
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
-    Gateway getGateway(String id);
+    Cluster getCluster(String id);
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Gateway createGateway(@RequestBody Gateway gateway);
+    public Cluster createCluster(@RequestBody Cluster cluster);
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Gateway updateGateway(@PathVariable("id") String id, @RequestBody Gateway gateway, UserDetails userDetails);
+    public Cluster updateCluster(@PathVariable("id") String id, @RequestBody Cluster cluster, UserDetails userDetails);
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public void deleteGateway(@PathVariable("id") String id);
+    public void deleteCluster(@PathVariable("id") String id);
 }

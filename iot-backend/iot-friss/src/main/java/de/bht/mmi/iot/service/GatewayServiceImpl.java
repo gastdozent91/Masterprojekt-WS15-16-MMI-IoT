@@ -1,8 +1,8 @@
 package de.bht.mmi.iot.service;
 
-import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.rest.Gateway;
 import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.model.User;
+import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
@@ -59,7 +59,7 @@ public class GatewayServiceImpl implements GatewayService{
         if (oldGateway != null && !oldGateway.equals(gateway)) {
             if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)) {
                 oldGateway.setName(gateway.getName());
-                oldGateway.setSensorList(gateway.getSensorList());
+                oldGateway.setClusterList(gateway.getClusterList());
                 return gatewayRepository.save(oldGateway);
             } else {
                 throw new AccessDeniedException(String.format("No rights to access!"));

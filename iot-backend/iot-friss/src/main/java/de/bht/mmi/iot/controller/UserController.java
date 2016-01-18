@@ -3,8 +3,8 @@ package de.bht.mmi.iot.controller;
 import de.bht.mmi.iot.service.TableCreatorService;
 import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
-import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.model.User;
+import de.bht.mmi.iot.model.rest.Sensor;
+import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.service.SensorService;
 import de.bht.mmi.iot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +57,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{username}/sensor",method = RequestMethod.PUT, consumes = "application/json")
-    public User updateUserSensorList(@PathVariable("username") String username, @RequestBody List<String> sensorList,
-                                     @AuthenticationPrincipal User user) {
-        // TODO: May be we need a new roles for people which can add sensors
-        return userService.updateUserSensors(username, sensorList, user);
+    public User updateUserSensorList(@PathVariable("username") String username, @RequestBody List<String> sensorList) {
+        return userService.updateUserSensors(username, sensorList);
     }
 
     @RequestMapping(value = "/{username}/sensor", method = RequestMethod.GET)

@@ -4,16 +4,13 @@ import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
 import de.bht.mmi.iot.service.SensorService;
 import de.bht.mmi.iot.service.TableCreatorService;
-import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.repository.SensorRepository;
+import de.bht.mmi.iot.model.rest.Sensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/sensor")

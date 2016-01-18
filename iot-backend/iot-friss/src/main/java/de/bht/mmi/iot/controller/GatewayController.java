@@ -3,19 +3,12 @@ package de.bht.mmi.iot.controller;
 import de.bht.mmi.iot.service.GatewayService;
 import de.bht.mmi.iot.service.SensorService;
 import de.bht.mmi.iot.service.TableCreatorService;
-import de.bht.mmi.iot.model.Gateway;
-import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.repository.GatewayRepository;
-import de.bht.mmi.iot.repository.SensorRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.bht.mmi.iot.model.rest.Gateway;
+import de.bht.mmi.iot.model.rest.Sensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/gateway")
