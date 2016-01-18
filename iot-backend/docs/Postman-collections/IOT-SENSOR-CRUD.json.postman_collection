@@ -7,14 +7,13 @@
 		"419bc14e-7590-190e-b85c-666cbd201fed",
 		"b9de9a2c-7a0a-56b6-27c7-995d5ee71b73",
 		"57864721-ae42-ffed-f5c6-057c86e6dc56",
-		"415ae481-8768-dd8d-e5d6-82e7a87db7b9",
-		"b5d8655b-a121-5e10-f734-8a38f812a9c2"
+		"a91dda34-28de-7f6c-53a6-78629d1f1e70"
 	],
 	"folders": [],
 	"timestamp": 1452190359512,
 	"owner": 0,
+	"remoteLink": "",
 	"public": false,
-	"hasRequests": true,
 	"requests": [
 		{
 			"id": "2d76dd0d-9617-04b2-d9c7-fecc7f91bc67",
@@ -31,25 +30,6 @@
 			"helperAttributes": {},
 			"time": 1452953799872,
 			"name": "GET ALL",
-			"description": "",
-			"collectionId": "7af1e778-6762-77ca-d13d-b72a699c3b6c",
-			"responses": []
-		},
-		{
-			"id": "415ae481-8768-dd8d-e5d6-82e7a87db7b9",
-			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
-			"url": "http://localhost:8080/iot-friss/sensor/deleteTable",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "params",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1452946365194,
-			"name": "delete Sensor Table",
 			"description": "",
 			"collectionId": "7af1e778-6762-77ca-d13d-b72a699c3b6c",
 			"responses": []
@@ -95,9 +75,9 @@
 			"rawModeData": "{\n  \"isActive\":false,\n  \"location\":\"Berlin, Mitte\",\n  \"clusterID\":null,\n  \"ownerName\":null,\n  \"sensorType\":0,\n  \"userList\":[]\n }"
 		},
 		{
-			"id": "b5d8655b-a121-5e10-f734-8a38f812a9c2",
+			"id": "a91dda34-28de-7f6c-53a6-78629d1f1e70",
 			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
-			"url": "http://localhost:8080/iot-friss/sensor/createTable",
+			"url": "http://localhost:8080/iot-friss/sensor/94abcfb6-c079-45da-91c5-568c0cb77afe",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "GET",
@@ -107,8 +87,8 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1452946369508,
-			"name": "create Sensor Table",
+			"time": 1453117065824,
+			"name": "GET SENSOR",
 			"description": "",
 			"collectionId": "7af1e778-6762-77ca-d13d-b72a699c3b6c",
 			"responses": []

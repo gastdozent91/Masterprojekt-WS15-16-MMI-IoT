@@ -3,9 +3,10 @@ package de.bht.mmi.iot.service;
 import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.model.User;
+import de.bht.mmi.iot.model.rest.Sensor;
+import de.bht.mmi.iot.model.rest.User;
+import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
-import org.apache.commons.collections4.IteratorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SensorRepository sensorRepository;
 
     Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -38,16 +44,12 @@ public class UserServiceImpl implements UserService {
             // TODO: More meaningfuel exception message
             throw new AccessDeniedException("Operation not permitted");
         }
-        return userRepository.findOne(username);
-    }
-
-    @Override
-    public User createUser(@Validated User user) {
-        final String username = user.getUsername();
-        if (isUsernameAlreadyInUse((username))) {
-            throw new EntityExistsException(String.format("Username '%s' already in use", username));
+        User user = userRepository.findOne(username);
+        if (user != null) {
+            return user;
+        } else {
+            throw new EntityNotFoundException(String.format("User with username '%s' not found!",username));
         }
-        return userRepository.save(user);
     }
 
     @Override
@@ -61,6 +63,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstname(dto.getFirstname());
         user.setLastname(dto.getLastname());
         user.setRoles(dto.getRoles());
+        user.setSensorList(new ArrayList<String>());
         return userRepository.save(user);
     }
 
@@ -92,21 +95,52 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserSensors(String username, Iterable<String> ids, User user) {
-        if (!(isRolePresent(user, RoleConstants.ROLE_ADMIN) || user.getUsername().equals(username))) {
-            // TODO: More meaningfuel exception message
-            throw new AccessDeniedException("Operation not permitted");
-        }
+    public User updateUserSensors(String username, List<String> sensorList) {
 
-        final User userToUpdate = userRepository.findOne(username);
-        if (userToUpdate == null) {
+        User user = userRepository.findOne(username);
+
+        if (user == null) {
             throw new UsernameNotFoundException(String.format("User with username '%s' not found", username));
-        }
+        } else {
 
-        final List<String> idsAsList = IteratorUtils.toList(ids.iterator());
-        userToUpdate.setSensorList(idsAsList);
-        userRepository.save(userToUpdate);
-        return userToUpdate;
+            if (!(isRolePresent(user, RoleConstants.ROLE_ADMIN) || user.getUsername().equals(username))) {
+                // TODO: More meaningfuel exception message
+                throw new AccessDeniedException("Operation not permitted");
+            } else {
+
+                // check deleted sensors and sync with userlist in sensor
+                if (user.getSensorList().size() > sensorList.size()) {
+                    for (String sensorId : user.getSensorList()) {
+                        if (!sensorList.contains(sensorId)) {
+                            Sensor sensor = sensorRepository.findOne(sensorId);
+                            if (sensor != null && sensor.getUserList() != null) {
+                                ArrayList<String> userList = sensor.getUserList();
+                                if (userList.contains(user.getUsername())) {
+                                    userList.remove(user.getUsername());
+                                    sensor.setUserList(userList);
+                                    sensorRepository.save(sensor);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // check for new sensors and sync with userList in sensor
+                for (String sensorId : sensorList) {
+                    Sensor sensor = sensorRepository.findOne(sensorId);
+                    if (sensor != null && sensor.getUserList() != null) {
+                        ArrayList<String> userList = sensor.getUserList();
+                        if (!userList.contains(user.getUsername())) {
+                            userList.add(user.getUsername());
+                            sensor.setUserList(userList);
+                            sensorRepository.save(sensor);
+                        }
+                    }
+                }
+                user.setSensorList(sensorList);
+                return userRepository.save(user);
+            }
+        }
     }
 
     @Override

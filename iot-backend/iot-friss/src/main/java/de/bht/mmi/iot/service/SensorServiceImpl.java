@@ -2,10 +2,10 @@ package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
-import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.rest.Gateway;
 import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.model.User;
+import de.bht.mmi.iot.model.rest.Sensor;
+import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 
 @Service
 public class SensorServiceImpl implements SensorService {
@@ -44,6 +45,16 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    public Sensor getSensor(String id) {
+        Sensor sensor = sensorRepository.findOne(id);
+        if (sensor != null) {
+            return sensor;
+        } else {
+            throw new EntityNotFoundException(String.format("Sensor with id '%s' not found!",id));
+        }
+    }
+
+    @Override
     public Iterable<Sensor> getAllSensorsByUsername(String username, User user) {
         if (!(userService.isRolePresent(user, RoleConstants.ROLE_ADMIN) ||
                 user.getUsername().equals(username))) {
@@ -56,7 +67,7 @@ public class SensorServiceImpl implements SensorService {
     public Iterable<Sensor> getAllSensorsByGatewayId(String gatewayID) {
         Gateway gateway = gatewayRepository.findOne(gatewayID);
         if (gateway != null) {
-            return sensorRepository.findAll(gateway.getSensorList());
+            return sensorRepository.findAll(gateway.getClusterList());
         } else {
             throw new EntityNotFoundException(String.format("Gateway with id '%s' not found"));
         }
@@ -70,6 +81,7 @@ public class SensorServiceImpl implements SensorService {
                                             sensor.getClusterID(),
                                             userDetails.getUsername(),
                                             sensor.getSensorType());
+        newSensor.setUserList(new ArrayList<String>());
         return sensorRepository.save(newSensor);
     }
 

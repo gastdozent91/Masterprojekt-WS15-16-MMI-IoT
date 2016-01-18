@@ -7,6 +7,7 @@ public interface TableCreatorService {
     final String TABLENAME_USER = "User";
     final String TABLENAME_SENSOR = "Sensor";
     final String TABLENAME_GATEWAY = "Gateway";
+    final String TABLENAME_CLUSTER = "Cluster";
 
     String createUserTable();
 
@@ -14,8 +15,10 @@ public interface TableCreatorService {
 
     String createGatewayTable();
 
+    String createClusterTable();
+
     ArrayList<String> getTableNames();
 
-    String deleteTable(String tableName);
+    void deleteTable(String tableName);
 
 }

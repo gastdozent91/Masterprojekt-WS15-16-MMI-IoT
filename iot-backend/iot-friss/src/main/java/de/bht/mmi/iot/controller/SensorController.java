@@ -4,16 +4,13 @@ import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
 import de.bht.mmi.iot.service.SensorService;
 import de.bht.mmi.iot.service.TableCreatorService;
-import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.repository.SensorRepository;
+import de.bht.mmi.iot.model.rest.Sensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/sensor")
@@ -32,6 +29,11 @@ public class SensorController {
         return sensorService.createSensor(sensor, userDetails);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Sensor getSensor(@PathVariable("id") String id) {
+        return sensorService.getSensor(id);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<Sensor> getAllSensor() {
         return sensorService.getAll();
@@ -47,19 +49,6 @@ public class SensorController {
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     public void deleteSensor(@PathVariable("id") String id) {
         sensorService.deleteSensor(id);
-    }
-
-    // Table Create/Delete
-
-
-    @RequestMapping(value = "/createTable")
-    public String createTable() throws Exception {
-        return tableCreator.createSensorTable();
-    }
-
-    @RequestMapping(value = "/deleteTable")
-    public String deleteTable() throws Exception {
-        return tableCreator.deleteTable(TableCreatorService.TABLENAME_SENSOR);
     }
 
 }
