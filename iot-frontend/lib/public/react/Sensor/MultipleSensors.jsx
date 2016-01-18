@@ -1,4 +1,7 @@
-var React = require('react');
+var React = require('react')
+  , _ = require('underscore');
+
+var NewSensor = require('./NewSensor');
 
 var MultipleSensors = React.createClass({
 
@@ -8,8 +11,21 @@ var MultipleSensors = React.createClass({
 
   getInitialState: function() {
     return {
-      sensors: this.props.sensors
+      sensors: this.props.sensors,
+      isAddingNew: false,
+      backgroundStyle: {display: 'none'}
     };
+  },
+
+  handleNew: function() {
+    var isAddingNew = !this.state.isAddingNew;
+    var backgroundStyle = _.clone(this.state.backgroundStyle);
+    if (isAddingNew)
+      backgroundStyle.display = 'block';
+    else
+      backgroundStyle.display = 'none';
+    this.setState({isAddingNew: isAddingNew,
+                   backgroundStyle: backgroundStyle});
   },
 
   handleSearchChange: function() {
@@ -148,9 +164,31 @@ var MultipleSensors = React.createClass({
         </div>
         <div className='row column' style={{float: 'none'}}>
           <div className='callout'>
-            <h5>Sensorlist</h5>
+            <div className='row'>
+              <div className='large-9 columns'>
+                <h5>Sensorlist</h5>
+              </div>
+              <div className='large-3 columns' style={{textAlign: 'end'}}>
+                <input className='button'
+                  type='submit'
+                  style={{marginRight: 0}}
+                  onClick={this.handleNew}
+                  value='Add New' />
+              </div>
+            </div>
             {this.renderSensors()}
           </div>
+        </div>
+        { this.state.isAddingNew
+        ? <div className='new-sensor-container'>
+            <div className='row column' style={{float: 'none'}}>
+              <div className='callout'>
+                <NewSensor handleNew={this.handleNew}/>
+              </div>
+            </div>
+          </div>
+        : null }
+        <div className='background-area' style={this.state.backgroundStyle}>
         </div>
       </div>
     );

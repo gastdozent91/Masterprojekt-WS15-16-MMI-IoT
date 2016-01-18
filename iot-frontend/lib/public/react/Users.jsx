@@ -86,7 +86,10 @@ var Users = React.createClass({
           <div className='large-3 columns'>
             lastname
           </div>
-          <div className='large-3 columns' style={{textAlign: 'end'}}>
+          <div className='large-1 columns'>
+            sensorcount
+          </div>
+          <div className='large-2 columns' style={{textAlign: 'end'}}>
             Role
           </div>
         </div>
@@ -118,7 +121,10 @@ var Users = React.createClass({
           <div className='large-3 columns'>
             {user.lastname}
           </div>
-          <div className='large-3 columns' style={{textAlign: 'end'}}>
+          <div className='large-1 columns'>
+            {user.sensorCount}
+          </div>
+          <div className='large-2 columns' style={{textAlign: 'end'}}>
             { this.renderRole(user) }
           </div>
         </div>
