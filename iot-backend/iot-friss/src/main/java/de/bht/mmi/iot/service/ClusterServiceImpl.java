@@ -54,7 +54,6 @@ public class ClusterServiceImpl implements ClusterService{
         if (oldCluster != null && !oldCluster.equals(cluster)) {
             if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)) {
                 oldCluster.setName(cluster.getName());
-                oldCluster.setGatewayName(cluster.getGatewayName());
                 oldCluster.setSensorList(cluster.getSensorList());
                 return clusterRepository.save(oldCluster);
             } else {

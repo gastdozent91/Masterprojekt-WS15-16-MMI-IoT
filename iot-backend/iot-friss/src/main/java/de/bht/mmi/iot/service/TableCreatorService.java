@@ -4,18 +4,13 @@ import java.util.ArrayList;
 
 public interface TableCreatorService {
 
-    final String TABLENAME_USER = "User";
-    final String TABLENAME_SENSOR = "Sensor";
-    final String TABLENAME_GATEWAY = "Gateway";
-    final String TABLENAME_CLUSTER = "Cluster";
+    void createUserTable();
 
-    String createUserTable();
+    void createSensorTable();
 
-    String createSensorTable();
+    void createGatewayTable();
 
-    String createGatewayTable();
-
-    String createClusterTable();
+    void createClusterTable();
 
     ArrayList<String> getTableNames();
 

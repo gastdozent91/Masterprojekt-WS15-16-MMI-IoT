@@ -59,7 +59,6 @@ public class GatewayServiceImpl implements GatewayService{
         if (oldGateway != null && !oldGateway.equals(gateway)) {
             if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)) {
                 oldGateway.setName(gateway.getName());
-                oldGateway.setClusterList(gateway.getClusterList());
                 return gatewayRepository.save(oldGateway);
             } else {
                 throw new AccessDeniedException(String.format("No rights to access!"));

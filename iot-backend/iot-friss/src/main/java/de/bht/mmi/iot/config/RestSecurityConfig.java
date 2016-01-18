@@ -25,16 +25,12 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // TODO: Move admin user to db
-        auth.inMemoryAuthentication().withUser(env.getProperty("api.user.admin.username"))
-                .password(env.getProperty("api.user.admin.password")).roles("ADMIN");
         auth.userDetailsService(userDetailsService);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()

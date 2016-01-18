@@ -3,8 +3,10 @@ package de.bht.mmi.iot.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.bht.mmi.iot.model.rest.SensorType;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class SensorPostDto {
 
@@ -14,18 +16,25 @@ public class SensorPostDto {
     @NotNull
     private String location;
 
-    private String clusterID;
+    @NotNull
+    private SensorType sensorType;
 
     @NotNull
-    private int sensorType;
+    private String attachedGateway;
+
+    @NotNull
+    private List<String> attachedClusters;
 
     @JsonCreator
     public SensorPostDto(@JsonProperty("isActive") boolean isActive, @JsonProperty("location") String location,
-                         @JsonProperty("clusterID") String clusterID, @JsonProperty("sensorType") int sensorType) {
+                         @JsonProperty("sensorType") SensorType sensorType,
+                         @JsonProperty("attachedGateway") String attachedGateway,
+                         @JsonProperty("attachedClusters") List<String> attachedClusters) {
         this.isActive = isActive;
         this.location = location;
-        this.clusterID = clusterID;
         this.sensorType = sensorType;
+        this.attachedGateway = attachedGateway;
+        this.attachedClusters = attachedClusters;
     }
 
     public boolean isActive() {
@@ -36,11 +45,16 @@ public class SensorPostDto {
         return location;
     }
 
-    public String getClusterID() {
-        return clusterID;
+    public String getAttachedGateway() {
+        return attachedGateway;
     }
 
-    public int getSensorType() {
+    public List<String> getAttachedClusters() {
+        return attachedClusters;
+    }
+
+    public SensorType getSensorType() {
         return sensorType;
     }
+
 }

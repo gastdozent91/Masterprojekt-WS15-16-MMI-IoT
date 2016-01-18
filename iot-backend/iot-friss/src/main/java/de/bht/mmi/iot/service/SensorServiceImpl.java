@@ -1,9 +1,9 @@
 package de.bht.mmi.iot.service;
 
+import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
 import de.bht.mmi.iot.model.rest.Gateway;
-import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.model.rest.Sensor;
 import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 
 @Service
 public class SensorServiceImpl implements SensorService {
@@ -67,21 +66,22 @@ public class SensorServiceImpl implements SensorService {
     public Iterable<Sensor> getAllSensorsByGatewayId(String gatewayID) {
         Gateway gateway = gatewayRepository.findOne(gatewayID);
         if (gateway != null) {
-            return sensorRepository.findAll(gateway.getClusterList());
+            return sensorRepository.findByAttachedGateway(gatewayID);
         } else {
-            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found"));
+            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found", gatewayID));
         }
     }
 
     @Override
     public Sensor createSensor(@Validated SensorPostDto sensor, UserDetails userDetails) {
-        final Sensor newSensor = new Sensor(sensor.isActive(),
-                                            new DateTime(),
-                                            sensor.getLocation(),
-                                            sensor.getClusterID(),
-                                            userDetails.getUsername(),
-                                            sensor.getSensorType());
-        newSensor.setUserList(new ArrayList<String>());
+        final Sensor newSensor = new Sensor(
+                sensor.getSensorType(),
+                sensor.getLocation(),
+                sensor.getAttachedGateway(),
+                sensor.getAttachedClusters(),
+                userDetails.getUsername(),
+                new DateTime(),sensor.isActive()
+        );
         return sensorRepository.save(newSensor);
     }
 
@@ -95,23 +95,18 @@ public class SensorServiceImpl implements SensorService {
                     oldSensor.setActive(sensor.isActive());
                     oldSensor.setLocation(sensor.getLocation());
                     oldSensor.setSensorType(sensor.getSensorType());
-                    oldSensor.setClusterID(sensor.getClusterID());
-                    oldSensor.setOwnerName(sensor.getOwnerName());
-                    if (sensor.getUserList() != null && sensor.getUserList().size() > 0) {
-                        oldSensor.setUserList(sensor.getUserList());
-                    }
+                    oldSensor.setAttachedGateway(sensor.getAttachedGateway());
+                    oldSensor.setAttachedClusters(sensor.getAttachedClusters());
+                    oldSensor.setOwner(sensor.getOwner());
                     return sensorRepository.save(oldSensor);
-                } else if (oldSensor.getOwnerName().equals(userDetails.getUsername())) {
+                } else if (oldSensor.getOwner().equals(userDetails.getUsername())) {
                     oldSensor.setActive(sensor.isActive());
                     oldSensor.setLocation(sensor.getLocation());
                     oldSensor.setSensorType(sensor.getSensorType());
-                    oldSensor.setClusterID(sensor.getClusterID());
-                    if (sensor.getUserList() != null && sensor.getUserList().size() > 0) {
-                        oldSensor.setUserList(sensor.getUserList());
-                    }
+                    oldSensor.setAttachedClusters(sensor.getAttachedClusters());
                     return sensorRepository.save(oldSensor);
                 } else {
-                        throw new AccessDeniedException("No rights to access!");
+                    throw new AccessDeniedException("No rights to access!");
                 }
             } else {
                 throw new UsernameNotFoundException(String.format("User with username '%s' not found", userDetails.getUsername()));
@@ -123,7 +118,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public void deleteSensor(String sensorID) {
-            sensorRepository.delete(sensorID);
-            LOGGER.debug("Sensor with id: " + sensorID + " succussfully deleted");
+        sensorRepository.delete(sensorID);
+        LOGGER.debug("Sensor with id: " + sensorID + " succussfully deleted");
     }
 }

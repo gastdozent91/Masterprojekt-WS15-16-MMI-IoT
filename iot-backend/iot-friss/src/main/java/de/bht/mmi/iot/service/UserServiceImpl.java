@@ -1,9 +1,8 @@
 package de.bht.mmi.iot.service;
 
+import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
-import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.model.rest.Sensor;
 import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
@@ -68,6 +67,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User saveUser(User user) {
+        final String username = user.getUsername();
+        if (isUsernameAlreadyInUse(username)) {
+            throw new EntityExistsException(String.format("Username '%s' already in use", username));
+        }
+        return userRepository.save(user);
+    }
+
+    @Override
     public User updateUser(String username, @Validated UserPutDto dto, UserDetails userDetails) {
         // Role admin can change all users, other roles can only change their own data
         if (!(isRolePresent(userDetails, RoleConstants.ROLE_ADMIN) || userDetails.getUsername().equals(username))) {
@@ -101,46 +109,16 @@ public class UserServiceImpl implements UserService {
 
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User with username '%s' not found", username));
-        } else {
-
-            if (!(isRolePresent(user, RoleConstants.ROLE_ADMIN) || user.getUsername().equals(username))) {
-                // TODO: More meaningfuel exception message
-                throw new AccessDeniedException("Operation not permitted");
-            } else {
-
-                // check deleted sensors and sync with userlist in sensor
-                if (user.getSensorList().size() > sensorList.size()) {
-                    for (String sensorId : user.getSensorList()) {
-                        if (!sensorList.contains(sensorId)) {
-                            Sensor sensor = sensorRepository.findOne(sensorId);
-                            if (sensor != null && sensor.getUserList() != null) {
-                                ArrayList<String> userList = sensor.getUserList();
-                                if (userList.contains(user.getUsername())) {
-                                    userList.remove(user.getUsername());
-                                    sensor.setUserList(userList);
-                                    sensorRepository.save(sensor);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // check for new sensors and sync with userList in sensor
-                for (String sensorId : sensorList) {
-                    Sensor sensor = sensorRepository.findOne(sensorId);
-                    if (sensor != null && sensor.getUserList() != null) {
-                        ArrayList<String> userList = sensor.getUserList();
-                        if (!userList.contains(user.getUsername())) {
-                            userList.add(user.getUsername());
-                            sensor.setUserList(userList);
-                            sensorRepository.save(sensor);
-                        }
-                    }
-                }
-                user.setSensorList(sensorList);
-                return userRepository.save(user);
-            }
         }
+
+
+        if (!(isRolePresent(user, RoleConstants.ROLE_ADMIN) || user.getUsername().equals(username))) {
+            // TODO: More meaningfuel exception message
+            throw new AccessDeniedException("Operation not permitted");
+        }
+
+        user.setSensorList(sensorList);
+        return userRepository.save(user);
     }
 
     @Override

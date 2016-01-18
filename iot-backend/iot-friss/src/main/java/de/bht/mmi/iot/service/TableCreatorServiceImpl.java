@@ -3,6 +3,7 @@ package de.bht.mmi.iot.service;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.Tables;
+import de.bht.mmi.iot.constants.DbConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,53 +13,53 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @Service
-public class TableCreatorImpl implements TableCreatorService {
+public class TableCreatorServiceImpl implements TableCreatorService {
 
     @Autowired
     private AmazonDynamoDB dynamoDB;
 
-    Logger LOGGER = LoggerFactory.getLogger(TableCreatorImpl.class);
+    Logger LOGGER = LoggerFactory.getLogger(TableCreatorServiceImpl.class);
 
-    public String createUserTable() {
+    public void createUserTable() {
         final CreateTableResult createTableResult = dynamoDB.createTable(
                 Arrays.asList(new AttributeDefinition("username", ScalarAttributeType.S)),
-                TABLENAME_USER,
+                DbConstants.TABLENAME_USER,
                 Arrays.asList(new KeySchemaElement("username", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
-        LOGGER.info("Table: User created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
-        return "Table status: " + createTableResult.getTableDescription().getTableStatus();
+        LOGGER.info(generateTableStatusLogMessage(
+                DbConstants.TABLENAME_USER, createTableResult.getTableDescription().getTableStatus()));
     }
 
-    public String createSensorTable() {
+    public void createSensorTable() {
         final CreateTableResult createTableResult = dynamoDB.createTable(
                 Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.S)),
-                TABLENAME_SENSOR,
+                DbConstants.TABLENAME_SENSOR,
                 Arrays.asList(new KeySchemaElement("id", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
-        LOGGER.info("Table: Sensor created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
-        return "Table status: " + createTableResult.getTableDescription().getTableStatus();
-    }
-
-    @Override
-    public String createGatewayTable() {
-        final CreateTableResult createTableResult = dynamoDB.createTable(
-                Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.S)),
-                TABLENAME_GATEWAY,
-                Arrays.asList(new KeySchemaElement("id", KeyType.HASH)),
-                new ProvisionedThroughput(10L, 10L));
-        LOGGER.info("Table: Gateway created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
-        return "Table status: " + createTableResult.getTableDescription().getTableStatus();
+        LOGGER.info(generateTableStatusLogMessage(
+                DbConstants.TABLENAME_SENSOR, createTableResult.getTableDescription().getTableStatus()));
     }
 
     @Override
-    public String createClusterTable() {
+    public void createGatewayTable() {
         final CreateTableResult createTableResult = dynamoDB.createTable(
                 Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.S)),
-                TABLENAME_CLUSTER,
+                DbConstants.TABLENAME_GATEWAY,
                 Arrays.asList(new KeySchemaElement("id", KeyType.HASH)),
                 new ProvisionedThroughput(10L, 10L));
-        LOGGER.info("Table: Cluster created -- Table status: " + createTableResult.getTableDescription().getTableStatus());
-        return "Table status: " + createTableResult.getTableDescription().getTableStatus();
+        LOGGER.info(generateTableStatusLogMessage(
+                DbConstants.TABLENAME_GATEWAY, createTableResult.getTableDescription().getTableStatus()));
+    }
+
+    @Override
+    public void createClusterTable() {
+        final CreateTableResult createTableResult = dynamoDB.createTable(
+                Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.S)),
+                DbConstants.TABLENAME_CLUSTER,
+                Arrays.asList(new KeySchemaElement("id", KeyType.HASH)),
+                new ProvisionedThroughput(10L, 10L));
+        LOGGER.info(generateTableStatusLogMessage(
+                DbConstants.TABLENAME_CLUSTER, createTableResult.getTableDescription().getTableStatus()));
     }
 
     public ArrayList<String> getTableNames() {
@@ -79,4 +80,9 @@ public class TableCreatorImpl implements TableCreatorService {
 
         }
     }
+
+    private String generateTableStatusLogMessage(String tableName, String status) {
+        return String.format("Table '%s' status: %s", tableName, status);
+    }
+
 }

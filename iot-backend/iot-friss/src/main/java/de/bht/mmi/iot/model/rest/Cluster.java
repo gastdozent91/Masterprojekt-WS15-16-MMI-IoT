@@ -8,6 +8,7 @@ import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @DynamoDBTable(tableName = "Cluster")
 public class Cluster {
@@ -18,17 +19,14 @@ public class Cluster {
 
     private DateTime creationDate;
 
-    private String gatewayName;
-
-    private ArrayList<String> sensorList;
+    private List<String> sensorList;
 
     public Cluster() {
         this.creationDate = new DateTime();
     }
 
-    public Cluster(String name, String gatewayName, ArrayList<String> sensorList) {
+    public Cluster(String name, String gatewayName, List<String> sensorList) {
         this.name = name;
-        this.gatewayName = gatewayName;
         this.sensorList = sensorList;
         this.creationDate = new DateTime();
     }
@@ -60,15 +58,7 @@ public class Cluster {
         this.creationDate = creationDate;
     }
 
-    public String getGatewayName() {
-        return gatewayName;
-    }
-
-    public void setGatewayName(String gatewayName) {
-        this.gatewayName = gatewayName;
-    }
-
-    public ArrayList<String> getSensorList() {
+    public List<String> getSensorList() {
         return sensorList;
     }
 

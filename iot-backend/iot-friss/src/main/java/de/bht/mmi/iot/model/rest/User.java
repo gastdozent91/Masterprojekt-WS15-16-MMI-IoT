@@ -5,9 +5,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.repository.SensorRepository;
-import de.bht.mmi.iot.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +13,6 @@ import java.util.*;
 
 @DynamoDBTable(tableName = "User")
 public class User implements UserDetails {
-
-    @Autowired
-    private SensorRepository sensorRepository;
 
     private String username;
 
