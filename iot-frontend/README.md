@@ -48,6 +48,7 @@ Apparently you need a AWS account for that. No problem you think it's free.
 Well, they still ask you for a credit card. For many people that's a no-go.
 
 You need to make a `~/.aws/credentials` file which looks like this:
+Oh wait! Hey windows users. You need to put it here `%USERPROFILE%\.aws\credentials`:
 
 ```
 [default]
