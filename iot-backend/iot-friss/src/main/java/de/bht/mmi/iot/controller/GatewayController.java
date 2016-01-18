@@ -61,16 +61,4 @@ public class GatewayController {
         return sensorService.getAllSensorsByGatewayId(id);
     }
 
-    // Table Create/Delete
-
-
-    @RequestMapping(value = "/createTable")
-    public String createTable() throws Exception {
-        return tableCreator.createGatewayTable();
-    }
-
-    @RequestMapping(value = "/deleteTable")
-    public String deleteTable() throws Exception {
-        return tableCreator.deleteTable(TableCreatorService.TABLENAME_GATEWAY);
-    }
 }

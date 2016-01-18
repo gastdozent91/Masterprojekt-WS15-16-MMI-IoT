@@ -16,6 +16,6 @@ public interface TableCreatorService {
 
     ArrayList<String> getTableNames();
 
-    String deleteTable(String tableName);
+    void deleteTable(String tableName);
 
 }

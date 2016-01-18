@@ -54,17 +54,4 @@ public class SensorController {
         sensorService.deleteSensor(id);
     }
 
-    // Table Create/Delete
-
-
-    @RequestMapping(value = "/createTable")
-    public String createTable() throws Exception {
-        return tableCreator.createSensorTable();
-    }
-
-    @RequestMapping(value = "/deleteTable")
-    public String deleteTable() throws Exception {
-        return tableCreator.deleteTable(TableCreatorService.TABLENAME_SENSOR);
-    }
-
 }

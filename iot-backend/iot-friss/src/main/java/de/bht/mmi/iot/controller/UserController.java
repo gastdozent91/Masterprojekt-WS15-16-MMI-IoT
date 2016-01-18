@@ -68,15 +68,5 @@ public class UserController {
                                                   @AuthenticationPrincipal User user) {
         return sensorService.getAllSensorsByUsername(username, user);
     }
-    // Table Create/Delete
-    @RequestMapping(value = "/createTable")
-    public String createTable() {
-        return userTableCreator.createUserTable();
-    }
-
-    @RequestMapping(value = "/deleteTable")
-    public String deleteTable() {
-        return userTableCreator.deleteTable(TableCreatorService.TABLENAME_USER);
-    }
 
 }

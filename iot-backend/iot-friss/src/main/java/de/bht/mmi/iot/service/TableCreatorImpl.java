@@ -2,6 +2,7 @@ package de.bht.mmi.iot.service;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.*;
+import com.amazonaws.services.dynamodbv2.util.Tables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +61,13 @@ public class TableCreatorImpl implements TableCreatorService {
         return tableNames;
     }
 
-    public String deleteTable(String tableName) {
-        final DeleteTableResult deleteTableResult = dynamoDB.deleteTable(tableName);
-        LOGGER.info("Table: "+tableName+" deleted -- Table status: " + deleteTableResult.getTableDescription().getTableStatus());
-        return "Table status: " + deleteTableResult.getTableDescription().getTableStatus();
+    public void deleteTable(String tableName) {
+        if (Tables.doesTableExist(dynamoDB, tableName)) {
+            final DeleteTableResult deleteTableResult = dynamoDB.deleteTable(tableName);
+            LOGGER.info("Table: " + tableName + " deleted -- Table status: " + deleteTableResult.getTableDescription().getTableStatus());
+        } else {
+            LOGGER.info("Table: " + tableName + " doesn't exist");
+
+        }
     }
 }
