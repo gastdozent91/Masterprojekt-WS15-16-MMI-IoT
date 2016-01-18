@@ -10,7 +10,8 @@
 		"a9c516c8-a8a5-9b2a-5671-353eec6c2d0d",
 		"643dfe07-2c95-2be9-a062-c230bcbf897e",
 		"75d7b148-fd5b-efdf-5185-a724bfe54061",
-		"f3b83289-6feb-66e1-d978-5dddfecad09e"
+		"f3b83289-6feb-66e1-d978-5dddfecad09e",
+		"28f73e24-96bd-844e-56fc-6cae5eb27a62"
 	],
 	"folders": [],
 	"timestamp": 1452516390402,
@@ -18,6 +19,25 @@
 	"remoteLink": "",
 	"public": false,
 	"requests": [
+		{
+			"id": "28f73e24-96bd-844e-56fc-6cae5eb27a62",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
+			"url": "http://localhost:8080/iot-friss/gateway/f2ef8ef8-5c23-4960-badf-36bd714e4982",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1453117085665,
+			"name": "GET GATEWAY",
+			"description": "",
+			"collectionId": "73111fed-a57e-98ec-6aef-76c4bda32eb6",
+			"responses": []
+		},
 		{
 			"id": "51133868-c2fe-4ca8-15d5-b49d8f7760d2",
 			"headers": "Content-Type: application/json\n",

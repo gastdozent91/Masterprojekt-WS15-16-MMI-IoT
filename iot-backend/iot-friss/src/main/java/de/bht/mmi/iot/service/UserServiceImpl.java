@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -38,7 +39,12 @@ public class UserServiceImpl implements UserService {
             // TODO: More meaningfuel exception message
             throw new AccessDeniedException("Operation not permitted");
         }
-        return userRepository.findOne(username);
+        User user = userRepository.findOne(username);
+        if (user != null) {
+            return user;
+        } else {
+            throw new EntityNotFoundException(String.format("User with username '%s' not found!",username));
+        }
     }
 
     @Override

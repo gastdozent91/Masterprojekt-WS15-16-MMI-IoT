@@ -32,6 +32,11 @@ public class SensorController {
         return sensorService.createSensor(sensor, userDetails);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Sensor getSensor(@PathVariable("id") String id) {
+        return sensorService.getSensor(id);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<Sensor> getAllSensor() {
         return sensorService.getAll();

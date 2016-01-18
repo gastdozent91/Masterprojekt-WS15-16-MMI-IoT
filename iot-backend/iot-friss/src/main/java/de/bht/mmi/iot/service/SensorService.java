@@ -14,6 +14,9 @@ public interface SensorService {
     Iterable<Sensor> getAll();
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
+    Sensor getSensor(String id);
+
+    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
     Iterable<Sensor> getAllSensorsByUsername(String username, User user);
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)

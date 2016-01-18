@@ -38,6 +38,16 @@ public class GatewayServiceImpl implements GatewayService{
     }
 
     @Override
+    public Gateway getGateway(String id) {
+        Gateway gateway = gatewayRepository.findOne(id);
+        if (gateway != null) {
+            return gateway;
+        } else {
+            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found!",id));
+        }
+    }
+
+    @Override
     public Gateway createGateway(@RequestBody Gateway gateway) {
         return gatewayRepository.save(gateway);
     }

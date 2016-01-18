@@ -12,6 +12,9 @@ public interface GatewayService {
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     public Iterable<Gateway> getAll();
 
+    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
+    Gateway getGateway(String id);
+
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     public Gateway createGateway(@RequestBody Gateway gateway);
 

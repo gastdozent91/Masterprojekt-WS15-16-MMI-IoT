@@ -44,6 +44,16 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    public Sensor getSensor(String id) {
+        Sensor sensor = sensorRepository.findOne(id);
+        if (sensor != null) {
+            return sensor;
+        } else {
+            throw new EntityNotFoundException(String.format("Sensor with id '%s' not found!",id));
+        }
+    }
+
+    @Override
     public Iterable<Sensor> getAllSensorsByUsername(String username, User user) {
         if (!(userService.isRolePresent(user, RoleConstants.ROLE_ADMIN) ||
                 user.getUsername().equals(username))) {

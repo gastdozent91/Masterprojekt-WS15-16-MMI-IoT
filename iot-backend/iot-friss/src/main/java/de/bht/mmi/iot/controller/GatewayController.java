@@ -39,6 +39,11 @@ public class GatewayController {
     public Iterable<Gateway> getAllGateways() {
         return gatewayService.getAll();
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Gateway getGateway(@PathVariable("id") String id) {
+        return gatewayService.getGateway(id);
+    }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
     public Gateway updateGateway(@PathVariable("id") String id,
