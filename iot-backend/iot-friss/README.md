@@ -6,6 +6,10 @@
 * Docker
 * Set `JAVA_HOME` to a local JDK 8 installation
 
+Copy [app-example.properties](./docs/resources/app-example.properties) to
+[./iot-friss/src/main/resources/](./iot-friss/src/main/resources/),
+rename it to app.properties and customise values like credentials and urls.
+
 ## Useful links, infos, programms etc.
 * [AMQP Model - RabbitMQ](https://www.rabbitmq.com/tutorials/amqp-concepts.html)
 * [Spring AMQP](http://docs.spring.io/spring-amqp/reference/html/)

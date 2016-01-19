@@ -1,5 +1,6 @@
 package de.bht.mmi.iot.listener;
 
+import de.bht.mmi.iot.constants.DbConstants;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.model.rest.*;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 @PropertySource("classpath:app.properties")
@@ -29,7 +31,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     private Environment env;
 
     @Autowired
-    private TableCreatorService tableCreator;
+    private TableCreatorService tableCreatorService;
 
     @Autowired
     private UserService userService;
@@ -49,21 +51,28 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // recreate tables and add dummy data
-        LOGGER.info("Creating tables");
+        LOGGER.info("Recreate tables");
         recreateTables();
+
+        // Admin user
         createAdmin();
         LOGGER.info(String.format("User %s created", env.getProperty("api.user.admin.username")));
-        addDummyData();
+
+        // DummyData
+        final boolean shouldAddDummyData = Boolean.parseBoolean(env.getProperty("db.init.dummy_data"));
+        if (shouldAddDummyData) {
+            addDummyData();
+        }
     }
 
     private void recreateTables() {
-        final ArrayList<String> tableNames = getTableNames();
-        // TODO: Nicht alle Tabllen löschen, sondern nur die, die wir erstellt haben
-        deleteTables(tableNames);
-        tableCreator.createUserTable();
-        tableCreator.createSensorTable();
-        tableCreator.createGatewayTable();
-        tableCreator.createClusterTable();
+        final List<String> tableNames = DbConstants.getAllTableNames();
+        deleteTables(tableNames.toArray(new String[tableNames.size()]));
+
+        tableCreatorService.createUserTable();
+        tableCreatorService.createSensorTable();
+        tableCreatorService.createGatewayTable();
+        tableCreatorService.createClusterTable();
     }
 
     private void addDummyData() {
@@ -125,12 +134,12 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     }
 
     private ArrayList<String> getTableNames() {
-        return tableCreator.getTableNames();
+        return tableCreatorService.getTableNames();
     }
 
-    private void deleteTables(ArrayList<String> tableNames) {
+    private void deleteTables(String... tableNames) {
         for (String tableName : tableNames) {
-            tableCreator.deleteTable(tableName);
+            tableCreatorService.deleteTable(tableName);
         }
     }
 
