@@ -7,7 +7,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @DynamoDBTable(tableName = "Cluster")
@@ -62,7 +61,7 @@ public class Cluster {
         return sensorList;
     }
 
-    public void setSensorList(ArrayList<String> sensorList) {
+    public void setSensorList(List<String> sensorList) {
         this.sensorList = sensorList;
     }
 }

@@ -4,7 +4,6 @@ import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.model.rest.User;
-import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -24,17 +22,23 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private SensorRepository sensorRepository;
-
-    Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getUser(String username) {
+        final User user = userRepository.findOne(username);
+        if (user == null) {
+            throw new EntityNotFoundException(String.format("User with username '%s' not found",username));
+        }
+        return user;
     }
 
     @Override
@@ -43,12 +47,7 @@ public class UserServiceImpl implements UserService {
             // TODO: More meaningfuel exception message
             throw new AccessDeniedException("Operation not permitted");
         }
-        User user = userRepository.findOne(username);
-        if (user != null) {
-            return user;
-        } else {
-            throw new EntityNotFoundException(String.format("User with username '%s' not found!",username));
-        }
+        return getUser(username);
     }
 
     @Override
@@ -83,10 +82,7 @@ public class UserServiceImpl implements UserService {
             throw new AccessDeniedException("Operation not permitted");
         }
 
-        final User user = userRepository.findOne(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User with username '%s' not found", username));
-        }
+        final User user = getUser(username);
         user.setFirstname(dto.getFirstname());
         user.setLastname(dto.getLastname());
         user.setPassword(dto.getPassword());
@@ -98,25 +94,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String username) {
+        final User user = getUser(username);
         userRepository.delete(username);
-        LOGGER.debug("User with username: " + username + " succussfully deleted");
     }
 
     @Override
     public User updateUserSensors(String username, List<String> sensorList) {
-
-        User user = userRepository.findOne(username);
-
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User with username '%s' not found", username));
-        }
-
-
+        final User user = getUser(username);
         if (!(isRolePresent(user, RoleConstants.ROLE_ADMIN) || user.getUsername().equals(username))) {
             // TODO: More meaningfuel exception message
             throw new AccessDeniedException("Operation not permitted");
         }
-
         user.setSensorList(sensorList);
         return userRepository.save(user);
     }
@@ -135,4 +123,5 @@ public class UserServiceImpl implements UserService {
     public boolean isUsernameAlreadyInUse(String username) {
         return userRepository.findOne(username) != null ? true: false;
     }
+
 }

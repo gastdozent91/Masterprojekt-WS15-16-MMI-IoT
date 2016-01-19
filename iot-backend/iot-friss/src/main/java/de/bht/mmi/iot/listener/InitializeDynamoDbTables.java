@@ -109,12 +109,12 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         sensorList.add(sensor2.getId());
         sensorList.add(sensor3.getId());
         userService.updateUserSensors(user.getUsername(), sensorList);
-        LOGGER.info(String.format("Added Sensors %s %s %s to User %s", sensor.getId(), sensor2.getId(),
+        LOGGER.info(String.format("Added Sensors %s, %s, %s to User %s", sensor.getId(), sensor2.getId(),
                 sensor3.getId(), user.getUsername()));
 
         cluster.setSensorList(sensorList);
         clusterService.updateCluster(cluster.getId(),cluster,userDetails);
-        LOGGER.info(String.format("Added Sensors %s %s %s to Cluster %s", sensor.getId(), sensor2.getId(),
+        LOGGER.info(String.format("Added Sensors %s, %s, %s to Cluster %s", sensor.getId(), sensor2.getId(),
                 sensor3.getId(), cluster.getName()));
 
         ArrayList<String> clusterList = new ArrayList<String>();

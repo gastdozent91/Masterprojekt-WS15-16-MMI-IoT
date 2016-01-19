@@ -1,10 +1,9 @@
 package de.bht.mmi.iot.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -14,13 +13,19 @@ public class GlobalRestControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({EntityNotFoundException.class, UsernameNotFoundException.class})
-    public PublicRestErrorMessage handleEntityNotFound(Exception e) {
+    public @ResponseBody PublicRestErrorMessage handleEntityNotFound(Exception e) {
         return new PublicRestErrorMessage(e);
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(EntityExistsException.class)
-    public PublicRestErrorMessage handleEntityExists(Exception e) {
+    public @ResponseBody PublicRestErrorMessage handleEntityExists(Exception e) {
+        return new PublicRestErrorMessage(e);
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public @ResponseBody PublicRestErrorMessage handleAccessDenied(Exception e) {
         return new PublicRestErrorMessage(e);
     }
 

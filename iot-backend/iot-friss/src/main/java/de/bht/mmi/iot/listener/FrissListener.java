@@ -24,7 +24,7 @@ public class FrissListener {
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    private AmazonDynamoDB dbConnector;
+    private AmazonDynamoDB amazonDynamoDB;
     
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,7 +38,7 @@ public class FrissListener {
     )
     public void processFriss(@Headers Map<String, String> amqpHeaders, String data) {
         log.info("Received message with payload: {} and amqpHeaders: {}.", data, amqpHeaders);
-        //dbConnector.batchWriteItem(new BatchWriteItemRequest());
+        //amazonDynamoDB.batchWriteItem(new BatchWriteItemRequest());
     }
 
 }

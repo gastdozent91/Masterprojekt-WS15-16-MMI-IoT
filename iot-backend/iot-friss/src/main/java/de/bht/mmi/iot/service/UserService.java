@@ -11,6 +11,8 @@ public interface UserService {
 
     Iterable<User> getAllUsers();
 
+    User getUser(String username);
+
     User getUser(String username, UserDetails userDetails);
 
     User createUser(UserPostDto dto);
