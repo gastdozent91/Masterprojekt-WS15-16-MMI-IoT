@@ -14,6 +14,9 @@ public class SensorPostDto {
     private boolean isActive;
 
     @NotNull
+    private String name;
+
+    @NotNull
     private String location;
 
     @NotNull
@@ -29,12 +32,14 @@ public class SensorPostDto {
     public SensorPostDto(@JsonProperty("isActive") boolean isActive, @JsonProperty("location") String location,
                          @JsonProperty("sensorType") SensorType sensorType,
                          @JsonProperty("attachedGateway") String attachedGateway,
-                         @JsonProperty("attachedClusters") List<String> attachedClusters) {
+                         @JsonProperty("attachedClusters") List<String> attachedClusters,
+                         @JsonProperty("name") String name) {
         this.isActive = isActive;
         this.location = location;
         this.sensorType = sensorType;
         this.attachedGateway = attachedGateway;
         this.attachedClusters = attachedClusters;
+        this.name = name;
     }
 
     public boolean isActive() {
@@ -57,4 +62,7 @@ public class SensorPostDto {
         return sensorType;
     }
 
+    public String getName() {
+        return name;
+    }
 }

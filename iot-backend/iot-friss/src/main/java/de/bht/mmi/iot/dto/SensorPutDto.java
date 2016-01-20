@@ -13,6 +13,9 @@ public class SensorPutDto {
     private boolean isActive;
 
     @NotNull
+    private String name;
+
+    @NotNull
     private String location;
 
     @NotNull
@@ -32,13 +35,19 @@ public class SensorPutDto {
                         @JsonProperty("clusterID") String clusterID, @JsonProperty("owner") String owner,
                         @JsonProperty("sensorType")SensorType sensorType,
                         @JsonProperty("attachedGateway") String attachedGateway,
-                        @JsonProperty("attachedClusters") List<String> attachedClusters) {
+                        @JsonProperty("attachedClusters") List<String> attachedClusters,
+                        @JsonProperty("name") String name) {
         this.isActive = isActive;
         this.location = location;
         this.owner = owner;
         this.sensorType = sensorType;
         this.attachedGateway = attachedGateway;
         this.attachedClusters = attachedClusters;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public boolean isActive() {

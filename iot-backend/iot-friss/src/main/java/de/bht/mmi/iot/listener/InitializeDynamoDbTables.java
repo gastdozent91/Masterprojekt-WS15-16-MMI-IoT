@@ -97,19 +97,19 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         // Sensor
         Sensor sensor = sensorService.createSensor(
                 new SensorPostDto(true, "Berlin, Germany", SensorType.ACCELERATION,
-                        gateway.getId(), Collections.emptyList()), userDetails);
+                        gateway.getId(), Collections.emptyList(), "Arm rechts"), userDetails);
         LOGGER.info(String.format("Sensor %s created", sensor.getId()));
 
         Sensor sensor2 = sensorService.createSensor(
                 new SensorPostDto(true, "13.301172256,52.44152832,33.4", SensorType.ACCELERATION,
-                        gateway.getId(), Collections.emptyList()),
+                        gateway.getId(), Collections.emptyList(), "Arm links"),
                 userDetailsService.loadUserByUsername("admin"));
         LOGGER.info(String.format("Sensor %s created", sensor2.getId()));
 
         Sensor sensor3 = sensorService.createSensor(new SensorPostDto(true,
                 "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50", SensorType.ACCELERATION,
                 gateway.getId(),
-                Arrays.asList(cluster.getId())), userDetailsService.loadUserByUsername("admin"));
+                Arrays.asList(cluster.getId()), "Kopf"), userDetailsService.loadUserByUsername("admin"));
         LOGGER.info(String.format("Sensor %s created", sensor3.getId()));
 
 

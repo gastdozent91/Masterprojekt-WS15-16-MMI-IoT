@@ -82,6 +82,7 @@ public class SensorServiceImpl implements SensorService {
                 userDetails.getUsername(),
                 new DateTime(),sensor.isActive()
         );
+        newSensor.setName(sensor.getName());
         return sensorRepository.save(newSensor);
     }
 
@@ -98,12 +99,14 @@ public class SensorServiceImpl implements SensorService {
                     oldSensor.setAttachedGateway(sensor.getAttachedGateway());
                     oldSensor.setAttachedClusters(sensor.getAttachedClusters());
                     oldSensor.setOwner(sensor.getOwner());
+                    oldSensor.setName(sensor.getName());
                     return sensorRepository.save(oldSensor);
                 } else if (oldSensor.getOwner().equals(userDetails.getUsername())) {
                     oldSensor.setActive(sensor.isActive());
                     oldSensor.setLocation(sensor.getLocation());
                     oldSensor.setSensorType(sensor.getSensorType());
                     oldSensor.setAttachedClusters(sensor.getAttachedClusters());
+                    oldSensor.setName(sensor.getName());
                     return sensorRepository.save(oldSensor);
                 } else {
                     throw new AccessDeniedException("No rights to access!");
