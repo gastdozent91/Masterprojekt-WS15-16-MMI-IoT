@@ -19,6 +19,11 @@ me.isAlreadyLoggedIn = function(req, res, next) {
   else next();
 };
 
+me.logout = function(req, res, next) {
+  req.session.destroy();
+  res.redirect('/login');
+};
+
 me.render = function(req, res) {
   var out = {greetings: 'Joo'};
   var login = new Login(out);

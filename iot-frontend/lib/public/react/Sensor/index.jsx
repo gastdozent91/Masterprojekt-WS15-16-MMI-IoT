@@ -16,7 +16,8 @@ var Sensor = React.createClass({
       isMultipleSensors = true;
 
     return {
-      isMultipleSensors: isMultipleSensors
+      //isMultipleSensors: isMultipleSensors
+      isMultipleSensors: true
     };
   },
 

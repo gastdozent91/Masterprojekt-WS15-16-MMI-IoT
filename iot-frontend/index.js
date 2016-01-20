@@ -70,6 +70,10 @@ app.get('/login',
   login.render
 );
 
+app.get('/logout',
+  login.logout
+);
+
 app.get('/',
   login.shouldBeLoggedIn,
   dashboard.render
