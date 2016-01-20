@@ -45,9 +45,9 @@ me.connect = function() {
       var date = obj.time.toTimeString();
       var reg = /\d{2}:\d{2}:\d{2}/;
 
-      var line1 = '[' + reg.exec(date) + '] Gateway: '
-                + JSON.parse(msg.body).gateway_name
-                + ' - Sensor Type: ';
+      var line1 = '[' + reg.exec(date) + '] Gateway: ' +
+        JSON.parse(msg.body).gateway_name +
+        ' - Sensor Type: ';
       var line2 = msg.headers.sensor_type;
 
       var span1 = document.createElement('span');

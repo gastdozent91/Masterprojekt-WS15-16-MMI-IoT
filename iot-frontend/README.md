@@ -73,13 +73,8 @@ npm install gulp -g
 OK. You are almost done. We (I) are using gulp for building our files. So run:
 
 ```
-gulp init
+gulp
 ```
-
-Nice. Now you have all the files where they should be. You have to run 
-`gulp init` only this one time. After that `gulp` is enough. If you are really
-cool you can run `gulp watch` and it is building everytime when you save a
-file.
 
 Now you can run the server with 
 
@@ -87,7 +82,7 @@ Now you can run the server with
 node .
 ```
 
-Here again you could be super cool and install `node-dev` and run it.
+Here you could be super cool and install `node-dev` and run it.
 The server restarts everytime when you save a file.
 
 ```

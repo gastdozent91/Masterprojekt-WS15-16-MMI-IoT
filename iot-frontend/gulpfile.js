@@ -34,11 +34,6 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest('build/public/fonts'))
 })
 
-gulp.task('server', function() {
-  return gulp.src('lib/app/**/*.js')
-         .pipe(jshint())
-})
-
 gulp.task('clean', function() {
   var jsFiles = fs.readdirSync('build/public/js');
   jsFiles.forEach(function(file) {
@@ -78,13 +73,38 @@ gulp.task('createBuildDir', function() {
   fs.existsSync('build/public/css') || fs.mkdirSync('build/public/css')
 })
 
-gulp.task('sync', ['jade', 'stylus', 'fonts', 'server'])
-gulp.task('async', ['rename'])
-
-gulp.task('default', gulpsync.sync(['clean', 'sync', 'browserify', 'rename']))
-
-gulp.task('watch', function() {
-  gulp.watch('lib/public/**/*', ['default'])
+gulp.task('copyFoundation', function() {
+  if (!fs.existsSync('build/public/css/foundation.min.css')) {
+    gulp.src('foundation.min.css')
+    .pipe(gulp.dest('build/public/css'))
+  }
 })
 
-gulp.task('init', ['createBuildDir', 'default'])
+gulp.task('lintjs', function() {
+  return gulp.src('lib/**/*.js')
+  .pipe(jshint())
+  .pipe(jshint.reporter('default', {verbose: true}))
+})
+
+gulp.task('lintjsx', function() {
+  return gulp.src('lib/**/*.jsx')
+  .pipe(jshint({linter: require('jshint-jsx').JSXHINT}))
+  .pipe(jshint.reporter('default', {verbose: true}))
+})
+
+gulp.task('sync', ['jade', 'stylus', 'fonts'])
+gulp.task('async', ['rename'])
+
+gulp.task('first', gulpsync.sync([
+  'always', 'watch'
+]))
+
+gulp.task('always', gulpsync.sync([
+  'clean', 'sync', 'browserify', 'rename', 'lintjs', 'lintjsx'
+]))
+
+gulp.task('watch', function() {
+  gulp.watch('lib/public/**/*', ['always'])
+})
+
+gulp.task('default', ['createBuildDir', 'copyFoundation', 'first'])

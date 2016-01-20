@@ -1,5 +1,5 @@
 var request = require('superagent')
-  , Promise = require('bluebird');
+  , Bluebird = require('bluebird');
 
 var dynamodb = require('../plugins/dynamodb');
 
@@ -8,7 +8,7 @@ module.exports = me = {};
 var endpoint = 'http://localhost:8080/iot-friss';
 
 me.getAll = (user) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/user')
       .auth(user.username, user.password)
@@ -20,7 +20,7 @@ me.getAll = (user) => {
 };
 
 me.getOne = (user, username) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/user/' + username)
       .auth(user.username, user.password)
@@ -32,7 +32,7 @@ me.getOne = (user, username) => {
 };
 
 me.update = (user, userToUpdate) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .put(endpoint + '/user/' + userToUpdate.username)
       .send(userToUpdate)
@@ -45,7 +45,7 @@ me.update = (user, userToUpdate) => {
 };
 
 me.delete = (user, userToDelete) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/user/' + userToDelete)
       .auth(user.username, user.password)
@@ -57,7 +57,7 @@ me.delete = (user, userToDelete) => {
 };
 
 me.create = (user, userToCreate) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .post(endpoint + '/user')
       .send(userToCreate)
@@ -70,7 +70,7 @@ me.create = (user, userToCreate) => {
 };
 
 me.getSensors = (user, userWithSensors) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/user/' + userWithSensors + '/sensor')
       .auth(user.username, user.password)
@@ -82,7 +82,7 @@ me.getSensors = (user, userWithSensors) => {
 };
 
 me.setSensors = (user, userWithSensors, sensors) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .put(endpoint + '/user/' + userWithSensors + '/sensor')
       .send(sensors)

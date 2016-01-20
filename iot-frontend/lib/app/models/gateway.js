@@ -1,5 +1,5 @@
 var request = require('superagent')
-  , Promise = require('bluebird');
+  , Bluebird = require('bluebird');
 
 var dynamodb = require('../plugins/dynamodb');
 
@@ -8,7 +8,7 @@ module.exports = me = {};
 var endpoint = 'http://localhost:8080/iot-friss';
 
 me.getAll = (user) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/gateway')
       .auth(user.username, user.password)
@@ -20,7 +20,7 @@ me.getAll = (user) => {
 };
 
 me.getOne = (user, gatewayname) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/gateway/' + gatewayname)
       .auth(user.username, user.password)
@@ -32,7 +32,7 @@ me.getOne = (user, gatewayname) => {
 };
 
 me.update = (user, gatewayToUpdate) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .put(endpoint + '/gateway/' + gatewayToUpdate.username)
       .send(gatewayToUpdate)
@@ -45,7 +45,7 @@ me.update = (user, gatewayToUpdate) => {
 };
 
 me.delete = (user, gatewayToDelete) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/gateway/' + gatewayToDelete)
       .auth(user.username, user.password)
@@ -57,7 +57,7 @@ me.delete = (user, gatewayToDelete) => {
 };
 
 me.create = (user, gatewayToCreate) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .post(endpoint + '/gateway')
       .send(gatewayToCreate)

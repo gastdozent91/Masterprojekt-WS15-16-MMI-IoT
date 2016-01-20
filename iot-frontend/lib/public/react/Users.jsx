@@ -49,26 +49,27 @@ var Users = React.createClass({
           }
         }
       });
-      var users = this.props.users.filter(function(user) {
+      users = this.props.users.filter(function(user) {
         if (!user.firstname) return true;
         var bool = true;
+        var value;
         if (checkUserName) {
-          var value = dic.username;
+          value = dic.username;
           bool = user.username.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkFirstName) {
-          var value = dic.firstname;
+          value = dic.firstname;
           bool = user.firstname.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkLastName) {
-          var value = dic.lastname;
+          value = dic.lastname;
           bool = user.lastname.toLowerCase().indexOf(value) > -1;
         }
         return bool;
       });
       this.setState({users: users});
     } else {
-      var users = this.props.users.filter(function(user) {
+      users = this.props.users.filter(function(user) {
         if (!user.firstname) return true;
         var bool = false;
         bool = user.username.toLowerCase().indexOf(input) > -1;

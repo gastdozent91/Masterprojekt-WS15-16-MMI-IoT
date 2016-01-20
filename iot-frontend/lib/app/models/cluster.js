@@ -1,5 +1,5 @@
 var request = require('superagent')
-  , Promise = require('bluebird');
+  , Bluebird = require('bluebird');
 
 var dynamodb = require('../plugins/dynamodb');
 
@@ -8,7 +8,7 @@ module.exports = me = {};
 var endpoint = 'http://localhost:8080/iot-friss';
 
 me.getAll = (user) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/cluster')
       .auth(user.username, user.password)
@@ -20,7 +20,7 @@ me.getAll = (user) => {
 };
 
 me.getOne = (user, clustername) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/cluster/' + clustername)
       .auth(user.username, user.password)
@@ -32,7 +32,7 @@ me.getOne = (user, clustername) => {
 };
 
 me.update = (user, clusterToUpdate) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .put(endpoint + '/cluster/' + clusterToUpdate.username)
       .send(clusterToUpdate)
@@ -45,7 +45,7 @@ me.update = (user, clusterToUpdate) => {
 };
 
 me.delete = (user, clusterToDelete) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/cluster/' + clusterToDelete)
       .auth(user.username, user.password)
@@ -57,7 +57,7 @@ me.delete = (user, clusterToDelete) => {
 };
 
 me.create = (user, clusterToCreate) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .post(endpoint + '/cluster')
       .send(clusterToCreate)

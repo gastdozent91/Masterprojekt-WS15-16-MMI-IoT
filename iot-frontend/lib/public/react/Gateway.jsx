@@ -47,21 +47,22 @@ var Gateway = React.createClass({
           }
         }
       });
-      var gateways = this.props.gateways.filter(function(gateway) {
+      gateways = this.props.gateways.filter(function(gateway) {
         var bool = true;
+        var value;
         if (checkName) {
-          var value = dic.name;
+          value = dic.name;
           bool = gateway.name.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkLocation) {
-          var value = dic.id;
+          value = dic.id;
           bool = gateway.id.toLowerCase().indexOf(value) > -1;
         }
         return bool;
       });
       this.setState({gateways: gateways});
     } else {
-      var gateways = this.props.gateways.filter(function(gateway) {
+      gateways = this.props.gateways.filter(function(gateway) {
         var bool = false;
         bool = gateway.name.toLowerCase().indexOf(input) > -1;
         if (bool) return true;

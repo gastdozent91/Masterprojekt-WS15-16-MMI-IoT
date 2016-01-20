@@ -1,0 +1,7 @@
+{
+  "laxcomma": true, // ignore comma first warnings
+  "lastsemic": false, // ignore missing semicolon
+  "asi": true, // ignore missing semicolon even more
+  "esversion": 6, // say we use ECMA6
+  "laxbreak": true // ignore bad line breaking
+}

@@ -133,9 +133,9 @@ var Chart = React.createClass({
 
 
   refreshGraph: function() {
-    var lastRefresh = this.state.lastRefresh
-                      ? this.state.lastRefresh
-                      : this.state.startTime;
+    var lastRefresh = this.state.lastRefresh ?
+      this.state.lastRefresh :
+      this.state.startTime;
 
     var that = this
       , svg = this.state.svg

@@ -1,5 +1,5 @@
 var request = require('superagent')
-  , Promise = require('bluebird');
+  , Bluebird = require('bluebird');
 
 var dynamodb = require('../plugins/dynamodb');
 
@@ -8,7 +8,7 @@ module.exports = me = {};
 var endpoint = 'http://localhost:8080/iot-friss';
 
 me.getAll = (user) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/sensor')
       .auth(user.username, user.password)
@@ -20,7 +20,7 @@ me.getAll = (user) => {
 };
 
 me.getOne = (user, sensorname) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/sensor/' + sensorname)
       .auth(user.username, user.password)
@@ -32,7 +32,7 @@ me.getOne = (user, sensorname) => {
 };
 
 me.update = (user, sensorToUpdate) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .put(endpoint + '/sensor/' + sensorToUpdate.username)
       .send(sensorToUpdate)
@@ -45,7 +45,7 @@ me.update = (user, sensorToUpdate) => {
 };
 
 me.delete = (user, sensorToDelete) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/sensor/' + sensorToDelete)
       .auth(user.username, user.password)
@@ -57,7 +57,7 @@ me.delete = (user, sensorToDelete) => {
 };
 
 me.create = (user, sensorToCreate) => {
-  return new Promise((resolve, reject) => {
+  return new Bluebird((resolve, reject) => {
     request
       .post(endpoint + '/sensor')
       .send(sensorToCreate)

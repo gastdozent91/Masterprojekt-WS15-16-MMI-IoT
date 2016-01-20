@@ -65,29 +65,30 @@ var MultipleSensors = React.createClass({
           }
         }
       });
-      var sensors = this.props.sensors.filter(function(sensor) {
+      sensors = this.props.sensors.filter(function(sensor) {
         var bool = true;
+        var value;
         if (checkName) {
-          var value = dic.id;
+          value = dic.id;
           bool = sensor.id.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkLocation) {
-          var value = dic.location;
+          value = dic.location;
           bool = sensor.location.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkType) {
-          var value = dic.type;
+          value = dic.type;
           bool = sensor.sensorType.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkGateway) {
-          var value = dic.gateway;
+          value = dic.gateway;
           bool = sensor.attachedGateway.toLowerCase().indexOf(value) > -1;
         }
         return bool;
       });
       this.setState({sensors: sensors});
     } else {
-      var sensors = this.props.sensors.filter(function(sensor) {
+      sensors = this.props.sensors.filter(function(sensor) {
         var bool = false;
         bool = sensor.id.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
