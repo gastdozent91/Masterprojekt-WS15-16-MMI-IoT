@@ -5,6 +5,7 @@ var chart = require('./chart')
   , user = require('./user')
   , gateway = require('./gateway')
   , cluster = require('./cluster')
+  , footer = require('./footer')
   , dashboard = require('./dashboard');
 
 window.onload = function() {
@@ -16,4 +17,5 @@ window.onload = function() {
   user.render();
   gateway.render();
   cluster.render();
+  footer.render();
 };

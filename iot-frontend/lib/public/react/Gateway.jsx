@@ -10,32 +10,36 @@ var Gateway = React.createClass({
 
   getInitialState: function() {
     return {
-      gateways: this.props.gateways
+      gateways: this.props.gateways,
+      listClass: 'row column list'
     };
   },
 
   componentDidMount: function() {
+    setTimeout(function() {
+      this.setState({listClass: 'row column list done'});
+    }.bind(this), 0);
   },
 
   handleSearchChange: function() {
     var input = this.refs.search.value.toLowerCase();
     var checkName = input.indexOf('name:') > -1
-      , checkLocation = input.indexOf('location:') > -1;
+      , checkLocation = input.indexOf('id:') > -1;
 
     var gateways = [];
     if (checkName || checkLocation) {
       var filterList = [
         'name',
-        'location'
+        'id'
       ];
       var dic = {};
       var splittedInput = input.split(';');
-      splittedInput.forEach(inputPiece => {
+      splittedInput.forEach(function(inputPiece) {
         inputPiece = inputPiece.trim();
         if (inputPiece.indexOf(':') > -1) {
           var pieceName = inputPiece.split(':')[0].trim().toLowerCase();
           var pieceValue = inputPiece.split(':')[1].trim().toLowerCase();
-          var isCorrect = filterList.some(filterName => {
+          var isCorrect = filterList.some(function(filterName) {
                             return filterName === pieceName;
                           });
           if (isCorrect) {
@@ -43,25 +47,25 @@ var Gateway = React.createClass({
           }
         }
       });
-      var gateways = this.props.gateways.filter(gateway => {
+      var gateways = this.props.gateways.filter(function(gateway) {
         var bool = true;
         if (checkName) {
           var value = dic.name;
           bool = gateway.name.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkLocation) {
-          var value = dic.location;
-          bool = gateway.location.toLowerCase().indexOf(value) > -1;
+          var value = dic.id;
+          bool = gateway.id.toLowerCase().indexOf(value) > -1;
         }
         return bool;
       });
       this.setState({gateways: gateways});
     } else {
-      var gateways = this.props.gateways.filter(gateway => {
+      var gateways = this.props.gateways.filter(function(gateway) {
         var bool = false;
         bool = gateway.name.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
-        bool = gateway.location.toLowerCase().indexOf(input) > -1;
+        bool = gateway.id.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
       });
       this.setState({gateways: gateways});
@@ -73,29 +77,30 @@ var Gateway = React.createClass({
       <div>
         <div className='row'>
           <div className='large-6 columns'>
-            Name
+            <b>Name</b>
           </div>
           <div className='large-6 columns' style={{textAlign: 'end'}}>
-            Location
+            <b>ID</b>
           </div>
         </div>
         {this.state.gateways
-        .sort((a, b) => {
+        .sort(function(a, b) {
           if (a.name < b.name)
             return -1;
           if (a.name > b.name)
             return 1;
           return 0;
         })
-        .map((gateway, i) => {
+        .map(function(gateway, i) {
           return this.renderGateway(gateway, i)
-        })}
+        }.bind(this))}
       </div>
     );
   },
 
   renderGateway: function(gateway, i) {
-    var state = gateway.active ? 'active' : 'inactive';
+    //var state = gateway.active ? 'active' : 'inactive';
+    var state = 'active';
     var gatewayClass = 'row ' + state;
     return (
       <a href='/sensors' key={'gateway #'+i}>
@@ -104,7 +109,7 @@ var Gateway = React.createClass({
             {gateway.name}
           </div>
           <div className='large-6 columns' style={{textAlign: 'end'}}>
-            {gateway.location}
+            {gateway.id}
           </div>
         </div>
       </a>
@@ -123,13 +128,13 @@ var Gateway = React.createClass({
             <label>Search
               <input type='text'
                 ref='search'
-                placeholder='name: Paul; location: Berlin' />
+                placeholder='name: Paul; id: Berlin' />
             </label>
           </div>
         </div>
         { /* Search area end */ }
         {/* Gateways area */}
-        <div className='row column' style={{float: 'none'}}>
+        <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>
             <h5>Gatewaylist</h5>
             {this.renderGateways()}

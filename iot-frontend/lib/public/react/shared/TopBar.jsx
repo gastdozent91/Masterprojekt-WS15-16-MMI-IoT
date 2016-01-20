@@ -14,13 +14,20 @@ var TopBar = React.createClass({
   componentDidMount: function() {
   },
 
+  handleFrissClick: function() {
+    window.location = '/';
+  },
+
   render: function() {
     return (
       <div className="top-bar">
         <div className='row'>
           <div className="top-bar-left">
             <ul className="dropdown menu" data-dropdown-menu>
-              <li className="menu-text">FRISS</li>
+              <li className="menu-text pointer"
+                onClick={this.handleFrissClick}>
+                FRISS
+              </li>
               <li className="has-submenu">
                 <a href="/sensors">Sensors</a>
                 <ul className="submenu menu vertical" data-submenu>

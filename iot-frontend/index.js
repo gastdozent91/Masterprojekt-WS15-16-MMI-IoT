@@ -77,16 +77,19 @@ app.get('/',
 
 app.get('/gateways',
   login.shouldBeLoggedIn,
+  gateway.getAll,
   gateway.render
 );
 
 app.get('/clusters',
   login.shouldBeLoggedIn,
+  cluster.getAll,
   cluster.render
 );
 
 app.get('/sensors',
   login.shouldBeLoggedIn,
+  sensor.getAll,
   sensor.render
 );
 

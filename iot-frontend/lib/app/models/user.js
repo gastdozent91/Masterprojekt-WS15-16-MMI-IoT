@@ -35,7 +35,7 @@ me.update = (user, userToUpdate) => {
   return new Promise((resolve, reject) => {
     request
       .put(endpoint + '/user/' + userToUpdate.username)
-      .send(user)
+      .send(userToUpdate)
       .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);

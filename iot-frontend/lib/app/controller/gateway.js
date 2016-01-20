@@ -1,34 +1,27 @@
 var React = require('react')
   , ReactDOM = require('react-dom/server')
+  , Model = require('../models/gateway')
   , Gateway = React.createFactory(
       require('../../public/react/Gateway')
     );
 
 module.exports = me = {};
 
+me.getAll = (req, res, next) => {
+  Model.getAll(req.user)
+  .then(gateways => {
+    req.gateways = gateways;
+    next();
+  })
+  .catch(err => {
+    res.json(err);
+  });
+};
+
 me.render = function(req, res) {
-  var gateways = [];
-  var gateway = {
-    name: 'Paul',
-    location: 'Berlin',
-    active: true
-  };
-  var gateway2 = {
-    name: 'Gerd',
-    location: 'Berlin',
-    active: false
-  };
-  var gateway3 = {
-    name: 'Michael',
-    location: 'Berlin',
-    active: true
-  };
-  gateways.push(gateway);
-  gateways.push(gateway2);
-  gateways.push(gateway3);
   var out = {
     user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-    gateways: gateways
+    gateways: req.gateways
   };
   var gateway = new Gateway(out);
   var body = ReactDOM.renderToStaticMarkup(gateway);

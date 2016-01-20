@@ -1,0 +1,71 @@
+var request = require('superagent')
+  , Promise = require('bluebird');
+
+var dynamodb = require('../plugins/dynamodb');
+
+module.exports = me = {};
+
+var endpoint = 'http://localhost:8080/iot-friss';
+
+me.getAll = (user) => {
+  return new Promise((resolve, reject) => {
+    request
+      .get(endpoint + '/gateway')
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body);
+      });
+  });
+};
+
+me.getOne = (user, gatewayname) => {
+  return new Promise((resolve, reject) => {
+    request
+      .get(endpoint + '/gateway/' + gatewayname)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body);
+      });
+  });
+};
+
+me.update = (user, gatewayToUpdate) => {
+  return new Promise((resolve, reject) => {
+    request
+      .put(endpoint + '/gateway/' + gatewayToUpdate.username)
+      .send(gatewayToUpdate)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+  });
+};
+
+me.delete = (user, gatewayToDelete) => {
+  return new Promise((resolve, reject) => {
+    request
+      .delete(endpoint + '/gateway/' + gatewayToDelete)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+  });
+};
+
+me.create = (user, gatewayToCreate) => {
+  return new Promise((resolve, reject) => {
+    request
+      .post(endpoint + '/gateway')
+      .send(gatewayToCreate)
+      .auth(user.username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+  });
+};
+

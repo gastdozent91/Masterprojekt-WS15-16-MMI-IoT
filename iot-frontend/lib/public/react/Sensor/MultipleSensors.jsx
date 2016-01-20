@@ -13,8 +13,15 @@ var MultipleSensors = React.createClass({
     return {
       sensors: this.props.sensors,
       isAddingNew: false,
+      listClass: 'row column list',
       backgroundStyle: {display: 'none'}
     };
+  },
+
+  componentDidMount: function() {
+    setTimeout(function() {
+      this.setState({listClass: 'row column list done'});
+    }.bind(this), 0);
   },
 
   handleNew: function() {
@@ -30,7 +37,7 @@ var MultipleSensors = React.createClass({
 
   handleSearchChange: function() {
     var input = this.refs.search.value.toLowerCase();
-    var checkName = input.indexOf('name:') > -1
+    var checkName = input.indexOf('id:') > -1
       , checkLocation = input.indexOf('location:') > -1
       , checkType = input.indexOf('type:') > -1
       , checkGateway = input.indexOf('gateway:') > -1;
@@ -38,19 +45,19 @@ var MultipleSensors = React.createClass({
     var sensors = [];
     if (checkName || checkLocation || checkGateway || checkType) {
       var filterList = [
-        'name',
+        'id',
         'location',
         'type',
         'gateway'
       ];
       var dic = {};
       var splittedInput = input.split(';');
-      splittedInput.forEach(inputPiece => {
+      splittedInput.forEach(function(inputPiece) {
         inputPiece = inputPiece.trim();
         if (inputPiece.indexOf(':') > -1) {
           var pieceName = inputPiece.split(':')[0].trim().toLowerCase();
           var pieceValue = inputPiece.split(':')[1].trim().toLowerCase();
-          var isCorrect = filterList.some(filterName => {
+          var isCorrect = filterList.some(function(filterName) {
                             return filterName === pieceName;
                           });
           if (isCorrect) {
@@ -58,11 +65,11 @@ var MultipleSensors = React.createClass({
           }
         }
       });
-      var sensors = this.props.sensors.filter(sensor => {
+      var sensors = this.props.sensors.filter(function(sensor) {
         var bool = true;
         if (checkName) {
-          var value = dic.name;
-          bool = sensor.name.toLowerCase().indexOf(value) > -1;
+          var value = dic.id;
+          bool = sensor.id.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkLocation) {
           var value = dic.location;
@@ -70,25 +77,25 @@ var MultipleSensors = React.createClass({
         }
         if (bool && checkType) {
           var value = dic.type;
-          bool = sensor.type.toLowerCase().indexOf(value) > -1;
+          bool = sensor.sensorType.toLowerCase().indexOf(value) > -1;
         }
         if (bool && checkGateway) {
           var value = dic.gateway;
-          bool = sensor.gateway.toLowerCase().indexOf(value) > -1;
+          bool = sensor.attachedGateway.toLowerCase().indexOf(value) > -1;
         }
         return bool;
       });
       this.setState({sensors: sensors});
     } else {
-      var sensors = this.props.sensors.filter(sensor => {
+      var sensors = this.props.sensors.filter(function(sensor) {
         var bool = false;
-        bool = sensor.name.toLowerCase().indexOf(input) > -1;
+        bool = sensor.id.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
         bool = sensor.location.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
-        bool = sensor.gateway.toLowerCase().indexOf(input) > -1;
+        bool = sensor.attachedGateway.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
-        bool = sensor.type.toLowerCase().indexOf(input) > -1;
+        bool = sensor.sensorType.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
       });
       this.setState({sensors: sensors});
@@ -100,29 +107,29 @@ var MultipleSensors = React.createClass({
       <div>
         <div className='row'>
           <div className='large-3 columns'>
-            Name
+            <b>ID</b>
           </div>
           <div className='large-3 columns'>
-            Location
+            <b>Location</b>
           </div>
           <div className='large-3 columns'>
-            Type
+            <b>Type</b>
           </div>
           <div className='large-3 columns' style={{textAlign: 'end'}}>
-            Gateway
+            <b>Gateway</b>
           </div>
         </div>
         {this.state.sensors
-        .sort((a, b) => {
-          if (a.gateway < b.gateway)
+        .sort(function(a, b) {
+          if (a.attachedGateway < b.attachedGateway)
             return -1;
-          if (a.gateway > b.gateway)
+          if (a.attachedGateway > b.attachedGateway)
             return 1;
           return 0;
         })
-        .map((sensor, i) => {
+        .map(function(sensor, i) {
           return this.renderSensor(sensor, i)
-        })}
+        }.bind(this))}
       </div>
     );
   },
@@ -134,16 +141,16 @@ var MultipleSensors = React.createClass({
       <a href='/sensors?size=1' key={'sensor #'+i}>
         <div className={sensorClass}>
           <div className='large-3 columns'>
-            {sensor.name}
+            {sensor.id}
           </div>
-          <div className='large-3 columns'>
+          <div className='large-3 columns' style={{overflow: 'hidden'}}>
             {sensor.location}
           </div>
           <div className='large-3 columns'>
-            {sensor.type}
+            {sensor.sensorType}
           </div>
           <div className='large-3 columns' style={{textAlign: 'end'}}>
-            {sensor.gateway}
+            {sensor.attachedGateway}
           </div>
         </div>
       </a>
@@ -159,10 +166,10 @@ var MultipleSensors = React.createClass({
           <label>Search
             <input type='text'
               ref='search'
-              placeholder='name: Gyro; location: Berlin; type: Gyro; gateway: supergateway' />
+              placeholder='id: Gyro; location: Berlin; type: Gyro; gateway: supergateway' />
           </label>
         </div>
-        <div className='row column' style={{float: 'none'}}>
+        <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>
             <div className='row'>
               <div className='large-9 columns'>

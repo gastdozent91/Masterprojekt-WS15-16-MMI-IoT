@@ -10,8 +10,15 @@ var Users = React.createClass({
 
   getInitialState: function() {
     return {
-      users: this.props.users
+      users: this.props.users,
+      listClass: 'row column list'
     };
+  },
+
+  componentDidMount: function() {
+    setTimeout(function() {
+      this.setState({listClass: 'row column list done'});
+    }.bind(this), 0);
   },
 
   handleSearchChange: function() {
@@ -29,12 +36,12 @@ var Users = React.createClass({
       ];
       var dic = {};
       var splittedInput = input.split(';');
-      splittedInput.forEach(inputPiece => {
+      splittedInput.forEach(function(inputPiece) {
         inputPiece = inputPiece.trim();
         if (inputPiece.indexOf(':') > -1) {
           var pieceName = inputPiece.split(':')[0].trim().toLowerCase();
           var pieceValue = inputPiece.split(':')[1].trim().toLowerCase();
-          var isCorrect = filterList.some(filterName => {
+          var isCorrect = filterList.some(function(filterName) {
                             return filterName === pieceName;
                           });
           if (isCorrect) {
@@ -42,7 +49,8 @@ var Users = React.createClass({
           }
         }
       });
-      var users = this.props.users.filter(user => {
+      var users = this.props.users.filter(function(user) {
+        if (!user.firstname) return true;
         var bool = true;
         if (checkUserName) {
           var value = dic.username;
@@ -60,7 +68,8 @@ var Users = React.createClass({
       });
       this.setState({users: users});
     } else {
-      var users = this.props.users.filter(user => {
+      var users = this.props.users.filter(function(user) {
+        if (!user.firstname) return true;
         var bool = false;
         bool = user.username.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
@@ -78,32 +87,32 @@ var Users = React.createClass({
       <div>
         <div className='row'>
           <div className='large-3 columns'>
-            username
+            <b>username</b>
           </div>
           <div className='large-3 columns'>
-            firstname
+            <b>firstname</b>
           </div>
           <div className='large-3 columns'>
-            lastname
+            <b>lastname</b>
           </div>
           <div className='large-1 columns'>
-            sensorcount
+            <b>sensorcount</b>
           </div>
           <div className='large-2 columns' style={{textAlign: 'end'}}>
-            Role
+            <b>Role</b>
           </div>
         </div>
         {this.state.users
-        .sort((a, b) => {
+        .sort(function(a, b) {
           if (a.username < b.username)
             return -1;
           if (a.username > b.username)
             return 1;
           return 0;
         })
-        .map((user, i) => {
+        .map(function(user, i) {
           return this.renderUser(user, i)
-        })}
+        }.bind(this))}
       </div>
     );
   },
@@ -116,13 +125,13 @@ var Users = React.createClass({
             {user.username}
           </div>
           <div className='large-3 columns'>
-            {user.firstname}
+            {user.firstname || 'missing'}
           </div>
           <div className='large-3 columns'>
-            {user.lastname}
+            {user.lastname || 'missing'}
           </div>
           <div className='large-1 columns'>
-            {user.sensorCount}
+            {user.sensorCount || 0}
           </div>
           <div className='large-2 columns' style={{textAlign: 'end'}}>
             { this.renderRole(user) }
@@ -153,7 +162,7 @@ var Users = React.createClass({
               placeholder='username: Max; firstname: Max; lastname: Mustermann' />
           </label>
         </div>
-        <div className='row column' style={{float: 'none'}}>
+        <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>
             <h5>Userlist</h5>
             {this.renderUsers()}
