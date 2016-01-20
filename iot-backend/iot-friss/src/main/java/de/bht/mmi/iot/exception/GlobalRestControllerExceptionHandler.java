@@ -29,5 +29,4 @@ public class GlobalRestControllerExceptionHandler {
         return new PublicRestErrorMessage(e);
     }
 
-
 }

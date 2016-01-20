@@ -16,6 +16,8 @@ public class DbConstants {
 
     public static final String TABLENAME_CLUSTER = "Cluster";
 
+    public static final String TABLENAME_MEASUREMENT = "Measurement";
+
     public static List<String> getAllTableNames() {
         final Class<DbConstants> dbConstantsClass = DbConstants.class;
         final Field[] declaredFields = dbConstantsClass.getDeclaredFields();

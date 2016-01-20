@@ -1,12 +1,11 @@
 package de.bht.mmi.iot.service;
 
-import de.bht.mmi.iot.model.rest.Gateway;
 import de.bht.mmi.iot.constants.RoleConstants;
+import de.bht.mmi.iot.model.rest.Gateway;
 import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 
 @Service
 public class GatewayServiceImpl implements GatewayService{
@@ -35,6 +35,11 @@ public class GatewayServiceImpl implements GatewayService{
     @Override
     public Iterable<Gateway> getAll() {
         return gatewayRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Gateway> getAllForIds(String... ids) {
+        return gatewayRepository.findAll(Arrays.asList(ids));
     }
 
     @Override

@@ -9,6 +9,8 @@ public interface GatewayService {
 
     Iterable<Gateway> getAll();
 
+    Iterable<Gateway> getAllForIds(String... ids);
+
     Gateway getGateway(String id);
 
     Gateway createGateway(@RequestBody Gateway gateway);

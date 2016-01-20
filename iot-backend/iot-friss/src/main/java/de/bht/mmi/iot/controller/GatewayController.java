@@ -22,10 +22,20 @@ public class GatewayController {
     private SensorService sensorService;
 
     // GET
+    /**
+     *
+     * @param ids comma-seperated list of gateway ids as string
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Iterable<Gateway> getAllGateways() {
-        return gatewayService.getAll();
+    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
+    public Iterable<Gateway> getAllGateways(@RequestParam(value = "ids", required = false) String ids) {
+        if (ids == null) {
+            return gatewayService.getAll();
+        } else {
+            final String[] gatewayIds = ids.split(",");
+            return gatewayService.getAllForIds(ids);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
