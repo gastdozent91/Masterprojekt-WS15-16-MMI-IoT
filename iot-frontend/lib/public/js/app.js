@@ -4,6 +4,7 @@ var chart = require('./chart')
   , users = require('./users')
   , user = require('./user')
   , gateway = require('./gateway')
+  , cluster = require('./cluster')
   , dashboard = require('./dashboard');
 
 window.onload = function() {
@@ -14,4 +15,5 @@ window.onload = function() {
   users.render();
   user.render();
   gateway.render();
+  cluster.render();
 };

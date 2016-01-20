@@ -30,6 +30,7 @@ var TopBar = React.createClass({
                 </ul>
               </li>
               <li><a href="/gateways">Gateways</a></li>
+              <li><a href="/clusters">Clusters</a></li>
               { this.props.user.isAdmin
               ? <li><a href="/users">Users</a></li>
               : null}

@@ -9,6 +9,7 @@ var chart = require('./lib/app/controller/chart')
   , login = require('./lib/app/controller/login')
   , sensor = require('./lib/app/controller/sensor')
   , gateway = require('./lib/app/controller/gateway')
+  , cluster = require('./lib/app/controller/cluster')
   , dashboard = require('./lib/app/controller/dashboard')
   , test = require('./lib/app/controller/test')
   , sensor = require('./lib/app/controller/sensor')
@@ -77,6 +78,11 @@ app.get('/',
 app.get('/gateways',
   login.shouldBeLoggedIn,
   gateway.render
+);
+
+app.get('/clusters',
+  login.shouldBeLoggedIn,
+  cluster.render
 );
 
 app.get('/sensors',
