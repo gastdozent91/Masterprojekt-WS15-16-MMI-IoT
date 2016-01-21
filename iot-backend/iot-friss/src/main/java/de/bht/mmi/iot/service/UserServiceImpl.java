@@ -4,7 +4,9 @@ import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.model.rest.User;
+import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SensorRepository sensorRepository;
 
     @Override
     public Iterable<User> getAllUsers() {
@@ -105,6 +110,20 @@ public class UserServiceImpl implements UserService {
             // TODO: More meaningfuel exception message
             throw new AccessDeniedException("Operation not permitted");
         }
+
+        // Check if every sensorId references a sensor
+        final List<String> notFoundSensorIds = new ArrayList<>(sensorList.size());
+        for (String sensorId : sensorList) {
+            if (sensorRepository.findOne(sensorId) == null) {
+                notFoundSensorIds.add(sensorId);
+            }
+        }
+        if (!notFoundSensorIds.isEmpty()) {
+            throw new EntityNotFoundException(String.format(
+                    "The following sensorIds do not reference known sensors: %s",
+                    StringUtils.join(notFoundSensorIds, ", ")));
+        }
+
         user.setSensorList(sensorList);
         return userRepository.save(user);
     }
