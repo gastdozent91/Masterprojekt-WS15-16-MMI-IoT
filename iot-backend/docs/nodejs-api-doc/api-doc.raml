@@ -1,221 +1,346 @@
 #%RAML 0.8
 title: Masterprojekt IoT
 version: 1
-baseUri: http://localhost:3000
+baseUri: http://localhost:3000/iot-friss
 /user:
  get:
    description: Show all registered User
    headers:
     Authorization:
-     description: TODO
+     description: Basic YWRtaW46YWRtaW4=
    responses:
     200:
      body:
       application/json:
        example: |
-         {
-          „users“:[
+         [
           {
-           „id“:“99“,
-           „firstname“:“Max“,
-           „lastname“:“Mustermann“,
-           „E-Mail“:“max@mustermann.de“
-           „creation_date“:329012390123,
-           „role“:1
-          },
-          {
-           „id“:“100“,
-           „firstname“:“Max2“,
-           „lastname“:“Mustermann2“,
-           „E-Mail“:“max2@mustermann2.de“
-           „creation_date“:329012490123,
-           „role“:0
-          }]
-         }
+           „username“:“admin“,
+           „firstname“:“max“,
+           „lastname“:“mustermann“,
+           „roles": [
+           "ROLE_USER",
+           "ROLE_ADMIN"
+           ],
+           "sensorList": []
+          }
+         ]
  post:
     description: Register new User
     headers:
      Authorization:
-      description: TODO
+      description: Basic YWRtaW46YWRtaW4=
+     Content-Type:
+      description: application/json
     body:
      application/json:
       example: |
          {
-          „firstname“:“Max“,
-          „lastname“:“Mustermann“,
-          „E-Mail“:“max@mustermann.de“,
+          „firstname“:“max“,
+          „lastname“:“mustermann“,
           „password“:“abc123“,
-          „password_repetition“:“abc123“,
-          „creation_date“:329012390123
+          "roles": ["ROLE_USER"]
           }
     responses:
-     200:
-      description: User successfully registered
- /:id:
+     201:
+      body:
+       application/json:
+        example: |
+         {
+          "username": "max",
+          "firstname": "max",
+          "lastname": "mustermann",
+          "roles": [
+            "ROLE_USER"
+          ],
+          "sensorList": []
+         }
+ /:username:
+   get:
+     description: Get solo user
+     headers:
+      Authorization:
+       description: Basic YWRtaW46YWRtaW4=
+     queryParameters:
+      username:
+       description: Username
+       type: string
+       required: true
+       example: max
+     responses:
+      200:
+            body:
+             application/json:
+              example: |
+               {
+                "username": "max",
+                "firstname": "max2",
+                "lastname": "mustermann",
+                "roles": [
+                  "ROLE_USER"
+                ],
+                "sensorList": []
+               }
    delete:
     description: Delete user
     headers:
      Authorization:
-      description: TODO
+      description: Basic YWRtaW46YWRtaW4=
     queryParameters:
-     id:
-      description: User id
-      type: number
+     username:
+      description: Username
+      type: string
       required: true
-      example: 99
+      example: max
     responses:
      200:
       description: User successfully deleted
    put:
-    description: Admin change user
+    description: Update User
     headers:
      Authorization:
-      description: TODO
+      description: Basic YWRtaW46YWRtaW4=
+     Content-Type:
+      description: application/json
     body:
      application/json:
       example: |
          {
-          „firstname“:“Max“,
-          „lastname“:“Mustermann“,
-          „E-Mail“:“max@mustermann.de“,
-          „creation_date“:329012390123,
-          „role“:1
-          }
+             "firstname":"max2",
+             "lastname":"mustermann",
+             "password": "test123",
+             "roles": ["ROLE_USER"]
+         }
     queryParameters:
-     id:
-      description: User id
-      type: number
+     username:
+      description: Username
+      type: string
       required: true
-      example: 99
-    responses:
-     200:
-      description: User data successfully changed
- /:id/sensor:
-   put:
-    description: Attach created sensors to user by id
-    headers:
-     Authorization:
-      description: TODO
-    body:
-     application/json:
-      example: |
-       {[
-        1,2,3,4,5,6
-       ]}
-    queryParameters:
-     id:
-      description: User id
-      type: number
-      required: true
-      example: 99
-    responses:
-     200:
-      description: Sensor 12 added successfully to user 99
-   get:
-    description: Get all attached sensors from specific user by id
-    headers:
-     Authorization:
-      description: TODO
-    queryParameters:
-     id:
-      description: User id
-      type: number
-      required: true
-      example: 99
+      example: max
     responses:
      200:
       body:
        application/json:
         example: |
          {
-          „sensors“:[
-          {
-           „id“:“12“,
-           „name“:“Sensor12“,
-           „isActive“:“true“,
-           „creation_date“:329012390123,
-           „location“:“Berlin, Mitte“,
-           „clusterID“:1,
-           „addedBy“:99,
-           „sensortype“:111
-          },
-          {
-           „id“:“13“,
-           „name“:“Sensor13“,
-           „isActive“:“true“,
-           „creation_date“:329012391225,
-           „location“:“Berlin, Mitte“,
-           „clusterID“:1,
-           „addedBy“:99,
-           „sensortype“:112
-          }]
+          "username": "max",
+          "firstname": "max2",
+          "lastname": "mustermann",
+          "roles": [
+            "ROLE_USER"
+          ],
+          "sensorList": []
          }
+ /:username/sensor:
+   put:
+    description: Attach created sensors to user by username
+    headers:
+     Authorization:
+      description: Basic YWRtaW46YWRtaW4=
+     Content-Type:
+      description: application/json
+    body:
+     application/json:
+      example: |
+       [
+        "1ac83a2f-2e33-4538-8e60-bc457f71b89b",
+        "f18de95c-e0da-498a-94b6-334c87202258",
+        "2fc27103-ac8a-46f6-bae1-0a9b354ca37c"
+       ]
+    queryParameters:
+     username:
+      description: Username
+      type: string
+      required: true
+      example: max
+    responses:
+     200:
+      body:
+       application/json:
+        example: |
+         {
+           "username": "admin",
+           "firstname": null,
+           "lastname": null,
+           "roles": [
+             "ROLE_USER",
+             "ROLE_ADMIN"
+           ],
+           "sensorList": [
+             "1ac83a2f-2e33-4538-8e60-bc457f71b89b",
+             "f18de95c-e0da-498a-94b6-334c87202258",
+             "2fc27103-ac8a-46f6-bae1-0a9b354ca37c"
+           ]
+         }
+   get:
+    description: Get all attached sensors from specific user by id
+    headers:
+     Authorization:
+      description: Basic YWRtaW46YWRtaW4=
+    queryParameters:
+     username:
+      description: Username
+      type: string
+      required: true
+      example: max
+    responses:
+     200:
+      body:
+       application/json:
+        example: |
+         [
+           {
+             "id": "301ff0eb-493f-49fe-8c0d-0c6785981032",
+             "name": null,
+             "sensorType": "ACCELERATION",
+             "location": "Berlin, Mitte",
+             "attachedClusters": [],
+             "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+             "owner": "admin",
+             "creationDate": "2016-01-21T19:21:57.024Z",
+             "active": true
+           },
+           {
+             "id": "52f3cef2-a348-4ddb-91f1-5f3f3eb357cc",
+             "name": null,
+             "sensorType": "ACCELERATION",
+             "location": "Berlin, Mitte",
+             "attachedClusters": [],
+             "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+             "owner": "admin",
+             "creationDate": "2016-01-21T19:22:05.538Z",
+             "active": true
+           },
+           {
+             "id": "df6f9f2d-d22c-4eaa-b44b-feb737b8a07a",
+             "name": null,
+             "sensorType": "ACCELERATION",
+             "location": "Berlin, Mitte",
+             "attachedClusters": [],
+             "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+             "owner": "admin",
+             "creationDate": "2016-01-21T19:22:04.806Z",
+             "active": true
+           }
+         ]
 /sensor:
  get:
    description: Show all added sensors
    headers:
     Authorization:
-     description: TODO
+     description: Basic YWRtaW46YWRtaW4=
    responses:
     200:
      body:
       application/json:
        example: |
-         {
-          „sensors“:[
-          {
-           „id“:“12“,
-           „name“:“Sensor12“,
-           „isActive“:“true“,
-           „creation_date“:329012390123,
-           „location“:“Berlin, Mitte“,
-           „clusterID“:1,
-           „addedBy“:99,
-           „sensortype“:111
-          },
-          {
-           „id“:“13“,
-           „name“:“Sensor13“,
-           „isActive“:“true“,
-           „creation_date“:329012391225,
-           „location“:“Berlin, Mitte“,
-           „clusterID“:1,
-           „addedBy“:99,
-           „sensortype“:112
-          }]
-         }
+         [
+           {
+             "id": "301ff0eb-493f-49fe-8c0d-0c6785981032",
+             "name": null,
+             "sensorType": "ACCELERATION",
+             "location": "Berlin, Mitte",
+             "attachedClusters": [],
+             "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+             "owner": "admin",
+             "creationDate": "2016-01-21T19:21:57.024Z",
+             "active": true
+           },
+           {
+             "id": "52f3cef2-a348-4ddb-91f1-5f3f3eb357cc",
+             "name": null,
+             "sensorType": "ACCELERATION",
+             "location": "Berlin, Mitte",
+             "attachedClusters": [],
+             "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+             "owner": "admin",
+             "creationDate": "2016-01-21T19:22:05.538Z",
+             "active": true
+           },
+           {
+             "id": "df6f9f2d-d22c-4eaa-b44b-feb737b8a07a",
+             "name": null,
+             "sensorType": "ACCELERATION",
+             "location": "Berlin, Mitte",
+             "attachedClusters": [],
+             "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+             "owner": "admin",
+             "creationDate": "2016-01-21T19:22:04.806Z",
+             "active": true
+           }
+         ]
  post:
     description: Add new sensor
     headers:
      Authorization:
-      description: TODO
+      description: Basic YWRtaW46YWRtaW4=
+     Content-Type:
+      description: application/json
     body:
      application/json:
       example: |
          {
-           „name“:“Sensor14“,
-           „isActive“:“true“,
-           „creation_date“:329012391225,
-           „location“:“Berlin, Mitte“,
-           „clusterID“:1,
-           „addedBy“:99,
-           „sensortype“:111
+           "isActive":true,
+           "location":"Berlin, Mitte",
+           "sensorType": "ACCELERATION",
+           "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+           "attachedClusters": []
           }
     responses:
      200:
-      description: Sensor successfully added
- /:sensorid:
+           body:
+            application/json:
+             example: |
+              {
+                "id": "3a0b96ab-cfca-4876-b0d1-d6ac41cd0cab",
+                "name": null,
+                "sensorType": "ACCELERATION",
+                "location": "Berlin, Mitte",
+                "attachedClusters": [],
+                "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+                "owner": "admin",
+                "creationDate": "2016-01-21T19:39:50.180Z",
+                "active": true
+              }
+ /:id:
+   get:
+     description: Get solo sensor
+     headers:
+      Authorization:
+       description: Basic YWRtaW46YWRtaW4=
+     queryParameters:
+      id:
+       description: sensor id
+       type: string
+       required: true
+       example: c149b163-7ad8-4809-8010-9acab033fb95
+     responses:
+      200:
+       body:
+        application/json:
+         example: |
+           {
+             "id": "301ff0eb-493f-49fe-8c0d-0c6785981032",
+             "name": null,
+             "sensorType": "ACCELERATION",
+             "location": "Berlin, Mitte",
+             "attachedClusters": [],
+             "attachedGateway": "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+             "owner": "admin",
+             "creationDate": "2016-01-21T19:21:57.024Z",
+             "active": true
+           }
    delete:
     description: Delete sensor
     headers:
      Authorization:
-      description: TODO
+      description: Basic YWRtaW46YWRtaW4=
     queryParameters:
-     sensorid:
+     id:
       description: sensor id
-      type: number
+      type: string
       required: true
-      example: 14
+      example: c149b163-7ad8-4809-8010-9acab033fb95
     responses:
      200:
       description: Sensor successfully deleted
@@ -223,25 +348,24 @@ baseUri: http://localhost:3000
     description: User changes sensor
     headers:
      Authorization:
-      description: TODO
+      description: Basic YWRtaW46YWRtaW4=
     body:
      application/json:
       example: |
          {
-           „name“:“TomsSensor“,
-           „isActive“:“true“,
-           „creation_date“:329012391225,
-           „location“:“Berlin, Mitte“,
-           „clusterID“:1,
-           „addedBy“:99,
-           „sensortype“:111
+           "isActive":false,
+           "location":"Berlin, Mitte",
+           "attachedGateway" : "d95e5a53-adff-490c-b0a3-7ec539a81c7f",
+           "attachedClusters" : [],
+           "owner": "admin",
+           "sensorType": "ACCELERATION"
           }
     queryParameters:
-     sensorid:
+     id:
       description: Sensor id
-      type: number
+      type: string
       required: true
-      example: 14
+      example: c149b163-7ad8-4809-8010-9acab033fb95
     responses:
      200:
       description: Sensor data successfully changed
@@ -250,138 +374,216 @@ baseUri: http://localhost:3000
    description: Show all added gateways
    headers:
     Authorization:
-     description: TODO
+     description: Basic YWRtaW46YWRtaW4=
    responses:
     200:
      body:
       application/json:
        example: |
+         [
+           {
+             "id": "a50267cf-dd9d-4d47-b3e2-b7517075f215",
+             "name": "Gateway1"
+           }
+         ]
+ post:
+    description: Add new gateway
+    headers:
+     Authorization:
+      description: Basic YWRtaW46YWRtaW4=
+     Content-Type:
+      description: application/json
+    body:
+     application/json:
+      example: |
          {
-          „gateways“:[
-          {
-           „id“:“1“,
-           „name“:“Gateway01“,
-           „creation_date“:329012390123
-          },
-          {
-           „id“:“2“,
-           „name“:“Gateway02“,
-           „creation_date“:329012394225
-          }]
-         }
- /:gatewayid:
+           "name":"Gateway1"
+          }
+    responses:
+     200:
+           body:
+            application/json:
+             example: |
+              {
+                "id": "84d559f4-a73e-4d61-939f-caaf3cc1aeed",
+                "name": "Gateway1"
+              }
+ /:id:
+  get:
+    description: Get solo gateway
+    headers:
+     Authorization:
+      description: Basic YWRtaW46YWRtaW4=
+    queryParameters:
+     id:
+      description: gateway id
+      type: string
+      required: true
+      example: a50267cf-dd9d-4d47-b3e2-b7517075f215
+    responses:
+     200:
+      body:
+       application/json:
+        example: |
+           {
+             "id": "a50267cf-dd9d-4d47-b3e2-b7517075f215",
+             "name": "TestNameFürGateway"
+           }
   delete:
    description: Delete gateway
    headers:
     Authorization:
-     description: TODO
+     description: Basic YWRtaW46YWRtaW4=
    queryParameters:
-    gatewayid:
+    id:
      description: Gateway id
-     type: number
+     type: string
      required: true
-     example: 99
+     example: 84d559f4-a73e-4d61-939f-caaf3cc1aeed
    responses:
     200:
-     description: User successfully deleted
+     description: Gateway successfully deleted
   put:
    description: Change gateway
    headers:
     Authorization:
-     description: TODO
+     description: Basic YWRtaW46YWRtaW4=
    body:
     application/json:
      example: |
       {
-      „firstname“:“Max“,
-      „lastname“:“Mustermann“,
-      „E-Mail“:“max@mustermann.de“,
-      „creation_date“:329012390123,
-      „role“:1
-      }
+        "name":"TestNameFürGateway"
+       }
    queryParameters:
-    gatewayid:
-     description: User id
-     type: number
+    id:
+     description: Gateway id
+     type: string
      required: true
-     example: 99
+     example: a50267cf-dd9d-4d47-b3e2-b7517075f215
    responses:
     200:
-     description: User data successfully changed
- /:gatewayid/sensor:
-   put:
-    description: Attach created sensor to gateway by id
-    headers:
-     Authorization:
-      description: TODO
-    queryParameters:
-     sensorid:
-      description: Sensor id
-      type: number
-      required: true
-      example: 12
-     gatewayid:
-      description: Gateway id
-      type: number
-      required: true
-      example: 1
-    responses:
-     200:
-      description: Sensor 12 added successfully to gateway 1
-/query:
-  get:
-   description: Get data from query
+      body:
+       application/json:
+        example: |
+         {
+           "id": "a50267cf-dd9d-4d47-b3e2-b7517075f215",
+           "name": "TestNameFürGateway"
+         }
+/cluster:
+ get:
+   description: Show all added cluster
    headers:
     Authorization:
-     description: TODO
+     description: Basic YWRtaW46YWRtaW4=
    responses:
     200:
      body:
       application/json:
        example: |
-        {[
-          {
-           "data": [
-            {
-             "acceleration": [5.55555555,6.6666666,7.7777777],
-             "location": "Berlin, Germany",
-             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
-             "time": "2012-04-23T18:25:43.511Z"
-            },
-            {
-             "acceleration": [5.55555555,6.6666666,7.7777777],
-             "location": [13.301172256,52.44152832,33.4],
-             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
-             "time": "2012-04-23T18:25:43.521Z"
-            },
-            {
-             "acceleration": [5.55555555,6.6666666,7.7777777],
-             "location": "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50",
-             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
-             "time": "2012-04-23T18:25:43.521Z"
-            }],
-           "id": "e0567770-8977-4518-9e56-f86f0037ec60"
-          },
-          {
-           "data": [
-            {
-             "acceleration": [5.55555555,6.6666666,7.7777777],
-             "location": "Berlin, Germany",
-             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
-             "time": "2012-04-23T18:25:43.511Z"
-            },
-            {
-             "acceleration": [5.55555555,6.6666666,7.7777777],
-             "location": [13.301172256,52.44152832,33.4],
-             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
-             "time": "2012-04-23T18:25:43.521Z"
-            },
-            {
-             "acceleration": [5.55555555,6.6666666,7.7777777],
-             "location": "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50",
-             "orientation": [1.111111,2.2222222,3.333333333,4.4444444444],
-             "time": "2012-04-23T18:25:43.521Z"
-            }],
-           "id": "e0567770-8977-4518-9e56-f86f0037ec60"
+         [
+           {
+             "id": "1004c576-7f12-4e23-8a48-b9df2c0f6575",
+             "name": "cluster1",
+             "creationDate": "2016-01-21T20:43:38.066Z",
+             "sensorList": []
+           }
+         ]
+ post:
+    description: Add new cluster
+    headers:
+     Authorization:
+      description: Basic YWRtaW46YWRtaW4=
+     Content-Type:
+      description: application/json
+    body:
+     application/json:
+      example: |
+         {
+             "name":"cluster1",
+             "sensorList":[]
           }
-         ]}
+    responses:
+     200:
+           body:
+            application/json:
+             example: |
+              {
+                "id": "ed5319f2-ffe3-4d9f-bb81-4da57cf29005",
+                "name": "cluster1",
+                "creationDate": "2016-01-21T20:45:11.575Z",
+                "sensorList": []
+              }
+ /:id:
+  get:
+    description: Get solo cluster
+    headers:
+     Authorization:
+      description: Basic YWRtaW46YWRtaW4=
+    queryParameters:
+     id:
+      description: cluster id
+      type: string
+      required: true
+      example: ed5319f2-ffe3-4d9f-bb81-4da57cf29005
+    responses:
+     200:
+      body:
+       application/json:
+        example: |
+           {
+             "id": "ed5319f2-ffe3-4d9f-bb81-4da57cf29005",
+             "name": "cluster1",
+             "creationDate": "2016-01-21T20:45:11.575Z",
+             "sensorList": []
+           }
+  delete:
+   description: Delete cluster
+   headers:
+    Authorization:
+     description: Basic YWRtaW46YWRtaW4=
+   queryParameters:
+    id:
+     description: Cluster id
+     type: string
+     required: true
+     example: 1004c576-7f12-4e23-8a48-b9df2c0f6575
+   responses:
+    200:
+     description: Cluster successfully deleted
+  put:
+   description: Change cluster
+   headers:
+    Authorization:
+     description: Basic YWRtaW46YWRtaW4=
+   body:
+    application/json:
+     example: |
+      {
+          "name":"cluster1",
+          "sensorList":[
+          "301ff0eb-493f-49fe-8c0d-0c6785981032",
+          "52f3cef2-a348-4ddb-91f1-5f3f3eb357cc",
+          "df6f9f2d-d22c-4eaa-b44b-feb737b8a07a"
+          ]
+       }
+   queryParameters:
+    id:
+     description: Cluster id
+     type: string
+     required: true
+     example: ed5319f2-ffe3-4d9f-bb81-4da57cf29005
+   responses:
+    200:
+      body:
+       application/json:
+        example: |
+         {
+           "id": "ed5319f2-ffe3-4d9f-bb81-4da57cf29005",
+           "name": "cluster1",
+           "creationDate": "2016-01-21T20:45:11.575Z",
+           "sensorList": [
+             "301ff0eb-493f-49fe-8c0d-0c6785981032",
+             "52f3cef2-a348-4ddb-91f1-5f3f3eb357cc",
+             "df6f9f2d-d22c-4eaa-b44b-feb737b8a07a"
+           ]
+         }

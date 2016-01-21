@@ -24,7 +24,7 @@ public class Cluster {
         this.creationDate = new DateTime();
     }
 
-    public Cluster(String name, String gatewayName, List<String> sensorList) {
+    public Cluster(String name, List<String> sensorList) {
         this.name = name;
         this.sensorList = sensorList;
         this.creationDate = new DateTime();
