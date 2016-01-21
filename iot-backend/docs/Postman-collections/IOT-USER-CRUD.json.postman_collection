@@ -50,12 +50,12 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1453125540035,
+			"time": 1453404185403,
 			"name": "ATTACH SENSOR TO USER",
 			"description": "",
 			"collectionId": "d599c050-bd23-0bf2-8205-3f6fbf77e095",
 			"responses": [],
-			"rawModeData": "[\"1ac83a2f-2e33-4538-8e60-bc457f71b89b\",\"f18de95c-e0da-498a-94b6-334c87202258\",\"2fc27103-ac8a-46f6-bae1-0a9b354ca37c\"]"
+			"rawModeData": "[\"301ff0eb-493f-49fe-8c0d-0c6785981032\",\"52f3cef2-a348-4ddb-91f1-5f3f3eb357cc\",\"df6f9f2d-d22c-4eaa-b44b-feb737b8a07a\"]"
 		},
 		{
 			"id": "6729c1d3-170b-1e0d-7ded-f21a45d021fb",
@@ -89,7 +89,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1453125531758,
+			"time": 1453404338987,
 			"name": "GET SENSORS FROM USER",
 			"description": "",
 			"collectionId": "d599c050-bd23-0bf2-8205-3f6fbf77e095",
@@ -98,7 +98,7 @@
 		{
 			"id": "8645d06d-81c6-206b-53ae-91af8a3795b6",
 			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
-			"url": "http://localhost:8080/iot-friss/user/admin",
+			"url": "http://localhost:8080/iot-friss/user/max",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "GET",
@@ -108,7 +108,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1453116446291,
+			"time": 1453404503105,
 			"name": "GET USER",
 			"description": "",
 			"collectionId": "d599c050-bd23-0bf2-8205-3f6fbf77e095",
