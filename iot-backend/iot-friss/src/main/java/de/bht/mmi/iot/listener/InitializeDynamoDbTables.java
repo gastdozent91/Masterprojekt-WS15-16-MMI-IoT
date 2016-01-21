@@ -91,7 +91,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         LOGGER.info(String.format("Gateway %s created", gateway.getName()));
 
         //Cluster
-        Cluster cluster = clusterService.createCluster(new Cluster("cluster1","gateway1", null));
+        Cluster cluster = clusterService.createCluster(new Cluster("cluster1", null));
         LOGGER.info(String.format("Cluster %s created", cluster.getName()));
 
         // Sensor

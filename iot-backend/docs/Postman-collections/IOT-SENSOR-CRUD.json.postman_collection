@@ -1,13 +1,13 @@
 {
-	"id": "6e22d45d-cc42-0ac8-8a22-a993352a82b3",
+	"id": "6ca1b7bb-9b0a-acd8-a50e-152831615852",
 	"name": "IOT SENSOR CRUD",
 	"description": "",
 	"order": [
-		"b4f07a34-ec1f-10f0-2816-421d617d23e6",
-		"298ab941-6b5b-3611-fed7-5941660aacda",
-		"ad0d11e7-0ade-6451-43cb-bed3c35000df",
-		"8f8e8341-536c-8484-1fab-81ef3768626f",
-		"fdbe2b31-3add-c4d8-b501-42958bd2928d"
+		"a9b5ef2d-0ad4-bdae-895a-b1a497d88e13",
+		"273b4cd8-cb9f-b0ad-ad24-8adce7c11dea",
+		"3dc8da72-cb96-435a-4d7c-d76b874bbc46",
+		"364e235a-3606-3b80-ffdc-34eb79598336",
+		"70be5251-3236-f9de-0802-159540a3ef95"
 	],
 	"folders": [],
 	"timestamp": 1452190359512,
@@ -16,7 +16,7 @@
 	"hasRequests": true,
 	"requests": [
 		{
-			"id": "298ab941-6b5b-3611-fed7-5941660aacda",
+			"id": "273b4cd8-cb9f-b0ad-ad24-8adce7c11dea",
 			"headers": "Content-Type: application/json\nAuthorization: Basic YWRtaW46YWRtaW4=\n",
 			"url": "http://localhost:8080/iot-friss/sensor",
 			"preRequestScript": "",
@@ -28,15 +28,15 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1453142272469,
+			"time": 1453412888137,
 			"name": "CREATE SENSOR",
 			"description": "",
-			"collectionId": "6e22d45d-cc42-0ac8-8a22-a993352a82b3",
+			"collectionId": "6ca1b7bb-9b0a-acd8-a50e-152831615852",
 			"responses": [],
-			"rawModeData": "{\n  \"isActive\":true,\n  \"location\":\"Berlin, Mitte\",\n  \"sensorType\": \"ACCELERATION\",\n  \"attachedGateway\": \"d95e5a53-adff-490c-b0a3-7ec539a81c7f\",\n  \"attachedClusters\": []\n }\n"
+			"rawModeData": "{\n  \"isActive\":true,\n  \"location\":\"Berlin, Mitte\",\n  \"sensorType\": \"ACCELERATION\",\n  \"attachedGateway\": \"d95e5a53-adff-490c-b0a3-7ec539a81c7f\",\n  \"attachedClusters\": [],\n  \"name\": \"Arm rechts\"\n }\n"
 		},
 		{
-			"id": "8f8e8341-536c-8484-1fab-81ef3768626f",
+			"id": "364e235a-3606-3b80-ffdc-34eb79598336",
 			"headers": "Content-Type: application/json\nAuthorization: Basic YWRtaW46YWRtaW4=\n",
 			"url": "http://localhost:8080/iot-friss/sensor/7143f5b5-525a-458d-a96a-d443d747f15a",
 			"preRequestScript": "",
@@ -48,15 +48,15 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1453142521071,
+			"time": 1453412817195,
 			"name": "UPDATE SENSOR",
 			"description": "",
-			"collectionId": "6e22d45d-cc42-0ac8-8a22-a993352a82b3",
+			"collectionId": "6ca1b7bb-9b0a-acd8-a50e-152831615852",
 			"responses": [],
-			"rawModeData": "{\n  \"isActive\":false,\n  \"location\":\"Berlin, Mitte\",\n  \"attachedGateway\" : \"d95e5a53-adff-490c-b0a3-7ec539a81c7f\",\n  \"attachedClusters\" : [],\n  \"owner\": \"admin\",\n  \"sensorType\": \"ACCELERATION\"\n }"
+			"rawModeData": "{\n  \"isActive\":false,\n  \"location\":\"Berlin, Mitte\",\n  \"attachedGateway\" : \"d95e5a53-adff-490c-b0a3-7ec539a81c7f\",\n  \"attachedClusters\" : [],\n  \"owner\": \"admin\",\n  \"sensorType\": \"ACCELERATION\",\n  \"name\": \"Arm rechts\"\n }"
 		},
 		{
-			"id": "ad0d11e7-0ade-6451-43cb-bed3c35000df",
+			"id": "3dc8da72-cb96-435a-4d7c-d76b874bbc46",
 			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
 			"url": "http://localhost:8080/iot-friss/sensor/c149b163-7ad8-4809-8010-9acab033fb95",
 			"preRequestScript": "",
@@ -71,30 +71,11 @@
 			"time": 1452953786745,
 			"name": "DELETE SENSOR",
 			"description": "",
-			"collectionId": "6e22d45d-cc42-0ac8-8a22-a993352a82b3",
+			"collectionId": "6ca1b7bb-9b0a-acd8-a50e-152831615852",
 			"responses": []
 		},
 		{
-			"id": "b4f07a34-ec1f-10f0-2816-421d617d23e6",
-			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
-			"url": "http://localhost:8080/iot-friss/sensor",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": [],
-			"dataMode": "params",
-			"version": 2,
-			"tests": "",
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1452953799872,
-			"name": "GET ALL",
-			"description": "",
-			"collectionId": "6e22d45d-cc42-0ac8-8a22-a993352a82b3",
-			"responses": []
-		},
-		{
-			"id": "fdbe2b31-3add-c4d8-b501-42958bd2928d",
+			"id": "70be5251-3236-f9de-0802-159540a3ef95",
 			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
 			"url": "http://localhost:8080/iot-friss/sensor/301ff0eb-493f-49fe-8c0d-0c6785981032",
 			"preRequestScript": "",
@@ -109,7 +90,26 @@
 			"time": 1453405428022,
 			"name": "GET SENSOR",
 			"description": "",
-			"collectionId": "6e22d45d-cc42-0ac8-8a22-a993352a82b3",
+			"collectionId": "6ca1b7bb-9b0a-acd8-a50e-152831615852",
+			"responses": []
+		},
+		{
+			"id": "a9b5ef2d-0ad4-bdae-895a-b1a497d88e13",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
+			"url": "http://localhost:8080/iot-friss/sensor",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1452953799872,
+			"name": "GET ALL",
+			"description": "",
+			"collectionId": "6ca1b7bb-9b0a-acd8-a50e-152831615852",
 			"responses": []
 		}
 	]
