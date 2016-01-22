@@ -3,6 +3,7 @@ allprojects {
     apply plugin: 'java'
     compileJava {
         options.deprecation = true
+        options.compilerArgs =  ['-Xlint:unchecked']
     }
     repositories {
         mavenCentral()

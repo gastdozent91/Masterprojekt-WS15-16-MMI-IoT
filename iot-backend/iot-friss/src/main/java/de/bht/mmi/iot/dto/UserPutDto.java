@@ -11,11 +11,14 @@ import java.util.Set;
 
 public class UserPutDto {
 
+    @NotNull
     private final String firstname;
 
+    @NotNull
     private final String lastname;
 
     @NotNull
+    @Size(min = 3)
     private final String password;
 
     @NotNull

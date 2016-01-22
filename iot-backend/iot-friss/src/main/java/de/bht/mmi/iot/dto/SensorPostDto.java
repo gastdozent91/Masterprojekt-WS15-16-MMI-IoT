@@ -1,6 +1,5 @@
 package de.bht.mmi.iot.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.bht.mmi.iot.model.rest.SensorType;

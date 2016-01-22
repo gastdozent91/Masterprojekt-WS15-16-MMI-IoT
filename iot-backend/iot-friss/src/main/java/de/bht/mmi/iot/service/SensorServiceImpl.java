@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 
 @Service
 public class SensorServiceImpl implements SensorService {
@@ -54,12 +55,10 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Iterable<Sensor> getAllSensorsByUsername(String username, User user) {
-        if (!(userService.isRolePresent(user, RoleConstants.ROLE_ADMIN) ||
-                user.getUsername().equals(username))) {
-            throw new AccessDeniedException("Operation not permitted! Access denied!");
-        }
-        return sensorRepository.findAll(user.getSensorList());
+    public Iterable<Sensor> getAllSensorsByUsername(String username, User authenticatedUser) {
+        final User user = userService.getUser(username, authenticatedUser);
+        final Iterable<Sensor> userSensors = sensorRepository.findAll(user.getSensorList());
+        return userSensors != null ? userSensors : Collections.emptyList();
     }
 
     @Override
@@ -73,13 +72,13 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor createSensor(@Validated SensorPostDto sensor, UserDetails userDetails) {
+    public Sensor createSensor(@Validated SensorPostDto sensor, UserDetails authenticatedUser) {
         final Sensor newSensor = new Sensor(
                 sensor.getSensorType(),
                 sensor.getLocation(),
                 sensor.getAttachedGateway(),
                 sensor.getAttachedClusters(),
-                userDetails.getUsername(),
+                authenticatedUser.getUsername(),
                 new DateTime(),sensor.isActive()
         );
         newSensor.setName(sensor.getName());
@@ -87,10 +86,10 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Sensor updateSensor(String sensorID, @Validated SensorPutDto sensor, UserDetails userDetails) {
+    public Sensor updateSensor(String sensorID, @Validated SensorPutDto sensor, UserDetails authenticatedUser) {
         Sensor oldSensor = sensorRepository.findOne(sensorID);
         if (oldSensor != null) {
-            User user = userRepository.findOne(userDetails.getUsername());
+            User user = userRepository.findOne(authenticatedUser.getUsername());
             if (user != null) {
                 if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)){
                     oldSensor.setActive(sensor.isActive());
@@ -101,7 +100,7 @@ public class SensorServiceImpl implements SensorService {
                     oldSensor.setOwner(sensor.getOwner());
                     oldSensor.setName(sensor.getName());
                     return sensorRepository.save(oldSensor);
-                } else if (oldSensor.getOwner().equals(userDetails.getUsername())) {
+                } else if (oldSensor.getOwner().equals(authenticatedUser.getUsername())) {
                     oldSensor.setActive(sensor.isActive());
                     oldSensor.setLocation(sensor.getLocation());
                     oldSensor.setSensorType(sensor.getSensorType());
@@ -112,7 +111,7 @@ public class SensorServiceImpl implements SensorService {
                     throw new AccessDeniedException("No rights to access!");
                 }
             } else {
-                throw new UsernameNotFoundException(String.format("User with username '%s' not found", userDetails.getUsername()));
+                throw new UsernameNotFoundException(String.format("User with username '%s' not found", authenticatedUser.getUsername()));
             }
         } else {
             throw new EntityNotFoundException(String.format("Sensor with id '%s' not found",sensorID));

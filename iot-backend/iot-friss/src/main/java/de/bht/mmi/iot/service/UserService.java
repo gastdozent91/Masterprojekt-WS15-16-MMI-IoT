@@ -1,6 +1,5 @@
 package de.bht.mmi.iot.service;
 
-import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.model.rest.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +13,6 @@ public interface UserService {
     User getUser(String username);
 
     User getUser(String username, UserDetails userDetails);
-
-    User createUser(UserPostDto dto);
 
     User saveUser(User user);
 

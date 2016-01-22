@@ -5,24 +5,37 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.bht.mmi.iot.constants.RoleConstants;
+import de.bht.mmi.iot.validator.Contain;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @DynamoDBTable(tableName = "User")
 public class User implements UserDetails {
 
+    @NotNull
+    @Size(min = 3)
+    @Pattern(regexp = "^\\w+$")
     private String username;
 
-    @JsonIgnore
+    @NotNull
+    @Size(min = 3)
     private String password;
 
+    @NotNull
     private String firstname;
 
+    @NotNull
     private String lastname;
 
+    @NotNull
+    @Size(min = 1)
+    @Contain({RoleConstants.ROLE_ADMIN, RoleConstants.ROLE_USER})
     private Set<String> roles = new HashSet<String>();
 
     private List<String> sensorList = Collections.emptyList();

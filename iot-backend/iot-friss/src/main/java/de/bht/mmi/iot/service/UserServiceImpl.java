@@ -1,7 +1,6 @@
 package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.dto.UserPostDto;
 import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.SensorRepository;
@@ -56,22 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(@Validated UserPostDto dto) {
-        final String dtoUsername = dto.getUsername();
-        if (isUsernameAlreadyInUse((dtoUsername))) {
-            throw new EntityExistsException(String.format("Username '%s' already in use", dtoUsername));
-        }
-
-        final User user = new User(dtoUsername, dto.getPassword());
-        user.setFirstname(dto.getFirstname());
-        user.setLastname(dto.getLastname());
-        user.setRoles(dto.getRoles());
-        user.setSensorList(new ArrayList<String>());
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User saveUser(User user) {
+    public User saveUser(@Validated User user) {
         final String username = user.getUsername();
         if (isUsernameAlreadyInUse(username)) {
             throw new EntityExistsException(String.format("Username '%s' already in use", username));
