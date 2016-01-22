@@ -137,7 +137,7 @@ var MultipleSensors = React.createClass({
 
   renderSensor: function(sensor, i) {
     var state = sensor.active ? 'active' : 'inactive';
-    var sensorClass = 'row ' + state;
+    var sensorClass = 'row ' + state + ' selectable-row';
     return (
       <a href='/sensors?size=1' key={'sensor #'+i}>
         <div className={sensorClass}>
@@ -161,14 +161,15 @@ var MultipleSensors = React.createClass({
   render: function() {
     return (
       <div>
-        <div className='row column'
+        <div className='search-row'
           onChange={this.handleSearchChange}
-          style={{float: 'none', width: '50%'}}>
-          <label>Search
+          >
+
             <input type='text'
               ref='search'
               placeholder='id: Gyro; location: Berlin; type: Gyro; gateway: supergateway' />
-          </label>
+
+
         </div>
         <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>

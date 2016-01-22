@@ -121,7 +121,7 @@ var Users = React.createClass({
   renderUser: function(user, i) {
     return (
       <a href={'/user/' + user.username} key={'user #'+i}>
-        <div className='row'>
+        <div className='row selectable-row'>
           <div className='large-3 columns'>
             {user.username}
           </div>
@@ -154,14 +154,11 @@ var Users = React.createClass({
     return (
       <div>
         <TopBar user={this.props.user} />
-        <div className='row column'
-          onChange={this.handleSearchChange}
-          style={{float: 'none', width: '50%'}}>
-          <label>Search
+        <div className='search-row'
+          onChange={this.handleSearchChange}>
             <input type='text'
               ref='search'
               placeholder='username: Max; firstname: Max; lastname: Mustermann' />
-          </label>
         </div>
         <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>

@@ -102,7 +102,7 @@ var Gateway = React.createClass({
   renderGateway: function(gateway, i) {
     //var state = gateway.active ? 'active' : 'inactive';
     var state = 'active';
-    var gatewayClass = 'row ' + state;
+    var gatewayClass = 'row ' + state + ' selectable-row';
     return (
       <a href='/sensors' key={'gateway #'+i}>
         <div className={gatewayClass}>
@@ -123,14 +123,11 @@ var Gateway = React.createClass({
         <TopBar user={this.props.user} />
         { /* Search area */ }
         <div>
-          <div className='row column'
-            onChange={this.handleSearchChange}
-            style={{float: 'none', width: '50%'}}>
-            <label>Search
+          <div className='search-row'
+            onChange={this.handleSearchChange}>
               <input type='text'
                 ref='search'
                 placeholder='name: Paul; id: Berlin' />
-            </label>
           </div>
         </div>
         { /* Search area end */ }

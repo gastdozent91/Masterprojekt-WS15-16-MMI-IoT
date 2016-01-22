@@ -50,7 +50,7 @@ var Cluster = React.createClass({
   renderCluster: function(cluster, i) {
     //var state = cluster.active ? 'active' : 'inactive';
     var state = 'active';
-    var clusterClass = 'row ' + state;
+    var clusterClass = 'row ' + state + ' selectable-row';
     return (
       <a href='/sensors' key={'gateway #'+i}>
         <div className={clusterClass}>
@@ -71,14 +71,12 @@ var Cluster = React.createClass({
         <TopBar user={this.props.user} />
         { /* Search area */ }
         <div>
-          <div className='row column'
+          <div className='search-row'
             onChange={this.handleSearchChange}
-            style={{float: 'none', width: '50%'}}>
-            <label>Search
+           >
               <input type='text'
                 ref='search'
                 placeholder='name: Paul; id: Berlin' />
-            </label>
           </div>
         </div>
         { /* Search area end */ }
