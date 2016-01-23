@@ -1,5 +1,6 @@
 var React = require('react')
-  , TopBar = require('./shared/TopBar');
+  , Search = require('./Search')
+  , TopBar = require('../shared/TopBar');
 
 var Cluster = React.createClass({
 
@@ -19,6 +20,10 @@ var Cluster = React.createClass({
     setTimeout(function() {
       this.setState({listClass: 'row column list done'});
     }.bind(this), 0);
+  },
+
+  setClusters: function(clusters) {
+    this.setState({clusters: clusters});
   },
 
   renderClusters: function() {
@@ -69,17 +74,8 @@ var Cluster = React.createClass({
     return (
       <div>
         <TopBar user={this.props.user} />
-        { /* Search area */ }
-        <div>
-          <div className='search-row'
-            onChange={this.handleSearchChange}
-           >
-              <input type='text'
-                ref='search'
-                placeholder='name: Paul; id: Berlin' />
-          </div>
-        </div>
-        { /* Search area end */ }
+        <Search clusters={this.props.clusters}
+          setClusters={this.setClusters} />
         {/* Cluster area */}
         <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>

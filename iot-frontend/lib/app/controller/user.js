@@ -1,7 +1,7 @@
 var React = require('react')
   , ReactDOM = require('react-dom/server')
-  , Users = React.createFactory(require('../../public/react/Users'))
-  , User = React.createFactory(require('../../public/react/User'))
+  , Users = React.createFactory(require('../../public/react/User'))
+  , SingleUser = React.createFactory(require('../../public/react/User/SingleUser'))
   , Model = require('../models/user');
 
 module.exports = me = {};
@@ -112,7 +112,7 @@ me.renderUser = (req, res) => {
     user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
     userToCheck: req.userToCheck
   };
-  var user = new User(out);
+  var user = new SingleUser(out);
   var body = ReactDOM.renderToStaticMarkup(user);
   res.render('user', {body: body, reactData: out});
 };

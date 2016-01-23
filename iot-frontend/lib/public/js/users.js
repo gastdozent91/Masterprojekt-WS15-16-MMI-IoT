@@ -1,6 +1,6 @@
 var React = require('react')
   , ReactDOM = require('react-dom')
-  , Users = React.createFactory(require('../react/Users'));
+  , Users = React.createFactory(require('../react/User'));
 
 module.exports = me = {};
 

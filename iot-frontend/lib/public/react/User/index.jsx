@@ -1,5 +1,6 @@
 var React = require('react')
-  , TopBar = require('./shared/TopBar');
+  , Search = require('./Search')
+  , TopBar = require('../shared/TopBar');
 
 var Users = React.createClass({
 
@@ -21,66 +22,8 @@ var Users = React.createClass({
     }.bind(this), 0);
   },
 
-  handleSearchChange: function() {
-    var input = this.refs.search.value.toLowerCase();
-    var checkUserName = input.indexOf('username:') > -1
-      , checkFirstName = input.indexOf('firstname:') > -1
-      , checkLastName = input.indexOf('lastname:') > -1;
-
-    var users = [];
-    if (checkUserName || checkFirstName || checkLastName) {
-      var filterList = [
-        'username',
-        'firstname',
-        'lastname'
-      ];
-      var dic = {};
-      var splittedInput = input.split(';');
-      splittedInput.forEach(function(inputPiece) {
-        inputPiece = inputPiece.trim();
-        if (inputPiece.indexOf(':') > -1) {
-          var pieceName = inputPiece.split(':')[0].trim().toLowerCase();
-          var pieceValue = inputPiece.split(':')[1].trim().toLowerCase();
-          var isCorrect = filterList.some(function(filterName) {
-                            return filterName === pieceName;
-                          });
-          if (isCorrect) {
-            dic[pieceName] = pieceValue;
-          }
-        }
-      });
-      users = this.props.users.filter(function(user) {
-        if (!user.firstname) return true;
-        var bool = true;
-        var value;
-        if (checkUserName) {
-          value = dic.username;
-          bool = user.username.toLowerCase().indexOf(value) > -1;
-        }
-        if (bool && checkFirstName) {
-          value = dic.firstname;
-          bool = user.firstname.toLowerCase().indexOf(value) > -1;
-        }
-        if (bool && checkLastName) {
-          value = dic.lastname;
-          bool = user.lastname.toLowerCase().indexOf(value) > -1;
-        }
-        return bool;
-      });
-      this.setState({users: users});
-    } else {
-      users = this.props.users.filter(function(user) {
-        if (!user.firstname) return true;
-        var bool = false;
-        bool = user.username.toLowerCase().indexOf(input) > -1;
-        if (bool) return true;
-        bool = user.firstname.toLowerCase().indexOf(input) > -1;
-        if (bool) return true;
-        bool = user.lastname.toLowerCase().indexOf(input) > -1;
-        if (bool) return true;
-      });
-      this.setState({users: users});
-    }
+  setUsers: function(users) {
+    this.setState({users: users});
   },
 
   renderUsers: function() {
@@ -154,12 +97,8 @@ var Users = React.createClass({
     return (
       <div>
         <TopBar user={this.props.user} />
-        <div className='search-row'
-          onChange={this.handleSearchChange}>
-            <input type='text'
-              ref='search'
-              placeholder='username: Max; firstname: Max; lastname: Mustermann' />
-        </div>
+        <Search users={this.props.users}
+          setUsers={this.setUsers} />
         <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>
             <h5>Userlist</h5>

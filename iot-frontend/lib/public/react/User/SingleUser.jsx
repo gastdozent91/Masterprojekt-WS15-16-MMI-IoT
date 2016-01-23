@@ -1,7 +1,7 @@
 var React = require('react')
-  , TopBar = require('./shared/TopBar');
+  , TopBar = require('../shared/TopBar');
 
-var User = React.createClass({
+var SingleUser = React.createClass({
 
   propTypes: {
     user: React.PropTypes.object,
@@ -27,5 +27,5 @@ var User = React.createClass({
   }
 });
 
-module.exports = User;
+module.exports = SingleUser;
 

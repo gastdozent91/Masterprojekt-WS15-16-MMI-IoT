@@ -50,7 +50,7 @@ var TopBar = React.createClass({
           infoStyle.top = infoStyle.top + 5;
           infoStyle.opacity = 1;
           this.setState({infoStyle: infoStyle});
-        }.bind(this), 10);
+        }.bind(this), 50);
       });
     }
   },

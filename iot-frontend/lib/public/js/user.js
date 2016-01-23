@@ -1,6 +1,6 @@
 var React = require('react')
   , ReactDOM = require('react-dom')
-  , User = React.createFactory(require('../react/User'));
+  , SingleUser = React.createFactory(require('../react/User/SingleUser'));
 
 module.exports = me = {};
 
@@ -11,6 +11,6 @@ me.render = function() {
 
   var data = JSON.parse($rdt.innerHTML);
 
-  ReactDOM.render(new User(data), $container);
+  ReactDOM.render(new SingleUser(data), $container);
 }
 
