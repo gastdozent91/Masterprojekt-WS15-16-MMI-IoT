@@ -21,7 +21,7 @@ public class RestUserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final UserDetails userDetails = userRepository.findOne(username);
         if (userDetails == null)
-            throw new UsernameNotFoundException(String.format("User with username: %s not found", username));
+            throw new UsernameNotFoundException(String.format("User with username %s not found", username));
         return userDetails;
     }
 

@@ -2,6 +2,9 @@ package de.bht.mmi.iot.controller;
 
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.UserPutDto;
+import de.bht.mmi.iot.exception.EntityExistsException;
+import de.bht.mmi.iot.exception.EntityNotFoundException;
+import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.rest.Sensor;
 import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.service.SensorService;
@@ -35,15 +38,16 @@ public class UserController {
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
-    public User getUser(@PathVariable("username") String username, @AuthenticationPrincipal UserDetails userDetails) {
-        return userService.loadUserByUsername(username, userDetails);
+    public User getUser(@PathVariable("username") String username, @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws NotAuthorizedException, EntityNotFoundException {
+        return userService.loadUserByUsername(username, authenticatedUser);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public User createUser(@RequestBody @Validated User user) {
+    public User createUser(@RequestBody @Validated User user) throws EntityExistsException {
         return userService.saveUser(user);
     }
 
@@ -51,29 +55,32 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
     public User updateUser(@PathVariable("username") String username, @RequestBody @Validated UserPutDto dto,
-                           @AuthenticationPrincipal UserDetails userDetails) {
-        return userService.updateUser(username, dto, userDetails);
+                           @AuthenticationPrincipal UserDetails authenticatedUser) throws NotAuthorizedException {
+        return userService.updateUser(username, dto, authenticatedUser);
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public void deleteUser(@PathVariable("username") String username) {
+    public void deleteUser(@PathVariable("username") String username) throws EntityNotFoundException {
         userService.deleteUser(username);
     }
 
-    @RequestMapping(value = "/{username}/sensor",method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
+    @RequestMapping(value = "/{username}/sensor", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
-    public User updateUserSensorList(@PathVariable("username") String username, @RequestBody List<String> sensorList) {
-        return userService.updateUserSensors(username, sensorList);
+    public User updateUserSensorList(@PathVariable("username") String username, @RequestBody List<String> sensorList,
+                                     @AuthenticationPrincipal UserDetails authenticatedUser) throws NotAuthorizedException,
+            EntityNotFoundException {
+        return userService.updateUserSensors(username, sensorList, authenticatedUser);
     }
 
     @RequestMapping(value = "/{username}/sensor", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
     public Iterable<Sensor> getAllAttachedSensors(@PathVariable("username") String username,
-                                                  @AuthenticationPrincipal User user) {
-        return sensorService.getAllSensorsByUsername(username, user);
+                                                  @AuthenticationPrincipal User authenticatedUser)
+            throws NotAuthorizedException, EntityNotFoundException {
+        return sensorService.getAllSensorsByUsername(username, authenticatedUser);
     }
 
 }

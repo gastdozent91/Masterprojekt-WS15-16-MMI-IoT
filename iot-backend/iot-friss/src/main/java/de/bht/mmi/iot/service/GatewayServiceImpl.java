@@ -1,34 +1,30 @@
 package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.constants.RoleConstants;
+import de.bht.mmi.iot.exception.EntityNotFoundException;
+import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.rest.Gateway;
 import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
-import de.bht.mmi.iot.repository.SensorRepository;
-import de.bht.mmi.iot.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
 
 @Service
-public class GatewayServiceImpl implements GatewayService{
+public class GatewayServiceImpl implements GatewayService {
 
     @Autowired
     private GatewayRepository gatewayRepository;
 
     @Autowired
-    private SensorRepository sensorRepository;
+    private SensorService sensorService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     private Logger LOGGER = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
@@ -38,44 +34,47 @@ public class GatewayServiceImpl implements GatewayService{
     }
 
     @Override
-    public Iterable<Gateway> getAllForIds(String... ids) {
-        return gatewayRepository.findAll(Arrays.asList(ids));
+    public Iterable<Gateway> getAllForIds(String... gatewayId) {
+        return gatewayRepository.findAll(Arrays.asList(gatewayId));
     }
 
     @Override
-    public Gateway getGateway(String id) {
-        Gateway gateway = gatewayRepository.findOne(id);
+    public Gateway getGateway(String gatewayId) throws EntityNotFoundException {
+        Gateway gateway = gatewayRepository.findOne(gatewayId);
         if (gateway != null) {
             return gateway;
         } else {
-            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found!",id));
+            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found", gatewayId));
         }
     }
 
     @Override
-    public Gateway createGateway(@RequestBody Gateway gateway) {
+    public Gateway createGateway(Gateway gateway) {
         return gatewayRepository.save(gateway);
     }
 
     @Override
-    public Gateway updateGateway(@PathVariable("id") String id, @RequestBody Gateway gateway, UserDetails userDetails) {
-        Gateway oldGateway = gatewayRepository.findOne(id);
-        User user = userRepository.findOne(userDetails.getUsername());
+    public Gateway updateGateway(String gatewayId, Gateway gateway, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        final Gateway oldGateway = getGateway(gatewayId);
+        final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
         if (oldGateway != null && !oldGateway.equals(gateway)) {
             if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)) {
                 oldGateway.setName(gateway.getName());
                 return gatewayRepository.save(oldGateway);
             } else {
-                throw new AccessDeniedException(String.format("No rights to access!"));
+                throw new NotAuthorizedException(String.format("You are not authorized to access gateway with id '%s'", gatewayId));
             }
         } else {
-            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found",id));
+            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found", gatewayId));
         }
     }
 
     @Override
-    public void deleteGateway(@PathVariable("id") String id) {
-            gatewayRepository.delete(id);
-            LOGGER.debug(String.format("Gateway with id '%s' successfull deleted",id));
+    public void deleteGateway(String gatewayId) throws EntityNotFoundException {
+        getGateway(gatewayId);
+        gatewayRepository.delete(gatewayId);
+        LOGGER.debug(String.format("Gateway with id '%s' deleted", gatewayId));
     }
+
 }

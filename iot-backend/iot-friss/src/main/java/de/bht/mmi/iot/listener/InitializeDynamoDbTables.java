@@ -3,6 +3,9 @@ package de.bht.mmi.iot.listener;
 import de.bht.mmi.iot.constants.DbConstants;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.SensorPostDto;
+import de.bht.mmi.iot.exception.EntityExistsException;
+import de.bht.mmi.iot.exception.EntityNotFoundException;
+import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.rest.*;
 import de.bht.mmi.iot.service.*;
 import org.slf4j.Logger;
@@ -54,14 +57,24 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         LOGGER.info("Recreate tables");
         recreateTables();
 
-        // Admin user
-        createAdmin();
-        LOGGER.info(String.format("User %s created", env.getProperty("api.user.admin.username")));
+        try {
+            // Admin user
+            createAdmin();
+            LOGGER.info(String.format("User %s created", env.getRequiredProperty("api.user.admin.username")));
 
-        // DummyData
-        final boolean shouldAddDummyData = Boolean.parseBoolean(env.getProperty("db.init.dummy_data"));
-        if (shouldAddDummyData) {
-            addDummyData();
+            // DummyData
+            final String keyDbInitDummyData = "db.init.dummy_data";
+            final String dbInitDummyData = env.getProperty(keyDbInitDummyData);
+            if (dbInitDummyData == null) {
+                LOGGER.warn(String.format("Property '%s' not set. No dummy data will be added to database", keyDbInitDummyData));
+            }
+
+            final boolean shouldAddDummyData = Boolean.parseBoolean(dbInitDummyData);
+            if (shouldAddDummyData) {
+                addDummyData();
+            }
+        } catch (EntityExistsException | NotAuthorizedException | EntityNotFoundException e ) {
+            throw new RuntimeException("Error while initializing tables", e);
         }
     }
 
@@ -75,7 +88,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         tableCreatorService.createClusterTable();
     }
 
-    private void addDummyData() {
+    private void addDummyData() throws NotAuthorizedException, EntityNotFoundException, EntityExistsException {
         // User
         final User user = new User("max", "test123");
         user.addRole(RoleConstants.ROLE_USER);
@@ -117,12 +130,13 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         sensorList.add(sensor.getId());
         sensorList.add(sensor2.getId());
         sensorList.add(sensor3.getId());
-        userService.updateUserSensors(user.getUsername(), sensorList);
+        user.setSensorList(sensorList);
+        userService.updateUser(user);
         LOGGER.info(String.format("Added Sensors %s, %s, %s to User %s", sensor.getId(), sensor2.getId(),
                 sensor3.getId(), user.getUsername()));
 
         cluster.setSensorList(sensorList);
-        clusterService.updateCluster(cluster.getId(),cluster,userDetails);
+        clusterService.updateCluster(cluster.getId(), cluster, userDetails);
         LOGGER.info(String.format("Added Sensors %s, %s, %s to Cluster %s", sensor.getId(), sensor2.getId(),
                 sensor3.getId(), cluster.getName()));
 
@@ -143,9 +157,9 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         }
     }
 
-    private void createAdmin() {
-        final User admin = new User(env.getProperty("api.user.admin.username"),
-                env.getProperty("api.user.admin.password"));
+    private void createAdmin() throws EntityExistsException {
+        final User admin = new User(env.getRequiredProperty("api.user.admin.username"),
+                env.getRequiredProperty("api.user.admin.password"));
         admin.addRole(RoleConstants.ROLE_ADMIN);
         userService.saveUser(admin);
     }

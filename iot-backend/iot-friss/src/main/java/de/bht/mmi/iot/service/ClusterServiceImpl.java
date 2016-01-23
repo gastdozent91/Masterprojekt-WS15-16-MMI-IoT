@@ -1,20 +1,16 @@
 package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.constants.RoleConstants;
+import de.bht.mmi.iot.exception.EntityNotFoundException;
+import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.rest.Cluster;
 import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.ClusterRepository;
-import de.bht.mmi.iot.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.persistence.EntityNotFoundException;
 
 @Service
 public class ClusterServiceImpl implements ClusterService{
@@ -23,7 +19,7 @@ public class ClusterServiceImpl implements ClusterService{
     private ClusterRepository clusterRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     private Logger LOGGER = LoggerFactory.getLogger(ClusterServiceImpl.class);
 
@@ -33,41 +29,44 @@ public class ClusterServiceImpl implements ClusterService{
     }
 
     @Override
-    public Cluster getCluster(String id) {
-        Cluster cluster = clusterRepository.findOne(id);
+    public Cluster getCluster(String clusterId) throws EntityNotFoundException {
+        Cluster cluster = clusterRepository.findOne(clusterId);
         if (cluster != null) {
             return cluster;
         } else {
-            throw new EntityNotFoundException(String.format("Cluster with id '%s' not found!",id));
+            throw new EntityNotFoundException(String.format("Cluster with id '%s' not found!", clusterId));
         }
     }
 
     @Override
-    public Cluster createCluster(@RequestBody Cluster cluster) {
+    public Cluster createCluster(Cluster cluster) {
         return clusterRepository.save(cluster);
     }
 
     @Override
-    public Cluster updateCluster(@PathVariable("id") String id, @RequestBody Cluster cluster, UserDetails userDetails) {
-        Cluster oldCluster = clusterRepository.findOne(id);
-        User user = userRepository.findOne(userDetails.getUsername());
+    public Cluster updateCluster(String clusterId, Cluster cluster, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        final Cluster oldCluster = getCluster(clusterId);
+        final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
         if (oldCluster != null && !oldCluster.equals(cluster)) {
             if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)) {
                 oldCluster.setName(cluster.getName());
                 oldCluster.setSensorList(cluster.getSensorList());
                 return clusterRepository.save(oldCluster);
             } else {
-                throw new AccessDeniedException(String.format("No rights to access!"));
+                throw new NotAuthorizedException(
+                        String.format("You are not authorized to access cluster with id '%s'", clusterId));
             }
         } else {
-            throw new EntityNotFoundException(String.format("Cluster with id '%s' not found",id));
+            throw new EntityNotFoundException(String.format("Cluster with id '%s' not found", clusterId));
         }
     }
 
     @Override
-    public void deleteCluster(@PathVariable("id") String id) {
-        clusterRepository.delete(id);
-        LOGGER.debug(String.format("Cluster with id '%s' successfull deleted",id));
-
+    public void deleteCluster(String clusterId) throws EntityNotFoundException {
+        getCluster(clusterId);
+        clusterRepository.delete(clusterId);
+        LOGGER.debug(String.format("Cluster with id '%s' deleted", clusterId));
     }
+
 }

@@ -1,21 +1,22 @@
 package de.bht.mmi.iot.service;
 
+import de.bht.mmi.iot.exception.EntityNotFoundException;
+import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.rest.Gateway;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 public interface GatewayService {
 
     Iterable<Gateway> getAll();
 
-    Iterable<Gateway> getAllForIds(String... ids);
+    Iterable<Gateway> getAllForIds(String... gatewayId);
 
-    Gateway getGateway(String id);
+    Gateway getGateway(String gatewayId) throws EntityNotFoundException;
 
-    Gateway createGateway(@RequestBody Gateway gateway);
+    Gateway createGateway(Gateway gateway);
 
-    Gateway updateGateway(@PathVariable("id") String id, @RequestBody Gateway gateway, UserDetails userDetails);
+    Gateway updateGateway(String gatewayId, Gateway gateway, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException;
 
-    void deleteGateway(@PathVariable("id") String id);
+    void deleteGateway(String gatewayId) throws EntityNotFoundException;
 }
