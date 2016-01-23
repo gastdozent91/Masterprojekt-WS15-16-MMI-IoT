@@ -6,8 +6,6 @@ import de.bht.mmi.iot.model.rest.User;
 import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,8 +21,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Autowired
     private UserRepository userRepository;
 
@@ -32,12 +28,7 @@ public class UserServiceImpl implements UserService {
     private SensorRepository sensorRepository;
 
     @Override
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public User getUser(String username) {
+    public User loadUserByUsername(String username) {
         final User user = userRepository.findOne(username);
         if (user == null) {
             throw new EntityNotFoundException(String.format("User with username '%s' not found",username));
@@ -46,12 +37,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String username, UserDetails userDetails) {
-        if (!(isRolePresent(userDetails, RoleConstants.ROLE_ADMIN) || userDetails.getUsername().equals(username))) {
+    public User loadUserByUsername(String username, UserDetails authenticatedUser) {
+        if (!(isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN) ||
+                authenticatedUser.getUsername().equals(username))) {
             // TODO: More meaningfuel exception message
             throw new AccessDeniedException("Operation not permitted");
         }
-        return getUser(username);
+        return loadUserByUsername(username);
+    }
+
+    @Override
+    public Iterable<User> loadAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -64,14 +61,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(String username, @Validated UserPutDto dto, UserDetails userDetails) {
+    public User updateUser(@Validated User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(User user, UserDetails authenticatedUser) {
+
+        if (!(isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN) ||
+                authenticatedUser.getUsername().equals(user.getUsername()))) {
+            // TODO: More meaningfuel exception message
+            throw new AccessDeniedException("Operation not permitted");
+        }
+        return updateUser(user);
+    }
+
+    @Override
+    public User updateUser(String username, @Validated UserPutDto dto, UserDetails authenticatedUser) {
         // Role admin can change all users, other roles can only change their own data
-        if (!(isRolePresent(userDetails, RoleConstants.ROLE_ADMIN) || userDetails.getUsername().equals(username))) {
+        if (!(isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN) ||
+                authenticatedUser.getUsername().equals(username))) {
             // TODO: More meaningfuel exception message
             throw new AccessDeniedException("Operation not permitted");
         }
 
-        final User user = getUser(username);
+        final User user = loadUserByUsername(username);
         user.setFirstname(dto.getFirstname());
         user.setLastname(dto.getLastname());
         user.setPassword(dto.getPassword());
@@ -83,13 +97,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String username) {
-        final User user = getUser(username);
+        final User user = loadUserByUsername(username);
         userRepository.delete(username);
     }
 
     @Override
     public User updateUserSensors(String username, List<String> sensorList) {
-        final User user = getUser(username);
+        final User user = loadUserByUsername(username);
         if (!(isRolePresent(user, RoleConstants.ROLE_ADMIN) || user.getUsername().equals(username))) {
             // TODO: More meaningfuel exception message
             throw new AccessDeniedException("Operation not permitted");

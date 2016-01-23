@@ -56,7 +56,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public Iterable<Sensor> getAllSensorsByUsername(String username, User authenticatedUser) {
-        final User user = userService.getUser(username, authenticatedUser);
+        final User user = userService.loadUserByUsername(username, authenticatedUser);
         final Iterable<Sensor> userSensors = sensorRepository.findAll(user.getSensorList());
         return userSensors != null ? userSensors : Collections.emptyList();
     }

@@ -30,13 +30,13 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     public Iterable<User> getAllUser() {
-        return userService.getAllUsers();
+        return userService.loadAllUsers();
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
     public User getUser(@PathVariable("username") String username, @AuthenticationPrincipal UserDetails userDetails) {
-        return userService.getUser(username, userDetails);
+        return userService.loadUserByUsername(username, userDetails);
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,

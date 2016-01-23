@@ -8,15 +8,19 @@ import java.util.List;
 
 public interface UserService {
 
-    Iterable<User> getAllUsers();
+    User loadUserByUsername(String username);
 
-    User getUser(String username);
+    User loadUserByUsername(String username, UserDetails authenticatedUser);
 
-    User getUser(String username, UserDetails userDetails);
+    Iterable<User> loadAllUsers();
 
     User saveUser(User user);
 
-    User updateUser(String username, UserPutDto dto, UserDetails userDetails);
+    User updateUser(User user);
+
+    User updateUser(User user, UserDetails authenticatedUser);
+
+    User updateUser(String username, UserPutDto user, UserDetails authenticatedUser);
 
     void deleteUser(String username);
 
