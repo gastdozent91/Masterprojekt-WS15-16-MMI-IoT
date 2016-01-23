@@ -18,7 +18,7 @@
 	"requests": [
 		{
 			"id": "09870735-9965-8961-b7e1-ae7940946798",
-			"headers": "Content-Type: application/json\n",
+			"headers": "Content-Type: application/json\nAuthorization: Basic YWRtaW46YWRtaW4=\n",
 			"url": "http://localhost:8080/iot-friss/gateway/d95e5a53-adff-490c-b0a3-7ec539a81c7f/sensor",
 			"preRequestScript": "",
 			"pathVariables": {},
@@ -29,7 +29,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1453142856765,
+			"time": 1453574978941,
 			"name": "GET SENSORS FROM GATEWAY",
 			"description": "",
 			"collectionId": "cc1af1eb-6d20-e64e-6789-323a8d684081",
