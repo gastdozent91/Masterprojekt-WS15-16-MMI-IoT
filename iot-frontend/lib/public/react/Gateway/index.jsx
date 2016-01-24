@@ -1,5 +1,8 @@
 var React = require('react')
-  , Search = require('./Search')
+  , _ = require('underscore');
+
+var Search = require('./Search')
+  , NewGateway = require('./NewGateway')
   , TopBar = require('../shared/TopBar');
 
 var Gateway = React.createClass({
@@ -12,7 +15,9 @@ var Gateway = React.createClass({
   getInitialState: function() {
     return {
       gateways: this.props.gateways,
-      listClass: 'row column list'
+      isAddingNew: false,
+      listClass: 'row column list',
+      backgroundStyle: {display: 'none'}
     };
   },
 
@@ -24,6 +29,17 @@ var Gateway = React.createClass({
 
   setGateways: function(gateways) {
     this.setState({gateways: gateways});
+  },
+
+  handleNew: function() {
+    var isAddingNew = !this.state.isAddingNew;
+    var backgroundStyle = _.clone(this.state.backgroundStyle);
+    if (isAddingNew)
+      backgroundStyle.display = 'block';
+    else
+      backgroundStyle.display = 'none';
+    this.setState({isAddingNew: isAddingNew,
+    backgroundStyle: backgroundStyle});
   },
 
   renderGateways: function() {
@@ -79,11 +95,33 @@ var Gateway = React.createClass({
         {/* Gateways area */}
         <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>
-            <h5>Gatewaylist</h5>
+            <div className='row'>
+              <div className='large-9 columns'>
+                <h5>Gatewaylist</h5>
+              </div>
+              <div className='large-3 columns' style={{textAlign: 'end'}}>
+                <input className='button'
+                  type='submit'
+                  style={{marginRight: 0}}
+                  onClick={this.handleNew}
+                  value='Add New' />
+              </div>
+            </div>
             {this.renderGateways()}
           </div>
         </div>
         {/* Gateways area end */}
+        { this.state.isAddingNew
+        ? <div className='new-gateway-container'>
+            <div className='row column' style={{float: 'none'}}>
+              <div className='callout'>
+                <NewGateway handleNew={this.handleNew}/>
+              </div>
+            </div>
+          </div>
+        : null }
+        <div className='background-area' style={this.state.backgroundStyle}>
+        </div>
       </div>
     );
   }

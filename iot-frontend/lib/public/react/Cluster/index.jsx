@@ -1,5 +1,8 @@
 var React = require('react')
-  , Search = require('./Search')
+  , _ = require('underscore');
+
+var Search = require('./Search')
+  , NewCluster = require('./NewCluster')
   , TopBar = require('../shared/TopBar');
 
 var Cluster = React.createClass({
@@ -12,7 +15,9 @@ var Cluster = React.createClass({
   getInitialState: function() {
     return {
       clusters: this.props.clusters,
-      listClass: 'row column list'
+      isAddingNew: false,
+      listClass: 'row column list',
+      backgroundStyle: {display: 'none'}
     };
   },
 
@@ -24,6 +29,17 @@ var Cluster = React.createClass({
 
   setClusters: function(clusters) {
     this.setState({clusters: clusters});
+  },
+
+  handleNew: function() {
+    var isAddingNew = !this.state.isAddingNew;
+    var backgroundStyle = _.clone(this.state.backgroundStyle);
+    if (isAddingNew)
+      backgroundStyle.display = 'block';
+    else
+      backgroundStyle.display = 'none';
+    this.setState({isAddingNew: isAddingNew,
+    backgroundStyle: backgroundStyle});
   },
 
   renderClusters: function() {
@@ -79,11 +95,33 @@ var Cluster = React.createClass({
         {/* Cluster area */}
         <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>
-            <h5>Clusterlist</h5>
+            <div className='row'>
+              <div className='large-9 columns'>
+                <h5>Clusterlist</h5>
+              </div>
+              <div className='large-3 columns' style={{textAlign: 'end'}}>
+                <input className='button'
+                  type='submit'
+                  style={{marginRight: 0}}
+                  onClick={this.handleNew}
+                  value='Add New' />
+              </div>
+            </div>
             {this.renderClusters()}
           </div>
         </div>
         {/* Cluster area end */}
+        { this.state.isAddingNew
+        ? <div className='new-cluster-container'>
+            <div className='row column' style={{float: 'none'}}>
+              <div className='callout'>
+                <NewCluster handleNew={this.handleNew}/>
+              </div>
+            </div>
+          </div>
+        : null }
+        <div className='background-area' style={this.state.backgroundStyle}>
+        </div>
       </div>
     );
   }

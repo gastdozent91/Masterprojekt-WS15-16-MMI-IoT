@@ -1,5 +1,8 @@
 var React = require('react')
-  , Search = require('./Search')
+  , _ = require('underscore');
+
+var Search = require('./Search')
+  , NewUser = require('./NewUser')
   , TopBar = require('../shared/TopBar');
 
 var Users = React.createClass({
@@ -12,7 +15,9 @@ var Users = React.createClass({
   getInitialState: function() {
     return {
       users: this.props.users,
-      listClass: 'row column list'
+      isAddingNew: false,
+      listClass: 'row column list',
+      backgroundStyle: {display: 'none'}
     };
   },
 
@@ -24,6 +29,17 @@ var Users = React.createClass({
 
   setUsers: function(users) {
     this.setState({users: users});
+  },
+
+  handleNew: function() {
+    var isAddingNew = !this.state.isAddingNew;
+    var backgroundStyle = _.clone(this.state.backgroundStyle);
+    if (isAddingNew)
+      backgroundStyle.display = 'block';
+    else
+      backgroundStyle.display = 'none';
+    this.setState({isAddingNew: isAddingNew,
+    backgroundStyle: backgroundStyle});
   },
 
   renderUsers: function() {
@@ -101,9 +117,31 @@ var Users = React.createClass({
           setUsers={this.setUsers} />
         <div className={this.state.listClass} style={{float: 'none'}}>
           <div className='callout'>
-            <h5>Userlist</h5>
+            <div className='row'>
+              <div className='large-9 columns'>
+                <h5>Userlist</h5>
+              </div>
+              <div className='large-3 columns' style={{textAlign: 'end'}}>
+                <input className='button'
+                  type='submit'
+                  style={{marginRight: 0}}
+                  onClick={this.handleNew}
+                  value='Add New' />
+              </div>
+            </div>
             {this.renderUsers()}
           </div>
+        </div>
+        { this.state.isAddingNew
+        ? <div className='new-user-container'>
+            <div className='row column' style={{float: 'none'}}>
+              <div className='callout'>
+                <NewUser handleNew={this.handleNew}/>
+              </div>
+            </div>
+          </div>
+        : null }
+        <div className='background-area' style={this.state.backgroundStyle}>
         </div>
       </div>
     );
