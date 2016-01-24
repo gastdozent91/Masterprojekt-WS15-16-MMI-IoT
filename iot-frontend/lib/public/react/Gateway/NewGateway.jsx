@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react')
+  , request = require('superagent');
 
 var NewGateway = React.createClass({
 
@@ -9,7 +10,9 @@ var NewGateway = React.createClass({
   getInitialState: function() {
     return {
       name: '',
-      fields: [{name: 'name', func: this.handleNameChange}]
+      fields: [
+        {name: 'name', func: this.handleNameChange, placeholder: 'gateway1'}
+      ]
     };
   },
 
@@ -23,6 +26,25 @@ var NewGateway = React.createClass({
     this.props.handleNew();
   },
 
+  handleSave: function() {
+    var that = this;
+    if (this.state.name) {
+      var json = {
+        name: this.state.name
+      };
+      request
+        .post('/gateway')
+        .send(json)
+        .end(function(err, res) {
+          if (err) return console.log(err);
+          //TODO: add warning
+          //res.body === statuscode
+          console.log(res);
+          that.props.handleNew();
+        });
+    }
+  },
+
   renderFields: function() {
     return this.state.fields.map(function(field) {
       return (
@@ -34,6 +56,7 @@ var NewGateway = React.createClass({
           </div>
           <div className='large-8 columns'>
             <input type='text'
+              placeholder={field.placeholder}
               ref={field.name} />
           </div>
         </div>
@@ -45,6 +68,7 @@ var NewGateway = React.createClass({
     return (
       <div className='row'>
         <div className='large-8 large-centered columns'>
+          <h2>Add a Gateway</h2>
           {this.renderFields()}
           <div className='row column' style={{textAlign: 'end'}}>
             <input type='button'

@@ -109,6 +109,28 @@ app.get('/user/:username',
   user.renderUser
 );
 
+// API
+
+app.post('/user',
+  login.shouldBeLoggedIn,
+  user.create
+);
+
+app.post('/sensor',
+  login.shouldBeLoggedIn,
+  sensor.create
+);
+
+app.post('/gateway',
+  login.shouldBeLoggedIn,
+  gateway.create
+);
+
+app.post('/cluster',
+  login.shouldBeLoggedIn,
+  cluster.create
+);
+
 app.get('/chart',
   chart.render
 );

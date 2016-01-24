@@ -18,6 +18,16 @@ me.getAll = (req, res, next) => {
   });
 };
 
+me.create = (req, res, next) => {
+  Model.create(req.user, req.body)
+  .then(result => {
+    res.json(result.status);
+  })
+  .catch(err => {
+    res.json(err.status);
+  });
+};
+
 me.render = function(req, res) {
   var out = {
     user: { firstname: req.user.firstname, isAdmin: req.isAdmin},

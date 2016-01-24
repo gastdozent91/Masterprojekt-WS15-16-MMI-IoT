@@ -1,4 +1,5 @@
-var React = require('react');
+var React = require('react')
+  , request = require('superagent');
 
 var NewCluster = React.createClass({
 
@@ -10,7 +11,10 @@ var NewCluster = React.createClass({
     return {
       name: '',
       sensorList: [],
-      fields: [{name: 'name', func: this.handleNameChange}]
+      fields: [
+        {name: 'name', func: this.handleNameChange, placeholder: 'Home'},
+        {name: 'sensorList', func: this.handleSensorListChange, placeholder: 'sensor1, sensor2'}
+      ]
     };
   },
 
@@ -20,8 +24,34 @@ var NewCluster = React.createClass({
     this.setState({name: input});
   },
 
+  handleSensorListChange: function() {
+    var input = this.refs.sensorList.value;
+    console.log('sensorList', input);
+    this.setState({sensorList: input});
+  },
+
   handleCancel: function() {
     this.props.handleNew();
+  },
+
+  handleSave: function() {
+    var that = this;
+    if (this.state.name) {
+      var json = {
+        name: this.state.name,
+        sensorList: this.state.sensorList
+      };
+      request
+        .post('/cluster')
+        .send(json)
+        .end(function(err, res) {
+          if (err) return console.log(err);
+          //TODO: add warning
+          //res.body === statuscode
+          console.log(res);
+          that.props.handleNew();
+        });
+    }
   },
 
   renderFields: function() {
@@ -35,6 +65,7 @@ var NewCluster = React.createClass({
           </div>
           <div className='large-8 columns'>
             <input type='text'
+              placeholder={field.placeholder}
               ref={field.name} />
           </div>
         </div>
@@ -46,6 +77,7 @@ var NewCluster = React.createClass({
     return (
       <div className='row'>
         <div className='large-8 large-centered columns'>
+          <h2>Add a Cluster</h2>
           {this.renderFields()}
           <div className='row column' style={{textAlign: 'end'}}>
             <input type='button'

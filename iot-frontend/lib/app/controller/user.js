@@ -60,19 +60,12 @@ me.delete = (req, res, next) => {
 };
 
 me.create = (req, res, next) => {
-  var userToCreate = {
-    firstname: 'Ray',
-    lastname: 'Glaeske',
-    username: 'ray',
-    password: 'LOL',
-    roles: ['ROLE_ADMIN']
-  };
-  Model.create(req.user, userToCreate)
+  Model.create(req.user, req.body)
   .then(result => {
-    res.json(result);
+    res.json(result.status);
   })
   .catch(err => {
-    res.json(err);
+    res.json(err.status);
   });
 };
 
