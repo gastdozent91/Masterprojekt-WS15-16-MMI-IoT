@@ -1,9 +1,10 @@
-package de.bht.mmi.iot.model.rest;
+package de.bht.mmi.iot.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.bht.mmi.iot.constants.DbConstants;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.validator.Contain;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +16,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.*;
 
-@DynamoDBTable(tableName = "User")
+@DynamoDBTable(tableName = DbConstants.TABLENAME_USER)
 public class User implements UserDetails {
 
     @NotNull
@@ -53,7 +54,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    @DynamoDBHashKey(attributeName = "username")
+    @DynamoDBHashKey(attributeName = DbConstants.ATTRIBUTE_USERNAME)
     public String getUsername() {
         return username;
     }

@@ -1,12 +1,14 @@
-package de.bht.mmi.iot.listener;
+package de.bht.mmi.iot.listener.app;
 
-import de.bht.mmi.iot.constants.DbConstants;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.exception.EntityExistsException;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.*;
+import de.bht.mmi.iot.model.Cluster;
+import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.Sensor;
+import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     private Environment env;
 
     @Autowired
-    private TableCreatorService tableCreatorService;
+    private TableService tableService;
 
     @Autowired
     private UserService userService;
@@ -80,13 +81,14 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     }
 
     private void recreateTables() {
-        final List<String> tableNames = DbConstants.getAllTableNames();
+        final List<String> tableNames = tableService.getTableNames();
         deleteTables(tableNames.toArray(new String[tableNames.size()]));
 
-        tableCreatorService.createUserTable();
-        tableCreatorService.createSensorTable();
-        tableCreatorService.createGatewayTable();
-        tableCreatorService.createClusterTable();
+        tableService.createUserTable();
+        tableService.createSensorTable();
+        tableService.createGatewayTable();
+        tableService.createClusterTable();
+        tableService.createMeasurementTable();
     }
 
     private void addDummyData() throws NotAuthorizedException, EntityNotFoundException, EntityExistsException {
@@ -110,8 +112,8 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
 
         // Sensor
         ArrayList<String> sensorTypes = new ArrayList<String>();
-        sensorTypes.add(SensorType.ACCELERATION.toString());
-        sensorTypes.add(SensorType.ORIENTATION.toString());
+        sensorTypes.add("acceleration");
+        sensorTypes.add("orientation");
 
         Sensor sensor = sensorService.createSensor(
                 new SensorPostDto(true, "Berlin, Germany", sensorTypes,
@@ -152,13 +154,9 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
 
     }
 
-    private ArrayList<String> getTableNames() {
-        return tableCreatorService.getTableNames();
-    }
-
     private void deleteTables(String... tableNames) {
         for (String tableName : tableNames) {
-            tableCreatorService.deleteTable(tableName);
+            tableService.deleteTable(tableName);
         }
     }
 
