@@ -39,8 +39,12 @@ public class ClusterServiceImpl implements ClusterService{
     }
 
     @Override
-    public Cluster createCluster(Cluster cluster) {
-        return clusterRepository.save(cluster);
+    public Cluster createCluster(Cluster cluster) throws EntityNotFoundException {
+        if (userService.loadUserByUsername(cluster.getOwner()) != null ) {
+            return clusterRepository.save(cluster);
+        } else {
+            throw new EntityNotFoundException(String.format("User with username '%s' not found", cluster.getOwner()));
+        }
     }
 
     @Override

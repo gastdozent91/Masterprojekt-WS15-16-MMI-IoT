@@ -16,6 +16,8 @@ public class Cluster {
 
     private String name;
 
+    private String owner;
+
     private DateTime creationDate;
 
     private List<String> sensorList;
@@ -24,10 +26,10 @@ public class Cluster {
         this.creationDate = new DateTime();
     }
 
-    public Cluster(String name, List<String> sensorList) {
+    public Cluster(String name, String owner, List<String> sensorList) {
         this.name = name;
+        this.owner = owner;
         this.sensorList = sensorList;
-        this.creationDate = new DateTime();
     }
 
     @DynamoDBHashKey(attributeName = "id")
@@ -63,5 +65,13 @@ public class Cluster {
 
     public void setSensorList(List<String> sensorList) {
         this.sensorList = sensorList;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }

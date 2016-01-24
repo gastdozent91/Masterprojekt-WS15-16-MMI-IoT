@@ -13,7 +13,7 @@ public interface GatewayService {
 
     Gateway getGateway(String gatewayId) throws EntityNotFoundException;
 
-    Gateway createGateway(Gateway gateway);
+    Gateway createGateway(Gateway gateway) throws EntityNotFoundException;
 
     Gateway updateGateway(String gatewayId, Gateway gateway, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;

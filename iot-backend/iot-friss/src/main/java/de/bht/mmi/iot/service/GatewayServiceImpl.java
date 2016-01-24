@@ -21,9 +21,6 @@ public class GatewayServiceImpl implements GatewayService {
     private GatewayRepository gatewayRepository;
 
     @Autowired
-    private SensorService sensorService;
-
-    @Autowired
     private UserService userService;
 
     private Logger LOGGER = LoggerFactory.getLogger(GatewayServiceImpl.class);
@@ -49,8 +46,12 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public Gateway createGateway(Gateway gateway) {
-        return gatewayRepository.save(gateway);
+    public Gateway createGateway(Gateway gateway) throws EntityNotFoundException {
+        if (userService.loadUserByUsername(gateway.getOwner()) != null) {
+            return gatewayRepository.save(gateway);
+        } else {
+            throw new EntityNotFoundException(String.format("User with username '%s' not found", gateway.getOwner()));
+        }
     }
 
     @Override

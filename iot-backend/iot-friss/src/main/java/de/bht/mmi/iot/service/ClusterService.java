@@ -11,7 +11,7 @@ public interface ClusterService {
 
     Cluster getCluster(String clusterId) throws EntityNotFoundException;
 
-    Cluster createCluster(Cluster cluster);
+    Cluster createCluster(Cluster cluster) throws EntityNotFoundException;
 
     Cluster updateCluster(String clusterId, Cluster cluster, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;

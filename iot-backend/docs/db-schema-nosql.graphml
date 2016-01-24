@@ -17,18 +17,19 @@
     <node id="n0">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="169.0" width="197.0" x="336.0" y="124.5"/>
+          <y:Geometry height="169.0" width="247.0" x="295.5" y="124.5"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.1328125" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="42.994140625" x="77.0029296875" y="4.0">Sensor</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="117.0625" modelName="custom" textColor="#000000" visible="true" width="185.001953125" x="2.0" y="30.1328125">private String id;
-private boolean isActive;
-private DateTime creationDate;
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.1328125" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="42.994140625" x="102.0029296875" y="4.0">Sensor</y:NodeLabel>
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="131.1953125" modelName="custom" textColor="#000000" visible="true" width="234.8359375" x="2.0" y="30.1328125">private String id;
+private String name;
+private List&lt;SensorType&gt; sensorTypes;
 private String location;
-private String clusterID;
-private String ownerName;
-private int sensorType;
-private List&lt;String&gt; userList;<y:LabelModel>
+private List&lt;String&gt; attachedClusters;
+private String attachedGateway;
+private String owner;
+private DateTime creationDate;
+private boolean isActive;<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -69,13 +70,13 @@ private List&lt;String&gt; sensorList;<y:LabelModel>
     <node id="n2">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="90.0" width="211.0" x="567.5" y="374.0"/>
+          <y:Geometry height="82.0" width="211.0" x="567.5" y="374.0"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.1328125" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="52.615234375" x="79.1923828125" y="4.0">Gateway</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.3984375" modelName="custom" textColor="#000000" visible="true" width="188.880859375" x="2.0" y="30.1328125">private id;
+          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="46.3984375" modelName="custom" textColor="#000000" visible="true" width="125.25390625" x="2.0" y="30.1328125">private id;
 private String name;
-private List&lt;String&gt; clusterList;<y:LabelModel>
+private String owner;<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -112,14 +113,14 @@ static final String ROLE_USER = "ROLE_USER";<y:LabelModel>
     <node id="n4">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="98.0" width="261.0" x="13.0" y="374.0"/>
+          <y:Geometry height="98.0" width="103.0" x="13.0" y="374.0"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.1328125" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="90.501953125" x="85.2490234375" y="4.0">TypeConstants</y:NodeLabel>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.53125" modelName="custom" textColor="#000000" visible="true" width="248.88671875" x="2.0" y="30.1328125">static final int TYPE_ACCELERATION =   0;
-static final int TYPE_ORIENTATION   =   1;
-static final int TYPE_TEMPERATURE   =   2;
-static final int TYPE_GEOLOCATION  =   3;<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.1328125" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="71.08984375" x="15.955078125" y="4.0">SensorType</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="60.53125" modelName="custom" textColor="#000000" visible="true" width="93.390625" x="2.0" y="30.1328125">ACCELERATION
+ORIENTATION
+LOCATION
+SCALAR<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -135,14 +136,14 @@ static final int TYPE_GEOLOCATION  =   3;<y:LabelModel>
     <node id="n5">
       <data key="d6">
         <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-          <y:Geometry height="110.5" width="197.0" x="574.5" y="124.5"/>
+          <y:Geometry height="111.0" width="197.0" x="611.5" y="32.5"/>
           <y:Fill color="#E8EEF7" color2="#B7C9E3" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#B7C9E3" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasLineColor="false" height="18.1328125" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="45.419921875" x="75.7900390625" y="4.0">Cluster</y:NodeLabel>
           <y:NodeLabel alignment="left" autoSizePolicy="content" configuration="com.yworks.entityRelationship.label.attributes" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="74.6640625" modelName="custom" textColor="#000000" visible="true" width="188.265625" x="2.0" y="30.1328125">private String id;
 private String name;
 private DateTime creationDate;
-private String gatewayName;
+private String owner;
 private List&lt;String&gt; sensorList;<y:LabelModel>
               <y:ErdAttributesNodeLabelModel/>
             </y:LabelModel>
@@ -191,7 +192,7 @@ private DateTime timestamp;<y:LabelModel>
     <edge id="e1" source="n1" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="86.5" sy="45.500000000000014" tx="-98.5390625" ty="-69.0"/>
+          <y:Path sx="86.5" sy="45.500000000000014" tx="-123.54897684010153" ty="-69.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -201,7 +202,9 @@ private DateTime timestamp;<y:LabelModel>
     <edge id="e2" source="n5" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-98.5062982944562" sy="42.416692536185735" tx="98.5078125" ty="13.166692536185735"/>
+          <y:Path sx="-38.0" sy="55.50784785067873" tx="123.50979536802029" ty="13.166692536185735">
+            <y:Point x="672.0" y="222.16669253618574"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -211,8 +214,8 @@ private DateTime timestamp;<y:LabelModel>
     <edge id="e3" source="n0" target="n1">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-98.51006984683403" sy="69.57406456831319" tx="0.0" ty="0.0">
-            <y:Point x="124.5" y="278.5740645683132"/>
+          <y:Path sx="-123.50114239189526" sy="41.58203559106701" tx="0.0" ty="0.0">
+            <y:Point x="124.5" y="250.582035591067"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -223,8 +226,8 @@ private DateTime timestamp;<y:LabelModel>
     <edge id="e4" source="n0" target="n4">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-98.4765625" sy="57.0" tx="-66.5" ty="-49.0078125">
-            <y:Point x="77.0" y="266.0"/>
+          <y:Path sx="-123.51703762117779" sy="-15.99781219666255" tx="-26.243295019157085" ty="-49.0078125">
+            <y:Point x="38.25670498084291" y="193.00218780333745"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -232,12 +235,12 @@ private DateTime timestamp;<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e5" source="n2" target="n5">
+    <edge id="e5" source="n6" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="105.49221331811009" sy="24.7247282335112" tx="0.0" ty="0.0">
-            <y:Point x="799.0" y="443.7247282335112"/>
-            <y:Point x="799.0" y="179.75"/>
+          <y:Path sx="89.540283203125" sy="0.0" tx="123.50038251811546" ty="-49.05078501003598">
+            <y:Point x="580.0" y="356.5"/>
+            <y:Point x="580.0" y="159.94921498996402"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -245,12 +248,11 @@ private DateTime timestamp;<y:LabelModel>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e6" source="n6" target="n0">
+    <edge id="e6" source="n2" target="n0">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="89.540283203125" sy="0.0" tx="98.50030508529858" ty="-49.05078501003598">
-            <y:Point x="553.0" y="356.5"/>
-            <y:Point x="553.0" y="159.94921498996402"/>
+          <y:Path sx="0.0" sy="0.0" tx="123.50964824762616" ty="28.36798222051479">
+            <y:Point x="673.0" y="237.3679822205148"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>

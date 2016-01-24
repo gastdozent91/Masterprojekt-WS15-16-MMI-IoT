@@ -68,7 +68,7 @@ public class SensorServiceImpl implements SensorService {
             throws EntityNotFoundException {
         gatewayService.getGateway(sensor.getAttachedGateway());
         final Sensor newSensor = new Sensor(
-                sensor.getSensorType(),
+                sensor.getSensorTypes(),
                 sensor.getLocation(),
                 sensor.getAttachedGateway(),
                 sensor.getAttachedClusters(),
@@ -88,7 +88,7 @@ public class SensorServiceImpl implements SensorService {
         if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)){
             oldSensor.setActive(sensor.isActive());
             oldSensor.setLocation(sensor.getLocation());
-            oldSensor.setSensorType(sensor.getSensorType());
+            oldSensor.setSensorTypes(sensor.getSensorTypes());
             oldSensor.setAttachedGateway(sensor.getAttachedGateway());
             oldSensor.setAttachedClusters(sensor.getAttachedClusters());
             oldSensor.setOwner(sensor.getOwner());
@@ -97,7 +97,7 @@ public class SensorServiceImpl implements SensorService {
         } else if (oldSensor.getOwner().equals(authenticatedUser.getUsername())) {
             oldSensor.setActive(sensor.isActive());
             oldSensor.setLocation(sensor.getLocation());
-            oldSensor.setSensorType(sensor.getSensorType());
+            oldSensor.setSensorTypes(sensor.getSensorTypes());
             oldSensor.setAttachedClusters(sensor.getAttachedClusters());
             oldSensor.setName(sensor.getName());
             return sensorRepository.save(oldSensor);

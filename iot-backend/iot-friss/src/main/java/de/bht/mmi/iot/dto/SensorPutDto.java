@@ -28,19 +28,19 @@ public class SensorPutDto {
     private String owner;
 
     @NotNull
-    private SensorType sensorType;
+    private List<String> sensorTypes;
 
     @JsonCreator
     public SensorPutDto(@JsonProperty("isActive") boolean isActive, @JsonProperty("location") String location,
                         @JsonProperty("clusterID") String clusterID, @JsonProperty("owner") String owner,
-                        @JsonProperty("sensorType")SensorType sensorType,
+                        @JsonProperty("sensorTypes")List<String> sensorTypes,
                         @JsonProperty("attachedGateway") String attachedGateway,
                         @JsonProperty("attachedClusters") List<String> attachedClusters,
                         @JsonProperty("name") String name) {
         this.isActive = isActive;
         this.location = location;
         this.owner = owner;
-        this.sensorType = sensorType;
+        this.sensorTypes = sensorTypes;
         this.attachedGateway = attachedGateway;
         this.attachedClusters = attachedClusters;
         this.name = name;
@@ -70,8 +70,7 @@ public class SensorPutDto {
         return owner;
     }
 
-    public SensorType getSensorType() {
-        return sensorType;
+    public List<String> getSensorTypes() {
+        return sensorTypes;
     }
-
 }

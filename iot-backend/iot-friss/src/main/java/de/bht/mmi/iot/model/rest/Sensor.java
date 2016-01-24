@@ -17,7 +17,7 @@ public class Sensor {
 
     private String name;
 
-    private SensorType sensorType;
+    private List<String> sensorTypes;
 
     private String location;
 
@@ -31,9 +31,9 @@ public class Sensor {
 
     private boolean isActive;
 
-    public Sensor(SensorType sensorType, String location, String attachedGateway,
+    public Sensor(List<String> sensorTypes, String location, String attachedGateway,
                   List<String> attachedClusters, String owner, DateTime creationDate, boolean isActive) {
-        this.sensorType = sensorType;
+        this.sensorTypes = sensorTypes;
         this.location = location;
         this.attachedGateway = attachedGateway;
         this.attachedClusters = attachedClusters;
@@ -111,13 +111,11 @@ public class Sensor {
         this.owner = owner;
     }
 
-    @DynamoDBMarshalling(marshallerClass = SensorTypeMarshaller.class)
-    public SensorType getSensorType() {
-        return sensorType;
+    public List<String> getSensorTypes() {
+        return sensorTypes;
     }
 
-    public void setSensorType(SensorType sensorType) {
-        this.sensorType = sensorType;
+    public void setSensorTypes(List<String> sensorTypes) {
+        this.sensorTypes = sensorTypes;
     }
-
 }

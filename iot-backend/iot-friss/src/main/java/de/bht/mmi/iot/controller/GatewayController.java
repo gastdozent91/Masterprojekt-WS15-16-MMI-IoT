@@ -56,7 +56,7 @@ public class GatewayController {
     // POST
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Gateway createGateway(@RequestBody Gateway gateway) {
+    public Gateway createGateway(@RequestBody Gateway gateway) throws EntityNotFoundException {
         return gatewayService.createGateway(gateway);
     }
 

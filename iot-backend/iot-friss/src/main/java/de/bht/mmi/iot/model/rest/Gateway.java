@@ -11,8 +11,11 @@ public class Gateway {
 
     private String name;
 
-    public Gateway(String name) {
+    private String owner;
+
+    public Gateway(String name, String owner) {
         this.name = name;
+        this.owner = owner;
     }
 
     public Gateway() { }
@@ -35,4 +38,11 @@ public class Gateway {
         this.name = name;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 }
