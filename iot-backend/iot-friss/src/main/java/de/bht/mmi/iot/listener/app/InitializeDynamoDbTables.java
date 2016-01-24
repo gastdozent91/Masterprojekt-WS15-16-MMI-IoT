@@ -1,12 +1,14 @@
-package de.bht.mmi.iot.listener;
+package de.bht.mmi.iot.listener.app;
 
-import de.bht.mmi.iot.constants.DbConstants;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.exception.EntityExistsException;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.*;
+import de.bht.mmi.iot.model.Cluster;
+import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.Sensor;
+import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +36,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     private Environment env;
 
     @Autowired
-    private TableCreatorService tableCreatorService;
+    private TableService tableService;
 
     @Autowired
     private UserService userService;
@@ -79,13 +81,14 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     }
 
     private void recreateTables() {
-        final List<String> tableNames = DbConstants.getAllTableNames();
+        final List<String> tableNames = tableService.getTableNames();
         deleteTables(tableNames.toArray(new String[tableNames.size()]));
 
-        tableCreatorService.createUserTable();
-        tableCreatorService.createSensorTable();
-        tableCreatorService.createGatewayTable();
-        tableCreatorService.createClusterTable();
+        tableService.createUserTable();
+        tableService.createSensorTable();
+        tableService.createGatewayTable();
+        tableService.createClusterTable();
+        tableService.createMeasurementTable();
     }
 
     private void addDummyData() throws NotAuthorizedException, EntityNotFoundException, EntityExistsException {
@@ -100,27 +103,31 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         UserDetails userDetails = userDetailsService.loadUserByUsername("admin");
 
         // Gateway
-        Gateway gateway = gatewayService.createGateway(new Gateway("gateway1"));
+        Gateway gateway = gatewayService.createGateway(new Gateway("gateway1",user.getUsername()));
         LOGGER.info(String.format("Gateway %s created", gateway.getName()));
 
         //Cluster
-        Cluster cluster = clusterService.createCluster(new Cluster("cluster1", null));
+        Cluster cluster = clusterService.createCluster(new Cluster("cluster1", user.getUsername(), null));
         LOGGER.info(String.format("Cluster %s created", cluster.getName()));
 
         // Sensor
+        ArrayList<String> sensorTypes = new ArrayList<String>();
+        sensorTypes.add("acceleration");
+        sensorTypes.add("orientation");
+
         Sensor sensor = sensorService.createSensor(
-                new SensorPostDto(true, "Berlin, Germany", SensorType.ACCELERATION,
+                new SensorPostDto(true, "Berlin, Germany", sensorTypes,
                         gateway.getId(), Collections.emptyList(), "Arm rechts"), userDetails);
         LOGGER.info(String.format("Sensor %s created", sensor.getId()));
 
         Sensor sensor2 = sensorService.createSensor(
-                new SensorPostDto(true, "13.301172256,52.44152832,33.4", SensorType.ACCELERATION,
+                new SensorPostDto(true, "13.301172256,52.44152832,33.4", sensorTypes,
                         gateway.getId(), Collections.emptyList(), "Arm links"),
                 userDetailsService.loadUserByUsername("admin"));
         LOGGER.info(String.format("Sensor %s created", sensor2.getId()));
 
         Sensor sensor3 = sensorService.createSensor(new SensorPostDto(true,
-                "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50", SensorType.ACCELERATION,
+                "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50", sensorTypes,
                 gateway.getId(),
                 Arrays.asList(cluster.getId()), "Kopf"), userDetailsService.loadUserByUsername("admin"));
         LOGGER.info(String.format("Sensor %s created", sensor3.getId()));
@@ -147,13 +154,9 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
 
     }
 
-    private ArrayList<String> getTableNames() {
-        return tableCreatorService.getTableNames();
-    }
-
     private void deleteTables(String... tableNames) {
         for (String tableName : tableNames) {
-            tableCreatorService.deleteTable(tableName);
+            tableService.deleteTable(tableName);
         }
     }
 

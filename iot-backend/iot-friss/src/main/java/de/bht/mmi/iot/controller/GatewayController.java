@@ -3,8 +3,8 @@ package de.bht.mmi.iot.controller;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.Gateway;
-import de.bht.mmi.iot.model.rest.Sensor;
+import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.service.GatewayService;
 import de.bht.mmi.iot.service.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class GatewayController {
     // POST
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Gateway createGateway(@RequestBody Gateway gateway) {
+    public Gateway createGateway(@RequestBody Gateway gateway) throws EntityNotFoundException {
         return gatewayService.createGateway(gateway);
     }
 

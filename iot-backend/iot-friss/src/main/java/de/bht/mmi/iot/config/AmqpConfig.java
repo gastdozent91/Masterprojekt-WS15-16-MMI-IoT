@@ -26,11 +26,11 @@ public class AmqpConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
         final CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
-                env.getProperty("rabbit.host"),
-                Integer.valueOf(env.getProperty("rabbit.port")));
-        connectionFactory.setUsername(env.getProperty("rabbit.username"));
-        connectionFactory.setPassword(env.getProperty("rabbit.password"));
-        connectionFactory.setChannelCacheSize(Integer.valueOf(env.getProperty("rabbit.channel_cache_size")));
+                env.getRequiredProperty("rabbit.host"),
+                Integer.valueOf(env.getRequiredProperty("rabbit.port")));
+        connectionFactory.setUsername(env.getRequiredProperty("rabbit.username"));
+        connectionFactory.setPassword(env.getRequiredProperty("rabbit.password"));
+        connectionFactory.setChannelCacheSize(Integer.valueOf(env.getRequiredProperty("rabbit.channel_cache_size")));
         return connectionFactory;
     }
 
@@ -43,8 +43,8 @@ public class AmqpConfig {
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
         final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
-        factory.setConcurrentConsumers(Integer.valueOf(env.getProperty("rabbit.concurrent_consumers")));
-        factory.setMaxConcurrentConsumers(Integer.valueOf(env.getProperty("rabbit.max_concurrent_consumers")));
+        factory.setConcurrentConsumers(Integer.valueOf(env.getRequiredProperty("rabbit.concurrent_consumers")));
+        factory.setMaxConcurrentConsumers(Integer.valueOf(env.getRequiredProperty("rabbit.max_concurrent_consumers")));
         factory.setMessageConverter(contentTypeConverter());
         return factory;
     }

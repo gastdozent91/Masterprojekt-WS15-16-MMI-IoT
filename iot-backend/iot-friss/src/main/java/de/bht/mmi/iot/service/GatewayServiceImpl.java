@@ -3,8 +3,8 @@ package de.bht.mmi.iot.service;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.Gateway;
-import de.bht.mmi.iot.model.rest.User;
+import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +19,6 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Autowired
     private GatewayRepository gatewayRepository;
-
-    @Autowired
-    private SensorService sensorService;
 
     @Autowired
     private UserService userService;
@@ -49,8 +46,12 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public Gateway createGateway(Gateway gateway) {
-        return gatewayRepository.save(gateway);
+    public Gateway createGateway(Gateway gateway) throws EntityNotFoundException {
+        if (userService.loadUserByUsername(gateway.getOwner()) != null) {
+            return gatewayRepository.save(gateway);
+        } else {
+            throw new EntityNotFoundException(String.format("User with username '%s' not found", gateway.getOwner()));
+        }
     }
 
     @Override

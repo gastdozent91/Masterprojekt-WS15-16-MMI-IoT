@@ -2,7 +2,6 @@ package de.bht.mmi.iot.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.bht.mmi.iot.model.rest.SensorType;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -19,7 +18,7 @@ public class SensorPostDto {
     private String location;
 
     @NotNull
-    private SensorType sensorType;
+    private List<String> sensorTypes;
 
     @NotNull
     private String attachedGateway;
@@ -29,13 +28,13 @@ public class SensorPostDto {
 
     @JsonCreator
     public SensorPostDto(@JsonProperty("isActive") boolean isActive, @JsonProperty("location") String location,
-                         @JsonProperty("sensorType") SensorType sensorType,
+                         @JsonProperty("sensorTypes") List<String> sensorTypes,
                          @JsonProperty("attachedGateway") String attachedGateway,
                          @JsonProperty("attachedClusters") List<String> attachedClusters,
                          @JsonProperty("name") String name) {
         this.isActive = isActive;
         this.location = location;
-        this.sensorType = sensorType;
+        this.sensorTypes = sensorTypes;
         this.attachedGateway = attachedGateway;
         this.attachedClusters = attachedClusters;
         this.name = name;
@@ -57,8 +56,8 @@ public class SensorPostDto {
         return attachedClusters;
     }
 
-    public SensorType getSensorType() {
-        return sensorType;
+    public List<String> getSensorTypes() {
+        return sensorTypes;
     }
 
     public String getName() {

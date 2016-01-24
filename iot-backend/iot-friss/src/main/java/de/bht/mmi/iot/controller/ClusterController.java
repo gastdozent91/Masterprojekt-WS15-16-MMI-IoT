@@ -3,7 +3,7 @@ package de.bht.mmi.iot.controller;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.Cluster;
+import de.bht.mmi.iot.model.Cluster;
 import de.bht.mmi.iot.service.ClusterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,7 +35,7 @@ public class ClusterController {
     // POST
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Cluster createCluster(@RequestBody Cluster cluster) {
+    public Cluster createCluster(@RequestBody Cluster cluster) throws EntityNotFoundException {
         return clusterService.createCluster(cluster);
     }
 

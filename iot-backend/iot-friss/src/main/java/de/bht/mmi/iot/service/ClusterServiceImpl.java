@@ -3,8 +3,8 @@ package de.bht.mmi.iot.service;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.Cluster;
-import de.bht.mmi.iot.model.rest.User;
+import de.bht.mmi.iot.model.Cluster;
+import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.ClusterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +39,12 @@ public class ClusterServiceImpl implements ClusterService{
     }
 
     @Override
-    public Cluster createCluster(Cluster cluster) {
-        return clusterRepository.save(cluster);
+    public Cluster createCluster(Cluster cluster) throws EntityNotFoundException {
+        if (userService.loadUserByUsername(cluster.getOwner()) != null ) {
+            return clusterRepository.save(cluster);
+        } else {
+            throw new EntityNotFoundException(String.format("User with username '%s' not found", cluster.getOwner()));
+        }
     }
 
     @Override

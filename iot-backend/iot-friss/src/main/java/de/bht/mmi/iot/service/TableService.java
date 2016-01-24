@@ -1,8 +1,8 @@
 package de.bht.mmi.iot.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public interface TableCreatorService {
+public interface TableService {
 
     void createUserTable();
 
@@ -12,7 +12,9 @@ public interface TableCreatorService {
 
     void createClusterTable();
 
-    ArrayList<String> getTableNames();
+    void createMeasurementTable();
+
+    List<String> getTableNames();
 
     void deleteTable(String tableName);
 

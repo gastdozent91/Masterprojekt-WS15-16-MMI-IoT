@@ -108,8 +108,8 @@ def sendBulk(senserDataBulk, optionsMap):
         for sampleJSON in senserDataBulk:
             bulk += str(sampleJSON)
         bulk += "}"
-        rabbitmqchannel.basic_publish(exchange='',
-                                      routing_key=optionsMap.exchange,
+        rabbitmqchannel.basic_publish(exchange=optionsMap.exchange,
+                                      routing_key="#", # routing_key is sensor_id
                                       body=bulk)
 
 
@@ -166,7 +166,7 @@ if __name__ == '__main__':
             print("Couldn't connect to rabbitmq server, aborting. Try option '--rabbitIP'")
             exit()
         rabbitmqchannel = rabbitmqConnection.channel()
-        rabbitmqchannel.queue_declare(queue=options.exchange)
+        rabbitmqchannel.queue_declare(queue=options.exchange) # We don't need queues
 
     # make bulks but dont send them
     c = 1
@@ -183,6 +183,3 @@ if __name__ == '__main__':
             print("looping data")
             dataIndex = 0
     rabbitmqConnection.close()
-
-
-

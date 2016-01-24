@@ -2,7 +2,7 @@ package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.Gateway;
+import de.bht.mmi.iot.model.Gateway;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface GatewayService {
@@ -13,7 +13,7 @@ public interface GatewayService {
 
     Gateway getGateway(String gatewayId) throws EntityNotFoundException;
 
-    Gateway createGateway(Gateway gateway);
+    Gateway createGateway(Gateway gateway) throws EntityNotFoundException;
 
     Gateway updateGateway(String gatewayId, Gateway gateway, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;

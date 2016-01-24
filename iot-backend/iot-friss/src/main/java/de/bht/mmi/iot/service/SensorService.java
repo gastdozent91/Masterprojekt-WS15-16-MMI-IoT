@@ -4,8 +4,8 @@ import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.Sensor;
-import de.bht.mmi.iot.model.rest.User;
+import de.bht.mmi.iot.model.Sensor;
+import de.bht.mmi.iot.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface SensorService {

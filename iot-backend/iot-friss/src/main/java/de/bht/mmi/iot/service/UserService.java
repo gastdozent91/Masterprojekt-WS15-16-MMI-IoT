@@ -4,7 +4,7 @@ import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.exception.EntityExistsException;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.rest.User;
+import de.bht.mmi.iot.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
