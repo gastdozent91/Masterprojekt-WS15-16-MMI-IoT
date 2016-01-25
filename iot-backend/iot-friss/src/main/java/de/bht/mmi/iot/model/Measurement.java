@@ -15,7 +15,9 @@ public class Measurement {
     @Id
     private MeasurementId measurementId;
 
-    private String data;
+    private double[] acceleration;
+
+    private double[] orientation;
 
     @DynamoDBHashKey(attributeName = DbConstants.ATTRIBUTE_SENSOR_ID)
     public String getSensorId() {
@@ -42,11 +44,19 @@ public class Measurement {
         measurementId.setTimeOfMeasurement(timeOfMeasurement);
     }
 
-    public String getData() {
-        return data;
+    public double[] getOrientation() {
+        return orientation;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setOrientation(double[] orientation) {
+        this.orientation = orientation;
+    }
+
+    public double[] getAcceleration() {
+        return acceleration;
+    }
+
+    public void setAcceleration(double[] acceleration) {
+        this.acceleration = acceleration;
     }
 }
