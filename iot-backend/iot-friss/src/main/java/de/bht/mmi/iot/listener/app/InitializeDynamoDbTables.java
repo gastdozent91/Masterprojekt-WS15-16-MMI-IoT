@@ -5,11 +5,9 @@ import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.exception.EntityExistsException;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.Cluster;
-import de.bht.mmi.iot.model.Gateway;
-import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.model.User;
+import de.bht.mmi.iot.model.*;
 import de.bht.mmi.iot.service.*;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +50,9 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private MeasurementService measurementService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -151,6 +152,17 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         clusterList.add(cluster.getId());
         gatewayService.updateGateway(gateway.getId(),gateway,userDetails);
         LOGGER.info(String.format("Added Cluster %s to Gateway %s",cluster.getName(),gateway.getName()));
+
+        final Measurement measurement = new Measurement();
+        measurement.setSensorId(sensor.getId());
+        measurement.setTimeOfMeasurement(DateTime.now());
+        measurementService.save(measurement);
+
+        final Measurement measurement1 = new Measurement();
+        measurement1.setSensorId(sensor.getId());
+        measurement1.setTimeOfMeasurement(DateTime.now());
+        measurementService.save(measurement1);
+
 
     }
 

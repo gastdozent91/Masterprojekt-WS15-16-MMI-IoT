@@ -1,0 +1,34 @@
+{
+	"id": "fc1bd037-3af9-da41-6a2c-76ef577eccdc",
+	"name": "IOT MEASUREMENT",
+	"description": "",
+	"order": [
+		"ef8a7898-68cd-f743-966c-8e6e7974d49e"
+	],
+	"folders": [],
+	"timestamp": 1453747448022,
+	"owner": 0,
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "ef8a7898-68cd-f743-966c-8e6e7974d49e",
+			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
+			"url": "http://localhost:8080/iot-friss/measurement?sensor_id=d8c6af7a-26d9-45fa-bf40-dd66b1fb93f6&after=2016-01-25T18:30:48.444Z&sort_order=asc&page=0&page_size=50",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": "",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1453747685587,
+			"name": "GET MEASUREMENT",
+			"description": "",
+			"collectionId": "fc1bd037-3af9-da41-6a2c-76ef577eccdc",
+			"responses": []
+		}
+	]
+}
