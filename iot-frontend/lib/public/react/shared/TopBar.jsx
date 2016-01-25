@@ -8,6 +8,7 @@ var TopBar = React.createClass({
   },
 
   getInitialState: function() {
+    console.log('user', this.props.user);
     return {
       infoStyle: {},
       isInfo: false

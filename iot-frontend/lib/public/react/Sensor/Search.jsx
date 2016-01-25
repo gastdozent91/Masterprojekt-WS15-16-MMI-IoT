@@ -13,6 +13,7 @@ var Search = React.createClass({
   },
 
   handleSearchChange: function() {
+    //TODO: enable sensortype again
     var input = this.refs.search.value.toLowerCase();
     var checkName = input.indexOf('id:') > -1
       , checkLocation = input.indexOf('location:') > -1
@@ -53,10 +54,10 @@ var Search = React.createClass({
           value = dic.location;
           bool = sensor.location.toLowerCase().indexOf(value) > -1;
         }
-        if (bool && checkType) {
-          value = dic.type;
-          bool = sensor.sensorType.toLowerCase().indexOf(value) > -1;
-        }
+        //if (bool && checkType) {
+          //value = dic.type;
+          //bool = sensor.sensorType.toLowerCase().indexOf(value) > -1;
+        //}
         if (bool && checkGateway) {
           value = dic.gateway;
           bool = sensor.attachedGateway.toLowerCase().indexOf(value) > -1;
@@ -73,8 +74,8 @@ var Search = React.createClass({
         if (bool) return true;
         bool = sensor.attachedGateway.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
-        bool = sensor.sensorType.toLowerCase().indexOf(input) > -1;
-        if (bool) return true;
+        //bool = sensor.sensorType.toLowerCase().indexOf(input) > -1;
+        //if (bool) return true;
       });
       this.props.setSensors(sensors);
     }

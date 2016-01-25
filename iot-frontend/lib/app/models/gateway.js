@@ -34,7 +34,7 @@ me.getOne = (user, gatewayname) => {
 me.update = (user, gatewayToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/gateway/' + gatewayToUpdate.Username)
+      .put(endpoint + '/gateway/' + gatewayToUpdate.username)
       .send(gatewayToUpdate)
       .auth(user.Username, user.password)
       .end((err, res) => {

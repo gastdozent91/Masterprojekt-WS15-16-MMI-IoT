@@ -34,7 +34,7 @@ me.getOne = (user, clustername) => {
 me.update = (user, clusterToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/cluster/' + clusterToUpdate.Username)
+      .put(endpoint + '/cluster/' + clusterToUpdate.username)
       .send(clusterToUpdate)
       .auth(user.Username, user.password)
       .end((err, res) => {

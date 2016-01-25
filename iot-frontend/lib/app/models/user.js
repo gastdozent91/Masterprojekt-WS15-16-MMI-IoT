@@ -19,10 +19,10 @@ me.getAll = (user) => {
   });
 };
 
-me.getOne = (user, Username) => {
+me.getOne = (user, username) => {
   return new Bluebird((resolve, reject) => {
     request
-      .get(endpoint + '/user/' + Username)
+      .get(endpoint + '/user/' + username)
       .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
@@ -34,7 +34,7 @@ me.getOne = (user, Username) => {
 me.update = (user, userToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/user/' + userToUpdate.Username)
+      .put(endpoint + '/user/' + userToUpdate.username)
       .send(userToUpdate)
       .auth(user.Username, user.password)
       .end((err, res) => {
@@ -100,7 +100,7 @@ me.setSensors = (user, userWithSensors, sensors) => {
 var db = dynamodb.db;
 var doc = dynamodb.doc;
 
-me.find = function(Username, cb) {
+me.find = function(username, cb) {
   var params = {
     TableName: 'User',
     KeyConditionExpression: '#n = :n',
@@ -108,7 +108,7 @@ me.find = function(Username, cb) {
       "#n": 'Username'
     },
     ExpressionAttributeValues: {
-      ":n": Username
+      ":n": username
     }
   };
   doc.query(params, function(err, data) {
