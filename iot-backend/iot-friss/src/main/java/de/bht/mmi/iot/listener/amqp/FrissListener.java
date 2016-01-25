@@ -1,9 +1,8 @@
 package de.bht.mmi.iot.listener.amqp;
 
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import de.bht.mmi.iot.constants.AmqpConstants;
 import de.bht.mmi.iot.model.Measurement;
-import de.bht.mmi.iot.repository.MeasurementRepository;
+import de.bht.mmi.iot.service.MeasurementService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +26,7 @@ public class FrissListener {
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    private MeasurementRepository measurementRepository;
-
-    @Autowired
-    private DynamoDB dynamoDB;
+    private MeasurementService measurementService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FrissListener.class);
 
@@ -41,23 +37,11 @@ public class FrissListener {
     )
     public void processFriss(@Headers Map<String, String> amqpHeaders, String data) {
         LOGGER.info("Received message with payload: {} and amqpHeaders: {}.", data, amqpHeaders);
-
-
-/*        TableWriteItems tableWriteItems =
-                new TableWriteItems(DbConstants.TABLENAME_MEASUREMENT).withItemsToPut(
-                        new Item()
-                        .withPrimaryKey(DbConstants.ATTRIBUTE_SENSOR_ID, "abc")
-                        .withJSON("document", json)
-                );
-
-        dynamoDB.batchWriteItem(tableWriteItems);*/
-
         Measurement m = new Measurement();
         m.setSensorId("abc");
         m.setTimeOfMeasurement(DateTime.now());
-        m.setAcceleration(new double[]{0.3, 0.5});
-        measurementRepository.save(Arrays.asList(m));
-
+        m.setAcceleration(Arrays.asList(1, 0.4, 0.4));
+        measurementService.save(Arrays.asList(m));
 
     }
 
