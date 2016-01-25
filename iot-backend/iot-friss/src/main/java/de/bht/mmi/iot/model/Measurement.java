@@ -15,6 +15,8 @@ public class Measurement {
     @Id
     private MeasurementId measurementId;
 
+    private String data;
+
     @DynamoDBHashKey(attributeName = DbConstants.ATTRIBUTE_SENSOR_ID)
     public String getSensorId() {
         return measurementId != null ? measurementId.getSensorId() : null;
@@ -40,4 +42,11 @@ public class Measurement {
         measurementId.setTimeOfMeasurement(timeOfMeasurement);
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 }
