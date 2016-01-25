@@ -11,7 +11,7 @@ me.getAll = (user) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/sensor')
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -23,7 +23,7 @@ me.getOne = (user, sensorname) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/sensor/' + sensorname)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -34,9 +34,9 @@ me.getOne = (user, sensorname) => {
 me.update = (user, sensorToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/sensor/' + sensorToUpdate.username)
+      .put(endpoint + '/sensor/' + sensorToUpdate.Username)
       .send(sensorToUpdate)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -48,7 +48,7 @@ me.delete = (user, sensorToDelete) => {
   return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/sensor/' + sensorToDelete)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -61,7 +61,7 @@ me.create = (user, sensorToCreate) => {
     request
       .post(endpoint + '/sensor')
       .send(sensorToCreate)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);

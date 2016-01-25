@@ -11,7 +11,7 @@ me.getAll = (user) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/user')
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -19,11 +19,11 @@ me.getAll = (user) => {
   });
 };
 
-me.getOne = (user, username) => {
+me.getOne = (user, Username) => {
   return new Bluebird((resolve, reject) => {
     request
-      .get(endpoint + '/user/' + username)
-      .auth(user.username, user.password)
+      .get(endpoint + '/user/' + Username)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -34,9 +34,9 @@ me.getOne = (user, username) => {
 me.update = (user, userToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/user/' + userToUpdate.username)
+      .put(endpoint + '/user/' + userToUpdate.Username)
       .send(userToUpdate)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -48,7 +48,7 @@ me.delete = (user, userToDelete) => {
   return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/user/' + userToDelete)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -61,7 +61,7 @@ me.create = (user, userToCreate) => {
     request
       .post(endpoint + '/user')
       .send(userToCreate)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -73,7 +73,7 @@ me.getSensors = (user, userWithSensors) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/user/' + userWithSensors + '/sensor')
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -86,7 +86,7 @@ me.setSensors = (user, userWithSensors, sensors) => {
     request
       .put(endpoint + '/user/' + userWithSensors + '/sensor')
       .send(sensors)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -100,15 +100,15 @@ me.setSensors = (user, userWithSensors, sensors) => {
 var db = dynamodb.db;
 var doc = dynamodb.doc;
 
-me.find = function(username, cb) {
+me.find = function(Username, cb) {
   var params = {
     TableName: 'User',
     KeyConditionExpression: '#n = :n',
     ExpressionAttributeNames:{
-      "#n": 'username'
+      "#n": 'Username'
     },
     ExpressionAttributeValues: {
-      ":n": username
+      ":n": Username
     }
   };
   doc.query(params, function(err, data) {

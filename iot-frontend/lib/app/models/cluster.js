@@ -11,7 +11,7 @@ me.getAll = (user) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/cluster')
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -23,7 +23,7 @@ me.getOne = (user, clustername) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/cluster/' + clustername)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -34,9 +34,9 @@ me.getOne = (user, clustername) => {
 me.update = (user, clusterToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/cluster/' + clusterToUpdate.username)
+      .put(endpoint + '/cluster/' + clusterToUpdate.Username)
       .send(clusterToUpdate)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -48,7 +48,7 @@ me.delete = (user, clusterToDelete) => {
   return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/cluster/' + clusterToDelete)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -61,7 +61,7 @@ me.create = (user, clusterToCreate) => {
     request
       .post(endpoint + '/cluster')
       .send(clusterToCreate)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);

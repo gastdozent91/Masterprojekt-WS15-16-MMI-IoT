@@ -11,7 +11,7 @@ me.getAll = (user) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/gateway')
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -23,7 +23,7 @@ me.getOne = (user, gatewayname) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/gateway/' + gatewayname)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -34,9 +34,9 @@ me.getOne = (user, gatewayname) => {
 me.update = (user, gatewayToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/gateway/' + gatewayToUpdate.username)
+      .put(endpoint + '/gateway/' + gatewayToUpdate.Username)
       .send(gatewayToUpdate)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -48,7 +48,7 @@ me.delete = (user, gatewayToDelete) => {
   return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/gateway/' + gatewayToDelete)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -61,7 +61,7 @@ me.create = (user, gatewayToCreate) => {
     request
       .post(endpoint + '/gateway')
       .send(gatewayToCreate)
-      .auth(user.username, user.password)
+      .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
