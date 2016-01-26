@@ -1,6 +1,7 @@
 package de.bht.mmi.iot.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.bht.mmi.iot.constants.DbConstants;
 import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
 import org.joda.time.DateTime;
@@ -21,6 +22,7 @@ public class Measurement {
     private String location;
 
     @DynamoDBHashKey(attributeName = DbConstants.ATTRIBUTE_SENSOR_ID)
+    @JsonProperty("id")
     public String getSensorId() {
         return measurementId != null ? measurementId.getSensorId() : null;
     }
@@ -34,6 +36,7 @@ public class Measurement {
 
     @DynamoDBRangeKey(attributeName = DbConstants.ATTRIBUTE_TIME_OF_MEASUREMENT)
     @DynamoDBMarshalling(marshallerClass = JodaDateTimeMarshaller.class)
+    @JsonProperty("time")
     public DateTime getTimeOfMeasurement() {
         return measurementId != null ? measurementId.getTimeOfMeasurement() : null;
     }
