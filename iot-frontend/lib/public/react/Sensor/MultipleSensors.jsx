@@ -76,7 +76,7 @@ var MultipleSensors = React.createClass({
     var state = sensor.active ? 'active' : 'inactive';
     var sensorClass = 'row ' + state + ' selectable-row';
     return (
-      <a href='/sensors?size=1' key={'sensor #'+i}>
+      <a href={'/sensor/' + sensor.id} key={'sensor #'+i}>
         <div className={sensorClass}>
           <div className='large-3 columns'>
             {sensor.id}
