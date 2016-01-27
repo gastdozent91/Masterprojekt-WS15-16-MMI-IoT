@@ -1,10 +1,9 @@
 package de.bht.mmi.iot.listener.amqp;
 
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bht.mmi.iot.constants.AmqpConstants;
 import de.bht.mmi.iot.model.Measurement;
-import de.bht.mmi.iot.repository.MeasurementRepository;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -17,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.Map;
 
 @Component
@@ -27,10 +26,10 @@ public class FrissListener {
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    private MeasurementRepository measurementRepository;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    private DynamoDB dynamoDB;
+    private DynamoDBMapper dynamoDBMapper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FrissListener.class);
 
@@ -40,25 +39,13 @@ public class FrissListener {
             key = AmqpConstants.ALL_MESSAGE_ROUTING_KEY)
     )
     public void processFriss(@Headers Map<String, String> amqpHeaders, String data) {
-        LOGGER.info("Received message with payload: {} and amqpHeaders: {}.", data, amqpHeaders);
-
-
-/*        TableWriteItems tableWriteItems =
-                new TableWriteItems(DbConstants.TABLENAME_MEASUREMENT).withItemsToPut(
-                        new Item()
-                        .withPrimaryKey(DbConstants.ATTRIBUTE_SENSOR_ID, "abc")
-                        .withJSON("document", json)
-                );
-
-        dynamoDB.batchWriteItem(tableWriteItems);*/
-
-        Measurement m = new Measurement();
-        m.setSensorId("abc");
-        m.setTimeOfMeasurement(DateTime.now());
-        m.setAcceleration(new double[]{0.3, 0.5});
-        measurementRepository.save(Arrays.asList(m));
-
-
+        LOGGER.info("Received message with amqpHeaders: {}", amqpHeaders);
+        try {
+            final Measurement[] measurements = objectMapper.readValue(data, Measurement[].class);
+            dynamoDBMapper.batchSave(measurements);
+        } catch (IOException e) {
+            LOGGER.error("Unable to parse bulk message body", e);
+        }
     }
 
 }

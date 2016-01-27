@@ -20,7 +20,6 @@ public class SensorPostDto {
     @NotNull
     private List<String> sensorTypes;
 
-    @NotNull
     private String attachedGateway;
 
     @NotNull

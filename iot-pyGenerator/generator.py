@@ -84,7 +84,7 @@ def formatData():
             data = sample['data'][SensorId]
             result.append({
                 'id': SensorId,
-                'time': recording_timezone.localize(ts).strftime('%Y-%m-%d %H:%M:%S.%f %Z'),
+                'time': recording_timezone.localize(ts).strftime('%Y-%m-%dT%H:%M:%S'), # TODO: ISO 8601 needed
                 'acceleration': data['acceleration'],
                 'orientation': data['orientation'],
                 'location': recording_location
@@ -98,20 +98,16 @@ def getBulkLen():
     return random.randrange(minSize, maxSize)
 
 
-def sendBulk(senserDataBulk, optionsMap):
+def sendBulk(sensorDataBulk, optionsMap):
     if optionsMap.simulated:
-        print("sending bulk of data, sensorValues: {}".format(len(senserDataBulk)))
+        print("sending bulk of data, sensorValues: {}".format(len(sensorDataBulk)))
     else:
-        print("sending bulk of data, sensorValues: {}".format(len(senserDataBulk)))
+        print("sending bulk of data, sensorValues: {}".format(len(sensorDataBulk)))
 
-        bulk = "{"
-        for sampleJSON in senserDataBulk:
-            bulk += str(sampleJSON)
-        bulk += "}"
-        rabbitmqchannel.basic_publish(exchange=optionsMap.exchange,
-                                      routing_key="#", # routing_key is sensor_id
-                                      body=bulk)
-
+        rabbitmqchannel.basic_publish(optionsMap.exchange,
+                                      "", # TODO: routing_key is sensor_id
+                                      json.dumps(sensorDataBulk),
+                                      pika.BasicProperties(content_type="text/plain", delivery_mode=1))
 
 if __name__ == '__main__':
 
@@ -166,7 +162,7 @@ if __name__ == '__main__':
             print("Couldn't connect to rabbitmq server, aborting. Try option '--rabbitIP'")
             exit()
         rabbitmqchannel = rabbitmqConnection.channel()
-        rabbitmqchannel.queue_declare(queue=options.exchange) # We don't need queues
+        rabbitmqchannel.queue_declare(queue=options.exchange) # TODO: ?, we don't need queues
 
     # make bulks but dont send them
     c = 1

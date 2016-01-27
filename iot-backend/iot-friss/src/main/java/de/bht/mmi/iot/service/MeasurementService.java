@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 
 public interface MeasurementService {
 
+    Iterable<Measurement> save(Iterable<Measurement> measurements);
+
     Measurement save(Measurement measurement);
 
     Page<Measurement> findBySensorIdAndTimeOfMeasurementBefore(

@@ -5,7 +5,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import org.apache.commons.lang3.StringUtils;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
@@ -49,11 +48,6 @@ public class DynamoDBConfig {
     @Bean
     public AWSCredentials amazonAWSCredentials() {
         return new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey);
-    }
-
-    @Bean
-    public DynamoDB dynamoDB() {
-        return new DynamoDB(amazonDynamoDB());
     }
 
     @Bean

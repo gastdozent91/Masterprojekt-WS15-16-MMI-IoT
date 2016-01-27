@@ -1,13 +1,13 @@
 package de.bht.mmi.iot.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshalling;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.bht.mmi.iot.constants.DbConstants;
 import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
+
+import java.util.List;
 
 @DynamoDBTable(tableName = DbConstants.TABLENAME_MEASUREMENT)
 public class Measurement {
@@ -15,11 +15,14 @@ public class Measurement {
     @Id
     private MeasurementId measurementId;
 
-    private double[] acceleration;
+    private List<Number> acceleration;
 
-    private double[] orientation;
+    private List<Number> orientation;
+
+    private String location;
 
     @DynamoDBHashKey(attributeName = DbConstants.ATTRIBUTE_SENSOR_ID)
+    @JsonProperty("id")
     public String getSensorId() {
         return measurementId != null ? measurementId.getSensorId() : null;
     }
@@ -33,6 +36,7 @@ public class Measurement {
 
     @DynamoDBRangeKey(attributeName = DbConstants.ATTRIBUTE_TIME_OF_MEASUREMENT)
     @DynamoDBMarshalling(marshallerClass = JodaDateTimeMarshaller.class)
+    @JsonProperty("time")
     public DateTime getTimeOfMeasurement() {
         return measurementId != null ? measurementId.getTimeOfMeasurement() : null;
     }
@@ -44,19 +48,28 @@ public class Measurement {
         measurementId.setTimeOfMeasurement(timeOfMeasurement);
     }
 
-    public double[] getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(double[] orientation) {
-        this.orientation = orientation;
-    }
-
-    public double[] getAcceleration() {
+    public List<Number> getAcceleration() {
         return acceleration;
     }
 
-    public void setAcceleration(double[] acceleration) {
+    public void setAcceleration(List<Number> acceleration) {
         this.acceleration = acceleration;
     }
+
+    public List<Number> getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(List<Number> orientation) {
+        this.orientation = orientation;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
 }

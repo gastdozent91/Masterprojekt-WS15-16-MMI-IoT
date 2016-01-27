@@ -21,6 +21,11 @@ public class MeasurementServiceImpl implements MeasurementService {
     private SensorService sensorService;
 
     @Override
+    public Iterable<Measurement> save(Iterable<Measurement> measurements) {
+        return measurementRepository.save(measurements);
+    }
+
+    @Override
     public Measurement save(Measurement measurement) {
         return measurementRepository.save(measurement);
     }
