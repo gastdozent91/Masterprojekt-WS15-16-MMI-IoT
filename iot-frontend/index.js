@@ -109,6 +109,12 @@ app.get('/user/:username',
   user.renderUser
 );
 
+app.get('/sensor/:id',
+  login.shouldBeLoggedIn,
+  sensor.getOne,
+  sensor.render
+);
+
 // API
 
 app.post('/user',

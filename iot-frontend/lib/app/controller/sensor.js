@@ -18,6 +18,18 @@ me.getAll = (req, res, next) => {
   });
 };
 
+me.getOne = (req, res, next) => {
+  Model.getOne(req.user, req.params.id)
+  .then(sensor => {
+    req.sensors = [sensor];
+    next();
+    //res.json(users);
+  })
+  .catch(err => {
+    res.json(err);
+  });
+};
+
 me.create = (req, res, next) => {
   Model.create(req.user, req.body)
   .then(result => {
