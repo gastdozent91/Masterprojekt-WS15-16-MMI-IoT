@@ -29,7 +29,7 @@ var SingleSensor = React.createClass({
       var value = that.props.sensor[field] || 'missing';
       var text = value;
       return(
-        <tr className='row' key={field}>
+        <tr key={field}>
           <td>{field}</td>
           <td>{field === 'owner' ? <a href={"/user/" + value}>{value}</a> : value}</td>
         </tr>
@@ -65,7 +65,7 @@ var SingleSensor = React.createClass({
           <div className='callout'>
               <h3>{this.props.sensor.name}</h3>
               <table style={{width: '100%'}}>
-                <tbody style={{borderWidth: '0px'}}>
+                <tbody style={{borderWidth: 0}}>
                   {this.renderFields()}
                 </tbody>
               </table>

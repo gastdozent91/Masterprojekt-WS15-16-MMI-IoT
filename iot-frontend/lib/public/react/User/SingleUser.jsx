@@ -37,14 +37,14 @@ var SingleUser = React.createClass({
         text = value || 'missing';
       }
       return (
-        <div className='row' key={field}>
-          <div className='large-4 columns'>
+        <tr key={field}>
+          <td>
             {field}
-          </div>
-          <div className='large-8 columns'>
+          </td>
+          <td>
             {text}
-          </div>
-        </div>
+          </td>
+        </tr>
       );
     });
   },
@@ -63,9 +63,11 @@ var SingleUser = React.createClass({
     return this.props.userToCheck.sensorList.map(function(sensor) {
       return (
         <div className='row' key={sensor}>
-          <div className='columns'>
-            {sensor}
-          </div>
+          <a href={'/sensor/' + sensor}>
+            <div className='columns selectable-row'>
+              {sensor}
+            </div>
+          </a>
         </div>
       );
     });
@@ -75,10 +77,16 @@ var SingleUser = React.createClass({
     return (
       <div>
         <TopBar user={this.props.user} />
-        <div className='row column' style={{float: 'none', marginTop: 10}}>
+        <div className='row column' style={{float: 'none', marginTop: 25}}>
           <div className='callout'>
             <h3>{this.props.userToCheck.username}</h3>
-            {this.renderFields()}
+            <table style={{width: '100%'}}>
+              <tbody style={{borderWidth: 0}}>
+                {this.renderFields()}
+              </tbody>
+            </table>
+          </div>
+          <div className='callout'>
             <h5>Sensors</h5>
             {this.renderSensors()}
           </div>
@@ -89,4 +97,3 @@ var SingleUser = React.createClass({
 });
 
 module.exports = SingleUser;
-
