@@ -25,6 +25,11 @@ public class WebAppInitializer implements WebApplicationInitializer {
     private AnnotationConfigWebApplicationContext getContext() {
         final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation("de.bht.mmi.iot.config");
+        String springActiveProfileName = System.getenv("SPRING_PROFILES_ACTIVE");
+        if (springActiveProfileName == null) {
+            springActiveProfileName = "development";
+        }
+        context.getEnvironment().setActiveProfiles(springActiveProfileName);
         return context;
     }
 

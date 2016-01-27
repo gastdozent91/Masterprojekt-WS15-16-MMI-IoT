@@ -15,10 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +27,21 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-@PropertySource("classpath:app.properties")
 public class InitializeDynamoDbTables implements ApplicationListener<ContextRefreshedEvent> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(InitializeDynamoDbTables.class);
 
-    @Autowired
-    private Environment env;
+    @Value("${db.init.dummy_data}")
+    private boolean addDummyData;
+
+    @Value("${db.init.table.mode}")
+    private String dbInitModeValue;
+
+    @Value("${api.user.admin.username}")
+    private String adminUsername;
+
+    @Value("${api.user.admin.password}")
+    private String adminPassword;
 
     @Autowired
     private TableService tableService;
@@ -53,7 +60,8 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        final DbInitMode dbInitMode = DbInitMode.fromPropertyValue(env.getRequiredProperty("db.init.table.mode"));
+        final DbInitMode dbInitMode = DbInitMode.fromPropertyValue(dbInitModeValue);
+        LOGGER.info(String.format("Initialize database in mode: '%s'", dbInitMode.getPropertyValue()));
         try {
             switch (dbInitMode) {
                 case VALIDATE:
@@ -62,9 +70,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
                 case DROP_CREATE:
                     recreateTables();
                     createAdmin();
-                    final boolean shouldAddDummyData =
-                            Boolean.parseBoolean(env.getRequiredProperty("db.init.dummy_data"));
-                    if (shouldAddDummyData) {
+                    if (addDummyData) {
                         addDummyData();
                     }
                     break;
@@ -178,8 +184,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     }
 
     private void createAdmin() throws EntityExistsException {
-        final User admin = new User(env.getRequiredProperty("api.user.admin.username"),
-                env.getRequiredProperty("api.user.admin.password"));
+        final User admin = new User(adminUsername, adminPassword);
         admin.addRole(RoleConstants.ROLE_ADMIN);
         userService.saveUser(admin);
     }

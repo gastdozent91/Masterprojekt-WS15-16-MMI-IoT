@@ -8,30 +8,31 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import org.apache.commons.lang3.StringUtils;
 import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
 
 @Configuration
-@PropertySource("classpath:app.properties")
 @EnableDynamoDBRepositories(basePackages = "de.bht.mmi.iot.repository")
 public class DynamoDBConfig {
 
-    @Autowired
-    private Environment env;
+    private String s;
 
+    @Value("${amazon.dynamodb.endpoint}")
     private String amazonDynamoDBEndpoint;
 
+    @Value("${amazon.aws.accesskey}")
     private String amazonAWSAccessKey;
 
+    @Value("${amazon.aws.secretkey}")
     private String amazonAWSSecretKey;
 
+    @Value("${amazon.dynamodb.read_capacity_units}")
     private Long readCapacityUnitsPerSecond;
 
+    @Value("${amazon.dynamodb.write_capacity_units}")
     private Long writeCapacityUnitsPerSecond;
 
     private ProvisionedThroughput provisionedThroughput;
@@ -57,12 +58,6 @@ public class DynamoDBConfig {
 
     @PostConstruct
     private void init() {
-        amazonDynamoDBEndpoint = env.getRequiredProperty("amazon.dynamodb.endpoint");
-        amazonAWSAccessKey = env.getRequiredProperty("amazon.aws.accesskey");
-        amazonAWSSecretKey = env.getRequiredProperty("amazon.aws.secretkey");
-
-        readCapacityUnitsPerSecond = Long.valueOf(env.getRequiredProperty("amazon.dynamodb.read_capacity_units"));
-        writeCapacityUnitsPerSecond = Long.valueOf(env.getRequiredProperty("amazon.dynamodb.write_capacity_units"));
         provisionedThroughput = new ProvisionedThroughput(readCapacityUnitsPerSecond, writeCapacityUnitsPerSecond);
     }
 

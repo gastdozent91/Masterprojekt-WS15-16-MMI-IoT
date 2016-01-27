@@ -6,28 +6,45 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 
 @Configuration
 @EnableRabbit
-@PropertySource("classpath:app.properties")
 public class AmqpConfig {
 
-    @Autowired
-    private Environment env;
+    @Value("${amqp.rabbitmq.host}")
+    private String host;
+
+    @Value("${amqp.rabbitmq.port}")
+    private int port;
+
+    @Value("${amqp.rabbitmq.username}")
+    private String username;
+
+    @Value("${amqp.rabbitmq.password}")
+    private String password;
+
+    @Value("${amqp.rabbitmq.channel_cache_size}")
+    private int channelCacheSize;
+
+    @Value("${amqp.rabbitmq.concurrent_consumers}")
+    private int concurrentConsumers;
+
+    @Value("${amqp.rabbitmq.max_concurrent_consumers}")
+    private int maxConcurrentConsumers;
 
     @Bean
     public ConnectionFactory connectionFactory() {
+        System.out.println("---- " + host);
+        System.out.println("---- " + port);
         final CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
-                env.getRequiredProperty("rabbit.host"),
-                Integer.valueOf(env.getRequiredProperty("rabbit.port")));
-        connectionFactory.setUsername(env.getRequiredProperty("rabbit.username"));
-        connectionFactory.setPassword(env.getRequiredProperty("rabbit.password"));
-        connectionFactory.setChannelCacheSize(Integer.valueOf(env.getRequiredProperty("rabbit.channel_cache_size")));
+                host,
+                port);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        connectionFactory.setChannelCacheSize(channelCacheSize);
         return connectionFactory;
     }
 
@@ -40,8 +57,8 @@ public class AmqpConfig {
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
         final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
-        factory.setConcurrentConsumers(Integer.valueOf(env.getRequiredProperty("rabbit.concurrent_consumers")));
-        factory.setMaxConcurrentConsumers(Integer.valueOf(env.getRequiredProperty("rabbit.max_concurrent_consumers")));
+        factory.setConcurrentConsumers(concurrentConsumers);
+        factory.setMaxConcurrentConsumers(maxConcurrentConsumers);
         return factory;
     }
 
@@ -50,6 +67,5 @@ public class AmqpConfig {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         return rabbitTemplate;
     }
-
 
 }

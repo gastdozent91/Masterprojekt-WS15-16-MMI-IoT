@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 @ComponentScan("de.bht.mmi.iot")
@@ -33,8 +31,19 @@ public class AppConfig {
     }
 
     @Bean
-    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
+    @Profile("development")
+    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurerDev() {
+        final PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
+        pspc.setLocation(new ClassPathResource("application-development.properties"));
+        return pspc;
+    }
+
+    @Bean
+    @Profile("production")
+    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurerProd() {
+        final PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
+        pspc.setLocation(new ClassPathResource("application-production.properties"));
+        return pspc;
     }
 
 }

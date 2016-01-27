@@ -43,7 +43,7 @@ public class FrissListener {
     public void processFriss(@Headers Map<String, String> amqpHeaders, String data) {
         LOGGER.info("Received message with amqpHeaders: {}", amqpHeaders);
         try {
-            final Measurement[] measurements = objectMapper.readValue(data, Measurement[].class);
+            final Object[] measurements = objectMapper.readValue(data, Measurement[].class);
             dynamoDBMapper.batchSave(measurements);
         } catch (IOException e) {
             LOGGER.error("Unable to parse bulk message body", e);
