@@ -10,6 +10,14 @@ Copy [app-example.properties](./docs/resources/app-example.properties) to
 [./iot-friss/src/main/resources/](./iot-friss/src/main/resources/),
 rename it to app.properties and customise values like credentials and urls.
 
+## Common problems
+
+### Required key [...] not found
+
+Please check the spelling of the keys in app.properties.
+If required key is missing, please compare app.properties
+with the app-exmaple.properties and copy missing key-value pairs.
+
 ## Useful links, infos, programms etc.
 * [AMQP Model - RabbitMQ](https://www.rabbitmq.com/tutorials/amqp-concepts.html)
 * [Spring AMQP](http://docs.spring.io/spring-amqp/reference/html/)
