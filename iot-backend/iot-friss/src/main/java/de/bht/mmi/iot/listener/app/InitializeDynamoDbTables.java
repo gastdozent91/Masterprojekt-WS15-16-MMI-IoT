@@ -1,5 +1,6 @@
 package de.bht.mmi.iot.listener.app;
 
+import de.bht.mmi.iot.config.DbInitMode;
 import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.exception.EntityExistsException;
@@ -10,6 +11,7 @@ import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -50,40 +51,53 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     @Autowired
     private ClusterService clusterService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private MeasurementService measurementService;
-
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        // recreate tables and add dummy data
-        LOGGER.info("Recreate tables");
-        recreateTables();
-
+        final DbInitMode dbInitMode = DbInitMode.fromPropertyValue(env.getRequiredProperty("db.init.table.mode"));
         try {
-            // Admin user
-            createAdmin();
-            LOGGER.info(String.format("User %s created", env.getRequiredProperty("api.user.admin.username")));
-
-            // DummyData
-            final String keyDbInitDummyData = "db.init.dummy_data";
-            final String dbInitDummyData = env.getProperty(keyDbInitDummyData);
-            if (dbInitDummyData == null) {
-                LOGGER.warn(String.format("Property '%s' not set. No dummy data will be added to database", keyDbInitDummyData));
+            switch (dbInitMode) {
+                case VALIDATE:
+                    validateTables();
+                    break;
+                case DROP_CREATE:
+                    recreateTables();
+                    createAdmin();
+                    final boolean shouldAddDummyData =
+                            Boolean.parseBoolean(env.getRequiredProperty("db.init.dummy_data"));
+                    if (shouldAddDummyData) {
+                        addDummyData();
+                    }
+                    break;
+                default:
+                    throw new RuntimeException(String.format("Unsupported dbInitMode: '%s' ",
+                            dbInitMode.getPropertyValue()));
             }
+        } catch (NotAuthorizedException | EntityNotFoundException | EntityExistsException e) {
+            throw new RuntimeException(String.format("Unable to initialize database in mode: '%s'",
+                    dbInitMode.getPropertyValue()), e);
+        }
+    }
 
-            final boolean shouldAddDummyData = Boolean.parseBoolean(dbInitDummyData);
-            if (shouldAddDummyData) {
-                addDummyData();
+    /**
+     * Poor validation - checks only if tables with names exists
+     */
+    private void validateTables() {
+        LOGGER.info("Validate tables");
+        List<String> notFoundTables = new ArrayList<>();
+        for (String tableName : tableService.getTableNames()) {
+            if (!tableService.doesTableExists(tableName)) {
+                notFoundTables.add(tableName);
             }
-        } catch (EntityExistsException | NotAuthorizedException | EntityNotFoundException e ) {
-            throw new RuntimeException("Error while initializing tables", e);
+        }
+        if (!notFoundTables.isEmpty()) {
+            throw new RuntimeException(String.format(
+                    "Table validation failed. The following tables are not present: %s",
+                    StringUtils.join(notFoundTables, ", ")));
         }
     }
 
     private void recreateTables() {
+        LOGGER.info("Recreate tables");
         final List<String> tableNames = tableService.getTableNames();
         deleteTables(tableNames.toArray(new String[tableNames.size()]));
 
@@ -103,7 +117,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         userService.saveUser(user);
         LOGGER.info(String.format("User %s created", user.getUsername()));
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername("admin");
+        UserDetails userDetails = userService.loadUserByUsername("admin");
 
         // Gateway
         Gateway gateway = gatewayService.createGateway(new Gateway("gateway1",user.getUsername()));
@@ -126,13 +140,13 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         Sensor sensor2 = sensorService.createSensor(
                 new SensorPostDto(true, "13.301172256,52.44152832,33.4", sensorTypes,
                         gateway.getId(), Collections.emptyList(), "Arm links"),
-                userDetailsService.loadUserByUsername("admin"));
+                userService.loadUserByUsername("admin"));
         LOGGER.info(String.format("Sensor %s created", sensor2.getId()));
 
         Sensor sensor3 = sensorService.createSensor(new SensorPostDto(true,
                 "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50", sensorTypes,
                 gateway.getId(),
-                Arrays.asList(cluster.getId()), "Kopf"), userDetailsService.loadUserByUsername("admin"));
+                Arrays.asList(cluster.getId()), "Kopf"), userService.loadUserByUsername("admin"));
         LOGGER.info(String.format("Sensor %s created", sensor3.getId()));
 
 

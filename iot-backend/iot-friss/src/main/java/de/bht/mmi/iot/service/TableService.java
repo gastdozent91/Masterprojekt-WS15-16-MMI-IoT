@@ -18,4 +18,6 @@ public interface TableService {
 
     void deleteTable(String tableName);
 
+    boolean doesTableExists(String tableName);
+
 }

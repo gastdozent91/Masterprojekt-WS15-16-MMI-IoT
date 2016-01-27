@@ -13,6 +13,7 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,7 @@ public class FrissListener {
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
+    @Qualifier("measurementObjectMapper")
     private ObjectMapper objectMapper;
 
     @Autowired

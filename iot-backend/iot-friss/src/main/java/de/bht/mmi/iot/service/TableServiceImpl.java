@@ -96,4 +96,8 @@ public class TableServiceImpl implements TableService {
         return String.format("Table '%s' status: %s", tableName, status);
     }
 
+    public boolean doesTableExists(String tableName) {
+        return Tables.doesTableExist(dynamoDB, tableName);
+    }
+
 }
