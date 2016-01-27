@@ -8,7 +8,13 @@ var SingleSensor = React.createClass({
 
   getInitialState: function() {
     return {
-      isLive: false
+      isLive: false,
+      fields: [
+        'id',
+        'name',
+        'owner',
+        'attachedGateway'
+      ]
     };
   },
 
@@ -18,7 +24,40 @@ var SingleSensor = React.createClass({
     this.setState({isLive: isLive});
   },
 
+  renderFields: function(){
+    var that = this;
+    return this.state.fields.map(function(field){
+      var value = that.props.sensor[field] || '';
+      var text;
+      return(
+        <div className='row' key={field}>
+          <div className='large-4 columns'>{field}</div>
+          <div className='large-8 columns'>{value}</div>
+        </div>
+      );
+    });
+  },
+
+  renderClusters:function(){
+    var that = this;
+    return this.props.sensor['attachedClusters'].map(function(cluster){
+      return(
+        <div className='row' key={cluster}>
+          <div className='large-12 columns'>{cluster}</div>
+        </div>
+      );
+    });
+  },
+
+  renderGraph: function(){
+    return (
+      <div className='row'>
+        <div className='large-12 columns' style={{border: '1px solid black',height:300}}>super meger krasse d3 Grafik</div>
+      </div>);
+  },
+
   render: function() {
+    console.log(this.props.sensor);
     return (
       <div>
         <div style={{textAlign: 'center', marginTop: 20}}>
@@ -39,6 +78,10 @@ var SingleSensor = React.createClass({
         <div className='row column' style={{float: 'none'}}>
           <div className='callout'>
             <h5>{this.props.sensor.name}</h5>
+            {this.renderFields()}
+            <h3>cluster</h3>
+            {this.renderClusters()}
+            {this.renderGraph()}
           </div>
         </div>
       </div>
@@ -47,4 +90,3 @@ var SingleSensor = React.createClass({
 });
 
 module.exports = SingleSensor;
-
