@@ -23,13 +23,15 @@ rabbit:
 # # NodeJS
 # # --------------------------------------
 # nodejs:
-#   build: docker/nodejs
+#   build: /home/maasch/projects/Masterprojekt-WS15-16-MMI-IoT/iot-frontend
 #   ports:
-#     - "8888:8888"
+#     - "8080:3000"
 #   container_name: iot-nodejs
+#   environment:
+#     - NODE_ENV=production
 #   links:
 #     - dynamodb
-#
+
 # Apache Tomcat
 # --------------------------------------
 tomcat:
