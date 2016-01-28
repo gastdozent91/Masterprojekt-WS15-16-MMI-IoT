@@ -1,6 +1,9 @@
 var React = require('react')
   , ReactDOM = require('react-dom/server')
   , Model = require('../models/gateway')
+  , SingleGateway = React.createFactory(
+      require('../../public/react/Gateway/SingleGateway')
+    )
   , Gateway = React.createFactory(
       require('../../public/react/Gateway')
     );
@@ -11,6 +14,17 @@ me.getAll = (req, res, next) => {
   Model.getAll(req.user)
   .then(gateways => {
     req.gateways = gateways;
+    next();
+  })
+  .catch(err => {
+    res.json(err);
+  });
+};
+
+me.getOne = (req, res, next) => {
+  Model.getOne(req.user, req.params.id)
+  .then(gateway => {
+    req.gateway = gateway;
     next();
   })
   .catch(err => {
@@ -29,13 +43,24 @@ me.create = (req, res, next) => {
 };
 
 me.render = function(req, res) {
-  var out = {
-    user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-    gateways: req.gateways
-  };
-  var gateway = new Gateway(out);
-  var body = ReactDOM.renderToStaticMarkup(gateway);
-
-  res.render('gateway', {body: body, reactData: out});
+  var out
+    , body;
+  if (req.gateway) {
+    out = {
+      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      gateway: req.gateway
+    };
+    var gateway = new SingleGateway(out);
+    body = ReactDOM.renderToStaticMarkup(gateway);
+    res.render('gateway', {body: body, reactData: out});
+  } else {
+    out = {
+      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      gateways: req.gateways
+    };
+    var gateways = new Gateway(out);
+    body = ReactDOM.renderToStaticMarkup(gateways);
+    res.render('gateways', {body: body, reactData: out});
+  }
 };
 

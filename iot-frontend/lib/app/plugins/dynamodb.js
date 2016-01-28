@@ -1,10 +1,11 @@
-var AWS = require('aws-sdk');
+var AWS = require('aws-sdk')
+  , config = require('./config');
 
 module.exports = me = {};
 
 AWS.config.update({
   region: 'us-west-2',
-  endpoint: 'http://192.168.99.100:8000'
+  endpoint: config.dynamo_endpoint
 });
 
 var dynamodb = new AWS.DynamoDB();

@@ -1,0 +1,7 @@
+extend layout
+
+block content
+  #clusters= body
+  #footer
+  script(type='json/application')#rdt !{JSON.stringify(reactData)}
+

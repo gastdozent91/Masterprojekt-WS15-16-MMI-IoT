@@ -1,16 +1,31 @@
 var React = require('react')
   , ReactDOM = require('react-dom')
-  , Sensor = React.createFactory(require('../react/Sensor'));
+  , Sensor = React.createFactory(require('../react/Sensor'))
+  , SingleSensor = React.createFactory(
+      require('../react/Sensor/SingleSensor')
+  );
 
 module.exports = me = {};
 
 me.render = function() {
-  var $container = document.querySelector('#sensor');
+  var $container;
   var $rdt = document.querySelector('#rdt');
-  if (!$container || !$rdt) return;
+  var data;
 
-  var data = JSON.parse($rdt.innerHTML);
+  if (document.querySelector('#sensor')) {
+    $container = document.querySelector('#sensor');
+    if (!$container || !$rdt) return;
 
-  ReactDOM.render(new Sensor(data), $container);
+    data = JSON.parse($rdt.innerHTML);
+    ReactDOM.render(new SingleSensor(data), $container);
+  } else if (document.querySelector('#sensors')) {
+    $container = document.querySelector('#sensors');
+    if (!$container || !$rdt) return;
+
+    data = JSON.parse($rdt.innerHTML);
+    ReactDOM.render(new Sensor(data), $container);
+  } else {
+    return;
+  }
 }
 

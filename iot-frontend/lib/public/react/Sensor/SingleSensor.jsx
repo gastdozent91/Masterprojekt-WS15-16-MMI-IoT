@@ -1,8 +1,10 @@
-var React = require('react');
+var React = require('react')
+  , TopBar = require('../shared/TopBar');
 
 var SingleSensor = React.createClass({
 
   propTypes: {
+    user: React.PropTypes.object,
     sensor: React.PropTypes.object
   },
 
@@ -39,7 +41,7 @@ var SingleSensor = React.createClass({
 
   renderClusters:function(){
     var that = this;
-    return this.props.sensor['attachedClusters'].map(function(cluster){
+    return this.props.sensor.attachedClusters.map(function(cluster){
       return(
         <div className='row' key={cluster}>
           <a href=''>
@@ -60,41 +62,44 @@ var SingleSensor = React.createClass({
   render: function() {
     console.log(this.props.sensor);
     return (
-      <div style={{marginTop: 25}}>
-        <div className='row column' style={{float: 'none'}}>
-          <div className='callout'>
-              <h3>{this.props.sensor.name}</h3>
-              <table style={{width: '100%'}}>
-                <tbody style={{borderWidth: 0}}>
-                  {this.renderFields()}
-                </tbody>
-              </table>
-          </div>
-        </div>
-        <div className='row column' style={{float: 'none'}}>
-          <div className='callout'>
-            <h5>attached cluster</h5>
-            {this.renderClusters()}
-          </div>
-        </div>
-        <div className='row column' style={{float:'none'}}>
-          <div className='callout'>
-            <div style={{textAlign: 'center'}}>
-              <p style={{marginBottom: 0}}>Show live data</p>
-              <div className="switch large">
-                <input className="switch-input"
-                  id="yes-no"
-                  type="checkbox"
-                  onClick={this.handleSwitch}
-                  name="exampleSwitch"/>
-                <label className="switch-paddle" htmlFor="yes-no">
-                  <span className="show-for-sr"></span>
-                  <span className="switch-active" aria-hidden="true">Yes</span>
-                  <span className="switch-inactive" aria-hidden="true">No</span>
-                </label>
+      <div>
+        <TopBar user={this.props.user} />
+        <div style={{marginTop: 25}}>
+          <div className='row column' style={{float: 'none'}}>
+            <div className='callout'>
+                <h3>{this.props.sensor.name}</h3>
+                <table style={{width: '100%'}}>
+                  <tbody style={{borderWidth: 0}}>
+                    {this.renderFields()}
+                  </tbody>
+                </table>
             </div>
           </div>
-            {this.renderGraph()}
+          <div className='row column' style={{float: 'none'}}>
+            <div className='callout'>
+              <h5>attached cluster</h5>
+              {this.renderClusters()}
+            </div>
+          </div>
+          <div className='row column' style={{float:'none'}}>
+            <div className='callout'>
+              <div style={{textAlign: 'center'}}>
+                <p style={{marginBottom: 0}}>Show live data</p>
+                <div className="switch large">
+                  <input className="switch-input"
+                    id="yes-no"
+                    type="checkbox"
+                    onClick={this.handleSwitch}
+                    name="exampleSwitch"/>
+                  <label className="switch-paddle" htmlFor="yes-no">
+                    <span className="show-for-sr"></span>
+                    <span className="switch-active" aria-hidden="true">Yes</span>
+                    <span className="switch-inactive" aria-hidden="true">No</span>
+                  </label>
+              </div>
+            </div>
+              {this.renderGraph()}
+            </div>
           </div>
         </div>
       </div>

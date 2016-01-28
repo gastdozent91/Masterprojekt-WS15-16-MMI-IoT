@@ -3,6 +3,9 @@ var React = require('react')
   , Model = require('../models/sensor')
   , Sensor = React.createFactory(
       require('../../public/react/Sensor')
+    )
+  , SingleSensor = React.createFactory(
+      require('../../public/react/Sensor/SingleSensor')
     );
 
 module.exports = me = {};
@@ -21,9 +24,8 @@ me.getAll = (req, res, next) => {
 me.getOne = (req, res, next) => {
   Model.getOne(req.user, req.params.id)
   .then(sensor => {
-    req.sensors = [sensor];
+    req.sensor = sensor;
     next();
-    //res.json(users);
   })
   .catch(err => {
     res.json(err);
@@ -41,12 +43,27 @@ me.create = (req, res, next) => {
 };
 
 me.render = function(req, res) {
-  var out = {
-    user: {firstname: req.user.firstname, isAdmin: req.isAdmin},
-    sensors: req.sensors
-  };
-  var sensor = new Sensor(out);
-  var body = ReactDOM.renderToStaticMarkup(sensor);
+  var out
+    , body;
+  if (req.sensor) {
+    console.log('single sensor');
+    out = {
+      user: {firstname: req.user.firstname, isAdmin: req.isAdmin},
+      sensor: req.sensor
+    };
+    var sensor = new SingleSensor(out);
+    body = ReactDOM.renderToStaticMarkup(sensor);
 
-  res.render('sensor', {body: body, reactData: out});
+    res.render('sensor', {body: body, reactData: out});
+  } else {
+    console.log('multi sensor');
+    out = {
+      user: {firstname: req.user.firstname, isAdmin: req.isAdmin},
+      sensors: req.sensors
+    };
+    var sensors = new Sensor(out);
+    body = ReactDOM.renderToStaticMarkup(sensors);
+
+    res.render('sensors', {body: body, reactData: out});
+  }
 };

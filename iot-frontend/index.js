@@ -100,19 +100,31 @@ app.get('/sensors',
 app.get('/users',
   login.shouldBeLoggedIn,
   user.getAll,
-  user.renderUsers
+  user.render
 );
 
 app.get('/user/:username',
   login.shouldBeLoggedIn,
   user.getOne,
-  user.renderUser
+  user.render
 );
 
 app.get('/sensor/:id',
   login.shouldBeLoggedIn,
   sensor.getOne,
   sensor.render
+);
+
+app.get('/gateway/:id',
+  login.shouldBeLoggedIn,
+  gateway.getOne,
+  gateway.render
+);
+
+app.get('/cluster/:id',
+  login.shouldBeLoggedIn,
+  cluster.getOne,
+  cluster.render
 );
 
 // API

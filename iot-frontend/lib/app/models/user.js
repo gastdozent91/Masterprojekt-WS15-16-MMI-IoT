@@ -1,11 +1,12 @@
 var request = require('superagent')
+  , config = require('../plugins/config')
   , Bluebird = require('bluebird');
 
 var dynamodb = require('../plugins/dynamodb');
 
 module.exports = me = {};
 
-var endpoint = 'http://localhost:8080/iot-friss';
+var endpoint = config.rest_endpoint;
 
 me.getAll = (user) => {
   return new Bluebird((resolve, reject) => {

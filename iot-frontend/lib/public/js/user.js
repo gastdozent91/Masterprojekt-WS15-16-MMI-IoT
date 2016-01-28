@@ -1,16 +1,32 @@
 var React = require('react')
   , ReactDOM = require('react-dom')
-  , SingleUser = React.createFactory(require('../react/User/SingleUser'));
+  , SingleUser = React.createFactory(require('../react/User/SingleUser'))
+  , Users = React.createFactory(require('../react/User'));
 
 module.exports = me = {};
 
 me.render = function() {
-  var $container = document.querySelector('#user');
+  var $container;
   var $rdt = document.querySelector('#rdt');
-  if (!$container || !$rdt) return;
+  var data;
 
-  var data = JSON.parse($rdt.innerHTML);
+  if (document.querySelector('#user')) {
+    $container = document.querySelector('#user');
+    if (!$container || !$rdt) return;
 
-  ReactDOM.render(new SingleUser(data), $container);
+    data = JSON.parse($rdt.innerHTML);
+
+    ReactDOM.render(new SingleUser(data), $container);
+  } else if (document.querySelector('#users')) {
+    $container = document.querySelector('#users');
+    if (!$container || !$rdt) return;
+
+    data = JSON.parse($rdt.innerHTML);
+
+    ReactDOM.render(new Users(data), $container);
+  } else {
+    return;
+  }
+
 }
 

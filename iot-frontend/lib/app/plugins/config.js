@@ -1,10 +1,9 @@
-
 var development = require('../../../config/development')
-  , production = require('../../../config/production')
+  , production = require('../../../config/production');
 
-var me = module.exports = process.env.NODE_END === 'production' ?
+var me = module.exports = process.env.NODE_ENV === 'production' ?
                           production :
-                          development
+                          development;
 
 me.isDevelopment = function () {
   if (process.env.NODE_ENV === 'production')

@@ -73,7 +73,7 @@ var Gateway = React.createClass({
     var state = 'active';
     var gatewayClass = 'row ' + state + ' selectable-row';
     return (
-      <a href='/sensors' key={'gateway #'+i}>
+      <a href={'/gateway/' + gateway.id} key={'gateway #'+i}>
         <div className={gatewayClass}>
           <div className='large-6 columns'>
             {gateway.name}

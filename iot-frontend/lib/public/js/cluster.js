@@ -1,16 +1,31 @@
 var React = require('react')
   , ReactDOM = require('react-dom')
-  , Cluster = React.createFactory(require('../react/Cluster'));
+  , Cluster = React.createFactory(require('../react/Cluster'))
+  , SingleCluster = React.createFactory(
+      require('../react/Cluster/SingleCluster')
+  );
 
 module.exports = me = {};
 
 me.render = function() {
-  var $container = document.querySelector('#cluster');
+  var $container;
   var $rdt = document.querySelector('#rdt');
-  if (!$container || !$rdt) return;
+  var data;
 
-  var data = JSON.parse($rdt.innerHTML);
+  if (document.querySelector('#cluster')) {
+    $container = document.querySelector('#cluster');
+    if (!$container || !$rdt) return;
 
-  ReactDOM.render(new Cluster(data), $container);
+    data = JSON.parse($rdt.innerHTML);
+    ReactDOM.render(new SingleCluster(data), $container);
+  } else if (document.querySelector('#clusters')) {
+    $container = document.querySelector('#clusters');
+    if (!$container || !$rdt) return;
+
+    data = JSON.parse($rdt.innerHTML);
+    ReactDOM.render(new Cluster(data), $container);
+  } else {
+    return;
+  }
 }
 

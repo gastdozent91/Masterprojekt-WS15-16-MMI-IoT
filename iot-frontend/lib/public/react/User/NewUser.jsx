@@ -82,9 +82,6 @@ var NewUser = React.createClass({
     }
   },
 
-  handleRoleChange: function() {
-  },
-
   handleAdminClick: function() {
     this.setState({isAdmin: !this.state.isAdmin});
   },

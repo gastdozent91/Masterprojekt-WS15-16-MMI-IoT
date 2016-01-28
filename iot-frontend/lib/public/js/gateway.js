@@ -1,16 +1,31 @@
 var React = require('react')
   , ReactDOM = require('react-dom')
-  , Gateway = React.createFactory(require('../react/Gateway'));
+  , Gateway = React.createFactory(require('../react/Gateway'))
+  , SingleGateway = React.createFactory(
+      require('../react/Gateway/SingleGateway')
+  );
 
 module.exports = me = {};
 
 me.render = function() {
-  var $container = document.querySelector('#gateway');
+  var $container;
   var $rdt = document.querySelector('#rdt');
-  if (!$container || !$rdt) return;
+  var data;
 
-  var data = JSON.parse($rdt.innerHTML);
+  if (document.querySelector('#gateway')) {
+    $container = document.querySelector('#gateway');
+    if (!$container || !$rdt) return;
 
-  ReactDOM.render(new Gateway(data), $container);
+    data = JSON.parse($rdt.innerHTML);
+    ReactDOM.render(new SingleGateway(data), $container);
+  } else if (document.querySelector('#gateways')) {
+    $container = document.querySelector('#gateways');
+    if (!$container || !$rdt) return;
+
+    data = JSON.parse($rdt.innerHTML);
+    ReactDOM.render(new Gateway(data), $container);
+  } else {
+    return;
+  }
 }
 

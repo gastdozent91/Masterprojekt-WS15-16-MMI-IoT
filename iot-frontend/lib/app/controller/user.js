@@ -100,23 +100,24 @@ me.setSensors = (req, res, next) => {
   //});
 };
 
-me.renderUser = (req, res) => {
-  var out = {
-    user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-    userToCheck: req.userToCheck
-  };
-  var user = new SingleUser(out);
-  var body = ReactDOM.renderToStaticMarkup(user);
-  res.render('user', {body: body, reactData: out});
-};
-
-me.renderUsers = (req, res) => {
-  var out = {
-    user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-    users: req.users
-  };
-  var users = new Users(out);
-  var body = ReactDOM.renderToStaticMarkup(users);
-  res.render('users', {body: body, reactData: out});
-
+me.render = (req, res) => {
+  var out
+    , body;
+  if (req.userToCheck) {
+    out = {
+      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      userToCheck: req.userToCheck
+    };
+    var user = new SingleUser(out);
+    body = ReactDOM.renderToStaticMarkup(user);
+    res.render('user', {body: body, reactData: out});
+  } else {
+    out = {
+      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      users: req.users
+    };
+    var users = new Users(out);
+    body = ReactDOM.renderToStaticMarkup(users);
+    res.render('users', {body: body, reactData: out});
+  }
 };

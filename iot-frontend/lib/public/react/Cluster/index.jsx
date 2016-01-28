@@ -73,7 +73,7 @@ var Cluster = React.createClass({
     var state = 'active';
     var clusterClass = 'row ' + state + ' selectable-row';
     return (
-      <a href='/sensors' key={'gateway #'+i}>
+      <a href={'/cluster/' + cluster.id} key={'cluster #'+i}>
         <div className={clusterClass}>
           <div className='large-6 columns'>
             {cluster.name}
