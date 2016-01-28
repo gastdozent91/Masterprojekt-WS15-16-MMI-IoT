@@ -22,21 +22,25 @@ var Dashboard = React.createClass({
         <div className='row' style={{marginTop: 20}}>
           {/* Sensors area */}
           <div className='large-6 columns'>
-            <div className='callout'>
-              <h5>Sensors</h5>
-              <div>blablabla</div>
-              <div>blablabla</div>
-              <div>blablabla</div>
+            <div className='dashboard-widget'>
+              <div className='title'><a href='/sensors'>Sensors</a><div className='icons'></div></div>
+              <div className='body'>
+                <div>blablabla</div>
+                <div>blablabla</div>
+                <div>blablabla</div>
+              </div>
             </div>
           </div>
           {/* Sensors area end */}
           {/* Gateway area */}
           <div className='large-6 columns'>
-            <div className='callout'>
-              <h5>Gateways</h5>
-              <div>blablabla</div>
-              <div>blablabla</div>
-              <div>blablabla</div>
+            <div className='dashboard-widget'>
+              <div className='title'><a href='/gateways'>Gateways</a><div className='icons'></div></div>
+              <div className='body'>
+                <div>blablabla</div>
+                <div>blablabla</div>
+                <div>blablabla</div>
+              </div>
             </div>
           </div>
           {/* Gateway area */}
@@ -44,21 +48,25 @@ var Dashboard = React.createClass({
         <div className='row'>
           {/* Cluster area */}
           <div className='large-6 columns'>
-            <div className='callout'>
-              <h5>Clusters</h5>
-              <div>blablabla</div>
-              <div>blablabla</div>
-              <div>blablabla</div>
+            <div className='dashboard-widget'>
+              <div className='title'><a href='/clusters'>Clusters</a><div className='icons'></div></div>
+              <div className='body'>
+                <div>blablabla</div>
+                <div>blablabla</div>
+                <div>blablabla</div>
+              </div>
             </div>
           </div>
           {/* Cluster area end */}
           {/* Statistic area */}
           <div className='large-6 columns'>
-            <div className='callout'>
-              <h5>Statistic</h5>
-              <div>blablabla</div>
-              <div>blablabla</div>
-              <div>blablabla</div>
+            <div className='dashboard-widget'>
+              <div className='title'>Statistic<div className='icons'></div></div>
+              <div className='body'>
+                <div>blablabla</div>
+                <div>blablabla</div>
+                <div>blablabla</div>
+              </div>
             </div>
           </div>
           {/* Statistic area end */}
