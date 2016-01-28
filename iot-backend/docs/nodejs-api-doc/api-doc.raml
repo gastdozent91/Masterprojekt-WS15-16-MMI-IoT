@@ -587,3 +587,58 @@ baseUri: http://localhost:3000/iot-friss
              "df6f9f2d-d22c-4eaa-b44b-feb737b8a07a"
            ]
          }
+/measurement?sensor_id:
+    get:
+     description: Show all Measurements from specific sensor with time, page and sort order parameters
+     headers:
+      Authorization:
+       description: Basic YWRtaW46YWRtaW4=
+     queryParameters:
+      sensor_id:
+       type: string
+       required: true
+       example: d8c6af7a-26d9-45fa-bf40-dd66b1fb93f6
+      before:
+       type: string
+       required: false
+       example: "2016-01-25T18:30:48.444Z"
+      after:
+       type: string
+       required: false
+       example: "2016-01-25T18:30:48.444Z"
+      page:
+       type: integer
+       required: false
+       example: "0"
+      page_size:
+       type: integer
+       required: false
+       example: 100
+      sort_order:
+       type: string
+       required: false
+       example: desc
+     responses:
+      200:
+       body:
+        application/json:
+         example: |
+          {
+            "content": [],
+            "last": true,
+            "totalPages": 0,
+            "totalElements": 0,
+            "size": 50,
+            "number": 0,
+            "first": true,
+            "sort": [
+              {
+                "direction": "ASC",
+                "property": "timeOfMeasurement",
+                "ignoreCase": false,
+                "nullHandling": "NATIVE",
+                "ascending": true
+              }
+            ],
+            "numberOfElements": 0
+          }
