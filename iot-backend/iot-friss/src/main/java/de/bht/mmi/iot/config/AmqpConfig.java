@@ -37,8 +37,6 @@ public class AmqpConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        System.out.println("---- " + host);
-        System.out.println("---- " + port);
         final CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
                 host,
                 port);
