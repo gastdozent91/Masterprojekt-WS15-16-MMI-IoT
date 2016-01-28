@@ -21,6 +21,18 @@ me.getAll = (req, res, next) => {
   });
 };
 
+me.getSensors = (req, res, next) => {
+  Model.getSensors(req.user, req.gateway.id)
+  .then(sensors => {
+    req.sensors = sensors;
+    console.log('sensors', sensors);
+    next();
+  })
+  .catch(err => {
+    res.json(err);
+  });
+};
+
 me.getOne = (req, res, next) => {
   Model.getOne(req.user, req.params.id)
   .then(gateway => {
@@ -48,7 +60,8 @@ me.render = function(req, res) {
   if (req.gateway) {
     out = {
       user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-      gateway: req.gateway
+      gateway: req.gateway,
+      sensors: req.sensors
     };
     var gateway = new SingleGateway(out);
     body = ReactDOM.renderToStaticMarkup(gateway);

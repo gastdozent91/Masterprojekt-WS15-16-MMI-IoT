@@ -82,7 +82,7 @@ var SingleSensor = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage='sensors' />
         <div style={{marginTop: 25}}>
           <div className='row column' style={{float: 'none'}}>
             <div className='callout'>

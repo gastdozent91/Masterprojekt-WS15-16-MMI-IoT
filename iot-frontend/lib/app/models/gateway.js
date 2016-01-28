@@ -32,6 +32,18 @@ me.getOne = (user, id) => {
   });
 };
 
+me.getSensors = (user, id) => {
+  return new Bluebird((resolve, reject) => {
+    request
+      .get(endpoint + '/gateway/' + id + '/sensor')
+      .auth(user.Username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body);
+      });
+  });
+};
+
 me.update = (user, gatewayToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request

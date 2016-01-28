@@ -118,6 +118,7 @@ app.get('/sensor/:id',
 app.get('/gateway/:id',
   login.shouldBeLoggedIn,
   gateway.getOne,
+  gateway.getSensors,
   gateway.render
 );
 

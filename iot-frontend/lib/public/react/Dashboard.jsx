@@ -18,7 +18,7 @@ var Dashboard = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage=''/>
         <div className='row' style={{marginTop: 20}}>
           {/* Sensors area */}
           <div className='large-6 columns'>

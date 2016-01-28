@@ -5,7 +5,7 @@ var SingleCluster = React.createClass({
 
   propTypes: {
     user: React.PropTypes.object,
-    cluster: React.PropTypes.object
+    cluster: React.PropTypes.object,
   },
 
   getInitialState: function() {
@@ -16,7 +16,7 @@ var SingleCluster = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage='clusters'/>
         <div>
           {this.props.cluster.name}
         </div>
