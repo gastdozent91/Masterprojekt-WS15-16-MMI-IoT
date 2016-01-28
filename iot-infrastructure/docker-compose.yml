@@ -16,6 +16,9 @@ rabbit:
     - "15674:15674"
   container_name: iot-rabbit
   hostname: iot-rabbit
+  environment:
+    - RABBITMQ_DEFAULT_USER=guest
+    - RABBITMQ_DEFAULT_PASS=guest
 
 # # NodeJS
 # # --------------------------------------
@@ -27,15 +30,15 @@ rabbit:
 #   links:
 #     - dynamodb
 #
-# # Apache Tomcat
-# # --------------------------------------
-# tomcat:
-#   build: docker/tomcat
-#   ports:
-#     - "8081:8080"
-#   container_name: iot-tomcat
-#   environment:
-#     - SPRING_PROFILES_ACTIVE=production
-#   links:
-#     - dynamodb
-#     - rabbit
+# Apache Tomcat
+# --------------------------------------
+tomcat:
+  build: docker/tomcat
+  ports:
+    - "8888:8080"
+  container_name: iot-tomcat
+  environment:
+    - SPRING_PROFILES_ACTIVE=production
+  links:
+    - dynamodb
+    - rabbit
