@@ -89,7 +89,7 @@ var Gateway = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage='gateways'/>
         <Search gateways={this.props.gateways}
           setGateways={this.setGateways} />
         {/* Gateways area */}
@@ -128,4 +128,3 @@ var Gateway = React.createClass({
 });
 
 module.exports = Gateway;
-

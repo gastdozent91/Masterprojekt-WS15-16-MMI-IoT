@@ -4,11 +4,11 @@ var React = require('react')
 var TopBar = React.createClass({
 
   propTypes: {
-    user: React.PropTypes.object
+    user: React.PropTypes.object,
+    activePage: React.PropTypes.string,
   },
 
   getInitialState: function() {
-    console.log('user', this.props.user);
     return {
       infoStyle: {},
       isInfo: false
@@ -61,6 +61,7 @@ var TopBar = React.createClass({
   },
 
   render: function() {
+    console.log(this.props.activePage);
     return (
       <div className="top-bar">
         <div className='row'>
@@ -70,11 +71,11 @@ var TopBar = React.createClass({
                 onClick={this.handleFrissClick}>
                 FRISS
               </li>
-              <li><a href="/sensors">Sensors</a></li>
-              <li><a href="/gateways">Gateways</a></li>
-              <li><a href="/clusters">Clusters</a></li>
+              <li className={this.props.activePage === 'sensors' ? 'active' : ''}><a href="/sensors">Sensors</a></li>
+              <li className={this.props.activePage === 'gateways' ? 'active' : ''}><a href="/gateways">Gateways</a></li>
+              <li className={this.props.activePage === 'clusters' ? 'active' : ''}><a href="/clusters">Clusters</a></li>
               { this.props.user.isAdmin
-              ? <li><a href="/users">Users</a></li>
+              ? <li className={this.props.activePage === 'users' ? 'active' : ''}><a href="/users">Users</a></li>
               : null}
             </ul>
           </div>

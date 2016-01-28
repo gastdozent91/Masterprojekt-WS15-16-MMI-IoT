@@ -12,9 +12,12 @@ var SingleSensor = React.createClass({
     return {
       isLive: false,
       fields: [
-        'id',
+        ['id', 'ID'],
+        'location',
+        ['creationDate', 'created'],
+        ['sensorTypes','sensor types'],
         'owner',
-        'attachedGateway'
+        ['attachedGateway', 'attached to gateway']
       ]
     };
   },
@@ -28,12 +31,29 @@ var SingleSensor = React.createClass({
   renderFields: function(){
     var that = this;
     return this.state.fields.map(function(field){
-      var value = that.props.sensor[field] || 'missing';
+      var value;
+      var caption;
+      var id;
+      if(Array.isArray(field)){
+        id = field[0];
+        value = that.props.sensor[field[0]] || 'missing';
+        caption = field[1];
+      }else{
+        value = that.props.sensor[field] || 'missing';
+        caption = field;
+        id = field;
+      }
       var text = value;
+      if(id === 'creationDate'){
+        var parts = /^([0-9]{4}-[0-9]{2}-[0-9]{2})T([0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+)Z$/.exec(text);
+        text = parts[1] + ' ' + parts[2];
+      }else if(id === 'sensorTypes'){
+        text = that.props.sensor[field[0]].join(', ');
+      }
       return(
-        <tr key={field}>
-          <td>{field}</td>
-          <td>{field === 'owner' ? <a href={"/user/" + value}>{value}</a> : value}</td>
+        <tr key={caption}>
+          <td>{caption}</td>
+          <td>{id === 'owner' ? <a href={"/user/" + text}>{text}</a> : text}</td>
         </tr>
       );
     });
@@ -60,7 +80,6 @@ var SingleSensor = React.createClass({
   },
 
   render: function() {
-    console.log(this.props.sensor);
     return (
       <div>
         <TopBar user={this.props.user} />

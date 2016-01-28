@@ -108,3 +108,5 @@ gulp.task('watch', function() {
 })
 
 gulp.task('default', ['createBuildDir', 'copyFoundation', 'first'])
+
+gulp.task('production', ['createBuildDir', 'copyFoundation', 'always'])

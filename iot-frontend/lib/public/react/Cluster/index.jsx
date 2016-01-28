@@ -89,7 +89,7 @@ var Cluster = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage='clusters'/>
         <Search clusters={this.props.clusters}
           setClusters={this.setClusters} />
         {/* Cluster area */}
@@ -128,4 +128,3 @@ var Cluster = React.createClass({
 });
 
 module.exports = Cluster;
-

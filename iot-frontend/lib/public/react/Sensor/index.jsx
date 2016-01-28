@@ -99,7 +99,7 @@ var MultipleSensors = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage='sensors' />
         <Search sensors={this.props.sensors}
           setSensors={this.setSensors}/>
         <div className={this.state.listClass} style={{float: 'none'}}>
