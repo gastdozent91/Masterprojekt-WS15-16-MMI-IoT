@@ -84,7 +84,9 @@ def formatData():
             data = sample['data'][SensorId]
             result.append({
                 'id': SensorId,
-                'time': recording_timezone.localize(ts).strftime('%Y-%m-%dT%H:%M:%S'), # TODO: ISO 8601 needed
+                # TODO: ISO 8601 need; id + time => must be unique
+                'time': recording_timezone.localize(ts).strftime('%Y-%m-%dT%H:%M:%S'),
+                #'time': datetime.datetime.fromtimestamp(random.randint(0, 1454005235)).strftime('%Y-%m-%dT%H:%M:%S'), quick fix to make id + time hopefully unique
                 'acceleration': data['acceleration'],
                 'orientation': data['orientation'],
                 'location': recording_location
