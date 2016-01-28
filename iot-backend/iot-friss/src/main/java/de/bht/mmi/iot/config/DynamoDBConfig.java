@@ -18,8 +18,6 @@ import javax.annotation.PostConstruct;
 @EnableDynamoDBRepositories(basePackages = "de.bht.mmi.iot.repository")
 public class DynamoDBConfig {
 
-    private String s;
-
     @Value("${amazon.dynamodb.endpoint}")
     private String amazonDynamoDBEndpoint;
 

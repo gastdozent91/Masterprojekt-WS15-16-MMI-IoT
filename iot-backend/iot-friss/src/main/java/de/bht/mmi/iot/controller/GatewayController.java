@@ -37,7 +37,7 @@ public class GatewayController {
             return gatewayService.getAll();
         } else {
             final String[] gatewayIds = ids.split(",");
-            return gatewayService.getAllForIds(ids);
+            return gatewayService.getAllForIds(gatewayIds);
         }
     }
 

@@ -5,7 +5,6 @@ import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.dto.SensorPutDto;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
-import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.SensorRepository;
@@ -59,7 +58,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public Iterable<Sensor> getAllSensorsByGatewayId(String gatewayId) throws EntityNotFoundException {
-        final Gateway gateway = gatewayService.getGateway(gatewayId);
+        gatewayService.getGateway(gatewayId);
         return sensorRepository.findByAttachedGateway(gatewayId);
     }
 
@@ -108,7 +107,7 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public void deleteSensor(String sensorId) throws EntityNotFoundException {
-        final Sensor sensor = getSensor(sensorId);
+        getSensor(sensorId);
         sensorRepository.delete(sensorId);
         LOGGER.debug(String.format("Sensor with id '%s' deleted", sensorId));
     }

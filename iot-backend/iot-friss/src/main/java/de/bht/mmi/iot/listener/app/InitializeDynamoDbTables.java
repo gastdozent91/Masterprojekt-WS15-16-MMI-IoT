@@ -170,8 +170,6 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         LOGGER.info(String.format("Added Sensors %s, %s, %s to Cluster %s", sensor.getId(), sensor2.getId(),
                 sensor3.getId(), cluster.getName()));
 
-        ArrayList<String> clusterList = new ArrayList<String>();
-        clusterList.add(cluster.getId());
         gatewayService.updateGateway(gateway.getId(),gateway,userDetails);
         LOGGER.info(String.format("Added Cluster %s to Gateway %s",cluster.getName(),gateway.getName()));
 

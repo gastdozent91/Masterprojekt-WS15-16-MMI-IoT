@@ -27,7 +27,7 @@ public class AmqpConfiguration {
     public ConnectionFactory connectionFactory() {
         final CachingConnectionFactory connectionFactory = new CachingConnectionFactory(
                 env.getProperty("rabbit.host"),
-                Integer.valueOf(env.getProperty("rabbit.port")));
+                Integer.parseInt(env.getProperty("rabbit.port")));
         connectionFactory.setUsername(env.getProperty("rabbit.username"));
         connectionFactory.setPassword(env.getProperty("rabbit.password"));
         connectionFactory.setChannelCacheSize(Integer.valueOf(env.getProperty("rabbit.channel_cache_size")));

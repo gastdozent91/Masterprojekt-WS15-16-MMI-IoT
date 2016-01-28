@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String username) throws EntityNotFoundException {
-        final User user = loadUserByUsername(username);
+        loadUserByUsername(username);
         userRepository.delete(username);
     }
 
