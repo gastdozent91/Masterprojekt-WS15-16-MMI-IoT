@@ -112,7 +112,7 @@ var Users = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage='users'/>
         <Search users={this.props.users}
           setUsers={this.setUsers} />
         <div className={this.state.listClass} style={{float: 'none'}}>
@@ -149,4 +149,3 @@ var Users = React.createClass({
 });
 
 module.exports = Users;
-

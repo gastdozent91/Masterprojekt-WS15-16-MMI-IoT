@@ -24,7 +24,7 @@ var Sensor = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage='sensors'/>
         { this.state.isMultipleSensors ?
           <MultipleSensors sensors={this.props.sensors} />
           :
@@ -36,4 +36,3 @@ var Sensor = React.createClass({
 });
 
 module.exports = Sensor;
-

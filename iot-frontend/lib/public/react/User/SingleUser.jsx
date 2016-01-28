@@ -76,7 +76,7 @@ var SingleUser = React.createClass({
   render: function() {
     return (
       <div>
-        <TopBar user={this.props.user} />
+        <TopBar user={this.props.user} activePage='users'/>
         <div className='row column' style={{float: 'none', marginTop: 25}}>
           <div className='callout'>
             <h3>{this.props.userToCheck.username}</h3>
