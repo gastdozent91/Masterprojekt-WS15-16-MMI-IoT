@@ -64,7 +64,7 @@ var SingleSensor = React.createClass({
     return this.props.sensor.attachedClusters.map(function(cluster){
       return(
         <div className='row' key={cluster}>
-          <a href=''>
+          <a href={'/cluster/' + cluster}>
           <div className='large-12 columns selectable-row'>{cluster}</div>
 </a>
       </div>
