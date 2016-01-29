@@ -32,6 +32,18 @@ me.getOne = (req, res, next) => {
   });
 };
 
+me.getSensors = (req, res, next) => {
+  Model.getSensors(req.user, req.cluster.sensorList)
+  .then(sensors => {
+    req.sensors = sensors;
+    delete req.cluster.sensorList;
+    next();
+  })
+  .catch(err => {
+    res.json(err);
+  });
+};
+
 me.create = (req, res, next) => {
   Model.create(req.user, req.body)
   .then(result => {
@@ -48,7 +60,8 @@ me.render = function(req, res) {
   if (req.cluster) {
     out = {
       user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-      cluster: req.cluster
+      cluster: req.cluster,
+      sensors: req.sensors
     };
     var cluster = new SingleCluster(out);
     body = ReactDOM.renderToStaticMarkup(cluster);

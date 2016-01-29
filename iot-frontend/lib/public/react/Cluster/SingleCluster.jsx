@@ -6,9 +6,11 @@ var SingleCluster = React.createClass({
   propTypes: {
     user: React.PropTypes.object,
     cluster: React.PropTypes.object,
+    sensors: React.PropTypes.array
   },
 
   getInitialState: function() {
+    console.log('props', this.props);
     return {
       fields:[
         ['id','ID'],
@@ -49,11 +51,11 @@ var SingleCluster = React.createClass({
 
   renderSensors: function(){
     var that = this;
-    return this.props.cluster.sensorList.map(function(sensor){
+    return this.props.sensors.map(function(sensor){
       return (
-        <div className='row' key={sensor}>
-          <a href={'/sensor/' + sensor}>
-            <div className='large-12 columns selectable-row'>{sensor}</div>
+        <div className='row' key={sensor.id}>
+          <a href={'/sensor/' + sensor.id}>
+            <div className='large-12 columns selectable-row'>{sensor.name}</div>
           </a>
         </div>
       );

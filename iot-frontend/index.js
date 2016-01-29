@@ -125,6 +125,7 @@ app.get('/gateway/:id',
 app.get('/cluster/:id',
   login.shouldBeLoggedIn,
   cluster.getOne,
+  cluster.getSensors,
   cluster.render
 );
 

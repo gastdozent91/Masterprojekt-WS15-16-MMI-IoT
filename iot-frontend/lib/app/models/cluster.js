@@ -1,5 +1,6 @@
 var request = require('superagent')
   , config = require('../plugins/config')
+  , Sensor = require('./sensor')
   , Bluebird = require('bluebird');
 
 var dynamodb = require('../plugins/dynamodb');
@@ -29,6 +30,18 @@ me.getOne = (user, id) => {
         if (err) reject(err);
         resolve(res.body);
       });
+  });
+};
+
+me.getSensors = (user, sensorList) => {
+  return new Bluebird((resolve, reject) => {
+    var promiseArray = [];
+    sensorList.forEach(id => {
+      promiseArray.push(Sensor.getOne(user, id));
+    });
+    Bluebird.all(promiseArray).then(sensors => {
+      resolve(sensors);
+    });
   });
 };
 
