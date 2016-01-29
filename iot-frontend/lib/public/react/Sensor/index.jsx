@@ -97,6 +97,7 @@ var MultipleSensors = React.createClass({
   },
 
   render: function() {
+    console.log('render Sensor');
     return (
       <div>
         <TopBar user={this.props.user} activePage='sensors' />

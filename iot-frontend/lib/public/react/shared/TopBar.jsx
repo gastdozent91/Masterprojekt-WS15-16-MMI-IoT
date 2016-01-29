@@ -15,6 +15,17 @@ var TopBar = React.createClass({
     };
   },
 
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if (nextProps.user === this.props.user &&
+        nextProps.activePage === this.props.activePage &&
+        nextState.infoStyle === this.state.infoStyle &&
+        nextState.isInfo === this.state.isInfo) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+
   componentDidMount: function() {
     this.posInfo();
     window.addEventListener('resize', this.posInfo);
@@ -34,6 +45,7 @@ var TopBar = React.createClass({
   },
 
   handleProfileClick: function() {
+    console.log('TopBar profile click');
     var infoStyle = _.clone(this.state.infoStyle);
     var isInfo = this.state.isInfo;
     if (isInfo) {
@@ -61,7 +73,7 @@ var TopBar = React.createClass({
   },
 
   render: function() {
-    console.log(this.props.activePage);
+    console.log('render TopBar');
     return (
       <div className="top-bar">
         <div className='row'>

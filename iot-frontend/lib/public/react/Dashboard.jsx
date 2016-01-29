@@ -16,6 +16,7 @@ var Dashboard = React.createClass({
   },
 
   render: function() {
+    console.log('render Dashboard');
     return (
       <div>
         <TopBar user={this.props.user} activePage=''/>

@@ -1,4 +1,5 @@
 var React = require('react')
+  , Arrow3D = require('../shared/Arrow3D')
   , TopBar = require('../shared/TopBar');
 
 var SingleSensor = React.createClass({
@@ -72,12 +73,12 @@ var SingleSensor = React.createClass({
     });
   },
 
-  renderGraph: function(){
-    return (
-      <div className='row'>
-        <div className='large-12 columns' style={{border: '1px solid black',height:300}}>super meger krasse d3 Grafik</div>
-      </div>);
-  },
+  //renderGraph: function(){
+    //return (
+      //<div className='row'>
+        //<div className='large-12 columns' style={{border: '1px solid black',height:300}}>super meger krasse d3 Grafik</div>
+      //</div>);
+  //},
 
   render: function() {
     return (
@@ -117,7 +118,7 @@ var SingleSensor = React.createClass({
                   </label>
               </div>
             </div>
-              {this.renderGraph()}
+            <Arrow3D />
             </div>
           </div>
         </div>

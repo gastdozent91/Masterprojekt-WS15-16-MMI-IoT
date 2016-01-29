@@ -32,6 +32,7 @@
     "stompjs": "^2.3.3",
     "stylus": "^0.52.4",
     "superagent": "^1.6.1",
+    "three": "^0.73.2",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
