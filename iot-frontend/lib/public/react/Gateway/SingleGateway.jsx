@@ -67,7 +67,7 @@ var SingleGateway = React.createClass({
 
   renderSensor: function(sensor){
     return (
-      <tr style={{cursor: 'pointer'}} onClick={this.handleClickOnSensor(sensor.id)}>
+      <tr className='selectable-row' style={{cursor: 'pointer'}} onClick={this.handleClickOnSensor(sensor.id)} key={sensor.id}>
         <td>{sensor.name}</td>
         <td>{sensor.id}</td>
         <td>{sensor.location}</td>
@@ -77,7 +77,7 @@ var SingleGateway = React.createClass({
   },
 
   handleClickOnSensor: function(id){
-
+    window.location = '/sensor/' + id;
   },
 
   render: function() {

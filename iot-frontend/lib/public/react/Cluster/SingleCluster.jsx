@@ -51,7 +51,24 @@ var SingleCluster = React.createClass({
 
   renderSensors: function(){
     var that = this;
-    return this.props.sensors.map(function(sensor){
+    return(
+      <table style={{width: '100%'}}>
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>ID</th>
+            <th>location</th>
+            <th>type</th>
+          </tr>
+        </thead>
+        <tbody style={{borderWidth: 0}}>
+          {this.props.sensors.map(function(sensor){
+            return this.renderSensor(sensor);
+          }.bind(this))}
+        </tbody>
+      </table>
+    )
+    /*return this.props.sensors.map(function(sensor){
       return (
         <div className='row' key={sensor.id}>
           <a href={'/sensor/' + sensor.id}>
@@ -59,7 +76,22 @@ var SingleCluster = React.createClass({
           </a>
         </div>
       );
-    });
+    });*/
+  },
+
+  renderSensor: function(sensor){
+    return(
+      <tr className='selectable-row' style={{cursor: 'pointer'}} onClick={this.handleClickOnSensor(sensor.id)} key={sensor.id}>
+        <td>{sensor.name}</td>
+        <td>{sensor.id}</td>
+        <td>{sensor.location}</td>
+        <td>{sensor.sensorTypes.join(', ')}</td>
+      </tr>
+    );
+  },
+
+  handleClickOnSensor: function(id){
+    window.location = '/sensor/' + id;
   },
 
   render: function() {
