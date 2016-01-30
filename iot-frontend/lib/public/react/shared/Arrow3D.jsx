@@ -7,11 +7,27 @@ var geometry, material, mesh;
 var Arrow3D = React.createClass({
 
   propTypes: {
+    quad: React.PropTypes.array
   },
 
   getInitialState: function() {
     return {
+      q: new THREE.Quaternion(0, 0, 0, 0)
     };
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return nextProps.quad !== this.props.quad;
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({q: new THREE.Quaternion(
+        nextProps.quad[0],
+        nextProps.quad[1],
+        nextProps.quad[2],
+        nextProps.quad[3]
+      )
+   });
   },
 
   componentDidMount: function() {
@@ -26,10 +42,10 @@ var Arrow3D = React.createClass({
 
     scene = new THREE.Scene();
 
-    geometry = new THREE.BoxGeometry(200, 200, 200);
-    material = new THREE.MeshBasicMaterial({
-    color: 0xff0000,
-    wireframe: true
+    geometry = new THREE.CylinderGeometry(1, 100, 200, 32);
+    material = new THREE.MeshNormalMaterial({
+      wireframe: true,
+      wireframeLinewidth: 2
     });
 
     mesh = new THREE.Mesh(geometry, material);
@@ -46,8 +62,15 @@ var Arrow3D = React.createClass({
   animate: function() {
     requestAnimationFrame(this.animate);
 
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.02;
+    //mesh.rotation.x += 0.01;
+    //mesh.rotation.z += 0.02;
+
+    var eu = new THREE.Euler();
+    eu.setFromQuaternion(this.state.q);
+    mesh.rotation.x = eu._x;
+    mesh.rotation.y = eu._y;
+    mesh.rotation.z = eu._z;
+    mesh.rotation = eu;
 
     renderer.render(scene, camera);
   },
