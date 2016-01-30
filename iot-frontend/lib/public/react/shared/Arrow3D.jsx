@@ -77,11 +77,8 @@ var Arrow3D = React.createClass({
 
   render: function() {
     return (
-      <div className='row'>
-        <div className='large-12 columns'
-          ref='renderWindow'
-          style={{border: '1px solid black',height:300,padding:0}}>
-        </div>
+      <div ref='renderWindow'
+        style={{border: '1px solid #bbb',height:300,padding:0}}>
       </div>
     );
   }

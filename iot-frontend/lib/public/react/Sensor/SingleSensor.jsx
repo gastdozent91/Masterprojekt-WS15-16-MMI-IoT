@@ -1,5 +1,6 @@
 var React = require('react')
   , Arrow3D = require('../shared/Arrow3D')
+  , Graph = require('../shared/Graph')
   , TopBar = require('../shared/TopBar');
 
 var SingleSensor = React.createClass({
@@ -597,9 +598,16 @@ var SingleSensor = React.createClass({
                     <span className="switch-active" aria-hidden="true">Yes</span>
                     <span className="switch-inactive" aria-hidden="true">No</span>
                   </label>
+                </div>
               </div>
-            </div>
-            <Arrow3D quad={this.state.cQ}/>
+              <div className='row'>
+                <div className='large-6 columns'>
+                  <Arrow3D quad={this.state.cQ}/>
+                </div>
+                <div className='large-6 columns'>
+                  <Graph />
+                </div>
+              </div>
             </div>
           </div>
         </div>

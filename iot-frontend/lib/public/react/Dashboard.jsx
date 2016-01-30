@@ -4,25 +4,18 @@ var React = require('react')
 var Dashboard = React.createClass({
 
   propTypes: {
-    user: React.PropTypes.object
+    user: React.PropTypes.object,
+    sensors: React.PropTypes.array,
+    gateways: React.PropTypes.array,
+    clusters: React.PropTypes.array
   },
 
   getInitialState: function() {
-    console.log(this.props);
     return {
     };
   },
 
   componentDidMount: function() {
-  },
-
-  getSensorString: function() {
-    var result = 'You have ';
-    if (this.props.sensors.length !== 1)
-      result += this.props.sensors.length + ' sensors';
-    else
-      result += this.props.sensors.length + ' sensor';
-    return result;
   },
 
   getGatewayString: function() {
@@ -43,6 +36,29 @@ var Dashboard = React.createClass({
     return result;
   },
 
+  renderSensorInfo: function() {
+    var infoString = 'You have ';
+    if (this.props.sensors.length !== 1)
+      infoString += this.props.sensors.length + ' sensors';
+    else
+      infoString += this.props.sensors.length + ' sensor';
+    var withNoCluster = 0;
+    var active = 0;
+    this.props.sensors.forEach(function(sensor) {
+      if (sensor.attachedClusters.length === 0)
+        withNoCluster++;
+      if (sensor.active)
+        active++;
+    });
+    return (
+      <div>
+        <div>{infoString}</div>
+        <div>{withNoCluster + ' sensors are not attached to a cluster'}</div>
+        <div>{active + ' sensors are not active'}</div>
+      </div>
+    );
+  },
+
   render: function() {
     console.log('render Dashboard');
     return (
@@ -54,9 +70,7 @@ var Dashboard = React.createClass({
             <div className='dashboard-widget'>
               <div className='title'><a href='/sensors'>Sensors</a><div className='icons'></div></div>
               <div className='body'>
-                <div>{this.getSensorString()}</div>
-                <div>blablabla</div>
-                <div>blablabla</div>
+                {this.renderSensorInfo()}
               </div>
             </div>
           </div>
