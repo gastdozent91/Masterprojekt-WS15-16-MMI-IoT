@@ -8,11 +8,39 @@ var Dashboard = React.createClass({
   },
 
   getInitialState: function() {
+    console.log(this.props);
     return {
     };
   },
 
   componentDidMount: function() {
+  },
+
+  getSensorString: function() {
+    var result = 'You have ';
+    if (this.props.sensors.length !== 1)
+      result += this.props.sensors.length + ' sensors';
+    else
+      result += this.props.sensors.length + ' sensor';
+    return result;
+  },
+
+  getGatewayString: function() {
+    var result = 'You have ';
+    if (this.props.gateways.length !== 1)
+      result += this.props.gateways.length + ' gateways';
+    else
+      result += this.props.gateways.length + ' gateway';
+    return result;
+  },
+
+  getClusterString: function() {
+    var result = 'You have ';
+    if (this.props.clusters.length !== 1)
+      result += this.props.clusters.length + ' clusters';
+    else
+      result += this.props.clusters.length + ' cluster';
+    return result;
   },
 
   render: function() {
@@ -26,7 +54,7 @@ var Dashboard = React.createClass({
             <div className='dashboard-widget'>
               <div className='title'><a href='/sensors'>Sensors</a><div className='icons'></div></div>
               <div className='body'>
-                <div>blablabla</div>
+                <div>{this.getSensorString()}</div>
                 <div>blablabla</div>
                 <div>blablabla</div>
               </div>
@@ -38,7 +66,7 @@ var Dashboard = React.createClass({
             <div className='dashboard-widget'>
               <div className='title'><a href='/gateways'>Gateways</a><div className='icons'></div></div>
               <div className='body'>
-                <div>blablabla</div>
+                <div>{this.getGatewayString()}</div>
                 <div>blablabla</div>
                 <div>blablabla</div>
               </div>
@@ -52,7 +80,7 @@ var Dashboard = React.createClass({
             <div className='dashboard-widget'>
               <div className='title'><a href='/clusters'>Clusters</a><div className='icons'></div></div>
               <div className='body'>
-                <div>blablabla</div>
+                <div>{this.getClusterString()}</div>
                 <div>blablabla</div>
                 <div>blablabla</div>
               </div>

@@ -30,15 +30,33 @@ textarea
 
 .profileinfo
   cursor pointer
-  display none
   z-index 2
   background white
   position absolute
+  right 16px
+  top 35px
+  color black
   border 1px solid #eee
+  font-weight normal
   padding 8px 16px
-  opacity 0
-  top 0
-  transition opacity 0.5s, top 0.5s
+
+.profileinfo-enter
+  opacity 0.01
+  top 25px
+
+.profileinfo-enter.profileinfo-enter-active
+  opacity 1
+  top 35px
+  transition 200ms ease-in
+
+.profileinfo-leave
+  opacity 1
+  top 35px
+
+.profileinfo-leave.profileinfo-leave-active
+  opacity 0.01
+  top 25px
+  transition 200ms ease-in
 
 .pointer
   cursor pointer

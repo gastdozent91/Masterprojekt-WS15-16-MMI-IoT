@@ -1,4 +1,6 @@
 var React = require('react')
+  , ReactCSSTransitionGroup = require('react-addons-css-transition-group')
+  , LogoutButton = require('./LogoutButton')
   , _ = require('underscore');
 
 var TopBar = React.createClass({
@@ -10,7 +12,6 @@ var TopBar = React.createClass({
 
   getInitialState: function() {
     return {
-      infoStyle: {},
       isInfo: false
     };
   },
@@ -18,7 +19,6 @@ var TopBar = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     if (nextProps.user === this.props.user &&
         nextProps.activePage === this.props.activePage &&
-        nextState.infoStyle === this.state.infoStyle &&
         nextState.isInfo === this.state.isInfo) {
       return false;
     } else {
@@ -27,17 +27,6 @@ var TopBar = React.createClass({
   },
 
   componentDidMount: function() {
-    this.posInfo();
-    window.addEventListener('resize', this.posInfo);
-  },
-
-  posInfo: function() {
-    var windowWidth = window.innerWidth;
-    var rect = this.refs.profile.getBoundingClientRect();
-    var infoStyle = _.clone(this.state.infoStyle);
-    infoStyle.top = rect.top + rect.height;
-    infoStyle.right = windowWidth - rect.right + 16;
-    this.setState({infoStyle: infoStyle});
   },
 
   handleFrissClick: function() {
@@ -45,31 +34,7 @@ var TopBar = React.createClass({
   },
 
   handleProfileClick: function() {
-    console.log('TopBar profile click');
-    var infoStyle = _.clone(this.state.infoStyle);
-    var isInfo = this.state.isInfo;
-    if (isInfo) {
-      infoStyle.display = 'none';
-      infoStyle.opacity = 0;
-      isInfo = false;
-      this.setState({infoStyle: infoStyle, isInfo: isInfo});
-    } else {
-      infoStyle.display = 'block';
-      infoStyle.top = infoStyle.top -5;
-      isInfo = true;
-      this.setState({infoStyle: infoStyle, isInfo: isInfo}, function() {
-        setTimeout(function() {
-          infoStyle = _.clone(infoStyle);
-          infoStyle.top = infoStyle.top + 5;
-          infoStyle.opacity = 1;
-          this.setState({infoStyle: infoStyle});
-        }.bind(this), 50);
-      });
-    }
-  },
-
-  handleLogout: function() {
-    window.location = '/logout';
+    this.setState({isInfo: !this.state.isInfo});
   },
 
   render: function() {
@@ -95,16 +60,18 @@ var TopBar = React.createClass({
             <ul className='menu'>
               <li className='menu-text pointer'
                 ref='profile'
+                style={{position: 'relative'}}
                 onClick={this.handleProfileClick}>
                 {this.props.user.firstname || 'Admin'}
+                <ReactCSSTransitionGroup transitionName='profileinfo'
+                  transitionEnterTimeout={200}
+                  transitionLeaveTimeout={200}>
+                  {!this.state.isInfo ? null :
+                    <LogoutButton />
+                  }
+                </ReactCSSTransitionGroup>
               </li>
             </ul>
-          </div>
-          <div className='profileinfo'
-            ref='profileinfo'
-            onClick={this.handleLogout}
-            style={this.state.infoStyle}>
-            Log out
           </div>
         </div>
       </div>
