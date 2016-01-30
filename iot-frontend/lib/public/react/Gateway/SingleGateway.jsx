@@ -77,7 +77,9 @@ var SingleGateway = React.createClass({
   },
 
   handleClickOnSensor: function(id){
-    window.location = '/sensor/' + id;
+    return function() {
+      window.location = '/sensor/' + id;
+    }
   },
 
   render: function() {
