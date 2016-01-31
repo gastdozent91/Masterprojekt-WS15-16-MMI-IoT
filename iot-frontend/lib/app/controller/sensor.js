@@ -42,6 +42,10 @@ me.create = (req, res, next) => {
   });
 };
 
+me.sendJson = function(req, res) {
+  res.json(req.sensors);
+};
+
 me.render = function(req, res) {
   var out
     , body;

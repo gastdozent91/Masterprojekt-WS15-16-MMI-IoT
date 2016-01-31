@@ -133,6 +133,11 @@ app.get('/cluster/:id',
 );
 
 // API
+app.get('/api/sensor',
+  login.shouldBeLoggedIn,
+  sensor.getAll,
+  sensor.sendJson
+);
 
 app.post('/user',
   login.shouldBeLoggedIn,
