@@ -7,16 +7,17 @@ import pika
 import time
 from math import floor
 import pytz
+import iso8601
 from optparse import OptionParser
 
 __author__ = 'Elias Lerch'
 
-# 0.1 = 10% variance in bulk size
 rabbitmqConnection = 0
 rabbitmqchannel = 0
 
 MAJOR_VERSION = 0
 MINOR_VERSION = 1
+idSeperatedSamples = {}
 
 # Mapping of sensor numbers to ids
 sensor_id = {
@@ -28,7 +29,15 @@ sensor_id = {
     5: "Schulter",
     6: "Kopf"
 }
-
+sensor_uuid = {
+    0: "12bbf970-c697-11e5-9912-ba0be0483c18",
+    1: "12bbfdbc-c697-11e5-9912-ba0be0483c18",
+    2: "12bc0384-c697-11e5-9912-ba0be0483c18",
+    3: "12bc0582-c697-11e5-9912-ba0be0483c18",
+    4: "12bc0744-c697-11e5-9912-ba0be0483c18",
+    5: "12bc0906-c697-11e5-9912-ba0be0483c18",
+    6: "12bc0dca-c697-11e5-9912-ba0be0483c18"
+}
 # These values must currently be set
 # They will be provided by the gateway at a later stage
 recording_date = datetime.datetime(2016, 1, 18, 18, 0)
@@ -85,7 +94,8 @@ def formatData():
             result.append({
                 'id': SensorId,
                 # TODO: ISO 8601 need; id + time => must be unique
-                'time': recording_timezone.localize(ts).strftime('%Y-%m-%dT%H:%M:%S'),
+                #'time': iso8601.parse_date(recording_timezone.localize(ts).strftime('%Y-%m-%dT%H:%M:%S.%f')),
+                'time': recording_timezone.localize(ts).strftime('%Y-%m-%dT%H:%M:%S.%f'),
                 #'time': datetime.datetime.fromtimestamp(random.randint(0, 1454005235)).strftime('%Y-%m-%dT%H:%M:%S'), quick fix to make id + time hopefully unique
                 'acceleration': data['acceleration'],
                 'orientation': data['orientation'],
@@ -154,6 +164,29 @@ if __name__ == '__main__':
         print("Splitting data")
     output = formatData()
 
+    # split output into specific sensors
+    monoSensorBulks = []
+    for sensor in sensor_id.keys():
+        monoSensorBulk = []
+        for sample in output:
+            if sample['id'] == sensor_id[sensor]:
+                newSample = sample
+                newSample['id'] = sensor_uuid[sensor]
+                newSample['time'] = sample['time'][0:len(sample['time'])-3] # remove trailing 0's
+                monoSensorBulk.append(newSample)
+        monoSensorBulks.append(monoSensorBulk)
+
+    # print(monoSensorBulks[0][0])
+    # print(monoSensorBulks[0][1])
+    # print(monoSensorBulks[0][2])
+    # print(
+    #     str(
+    #         int(monoSensorBulks[0][2]['time'][0:4])+1
+    #     ) +
+    #     monoSensorBulks[0][2]['time'][4:len(monoSensorBulks[0][2]['time'])]
+    # )
+    #print(monoSensorBulks[0][0]['time'])
+
     # Write out result as UTF_8 JSON
     if options.verbose:
         print("got {} samples in file".format(len(output)))
@@ -173,11 +206,17 @@ if __name__ == '__main__':
         bulkDataAmount = getBulkLen()
         if dataIndex + bulkDataAmount > len(output):
             bulkDataAmount = len(output)-dataIndex
-        sendBulk(output[dataIndex:(dataIndex + bulkDataAmount)],
-                 options)
+        for i in range(0, sensor_id.__len__()):
+            sendBulk(monoSensorBulks[i][dataIndex:(dataIndex + bulkDataAmount)],
+                     options)
         dataIndex += bulkDataAmount
         time.sleep(options.sleeptime)
         if options.loop and dataIndex >= len(output):
             print("looping data")
             dataIndex = 0
+            #adding time to samples
+            for monoSensorBulk in monoSensorBulks:
+                for sample in monoSensorBulk:
+                    curYear = int(sample['time'][0:4])
+                    sample['time'] = str(curYear+1)+sample['time'][4:len(sample['time'])]
     rabbitmqConnection.close()
