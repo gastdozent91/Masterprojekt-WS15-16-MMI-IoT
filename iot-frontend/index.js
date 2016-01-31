@@ -139,6 +139,18 @@ app.get('/api/sensor',
   sensor.sendJson
 );
 
+app.get('/api/cluster',
+  login.shouldBeLoggedIn,
+  cluster.getAll,
+  cluster.sendJson
+);
+
+app.get('/api/gateway',
+  login.shouldBeLoggedIn,
+  gateway.getAll,
+  gateway.sendJson
+);
+
 app.post('/user',
   login.shouldBeLoggedIn,
   user.create

@@ -54,6 +54,10 @@ me.create = (req, res, next) => {
   });
 };
 
+me.sendJson = function(req, res) {
+  res.json(req.clusters);
+};
+
 me.render = function(req, res) {
   var out
     , body;
