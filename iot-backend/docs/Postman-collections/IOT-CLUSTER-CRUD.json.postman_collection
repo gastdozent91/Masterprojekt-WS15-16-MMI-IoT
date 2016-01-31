@@ -52,7 +52,7 @@
 			"description": "",
 			"collectionId": "7fecc211-2c7f-0df6-4ff2-89d300a85e1b",
 			"responses": [],
-			"rawModeData": "{\n    \"name\":\"cluster1\",\n    \"sensorList\":[]\n }"
+			"rawModeData": "{\n    \"name\":\"cluster1\",\n    \"sensors\":[]\n }"
 		},
 		{
 			"id": "56b5d3b8-60ea-dacb-9fe3-01bb0c5717dc",
@@ -110,7 +110,7 @@
 			"description": "",
 			"collectionId": "7fecc211-2c7f-0df6-4ff2-89d300a85e1b",
 			"responses": [],
-			"rawModeData": "{\n    \"name\":\"cluster1\",\n    \"owner\":\"max\",\n    \"sensorList\":[]\n }\n"
+			"rawModeData": "{\n    \"name\":\"cluster1\",\n    \"owner\":\"max\",\n    \"sensors\":[]\n }\n"
 		}
 	]
 }

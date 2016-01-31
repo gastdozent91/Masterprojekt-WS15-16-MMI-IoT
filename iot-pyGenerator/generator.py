@@ -29,15 +29,17 @@ sensor_id = {
     5: "Schulter",
     6: "Kopf"
 }
+
 sensor_uuid = {
-    0: "12bbf970-c697-11e5-9912-ba0be0483c18",
-    1: "12bbfdbc-c697-11e5-9912-ba0be0483c18",
-    2: "12bc0384-c697-11e5-9912-ba0be0483c18",
-    3: "12bc0582-c697-11e5-9912-ba0be0483c18",
-    4: "12bc0744-c697-11e5-9912-ba0be0483c18",
-    5: "12bc0906-c697-11e5-9912-ba0be0483c18",
-    6: "12bc0dca-c697-11e5-9912-ba0be0483c18"
+        0: "aeeae543-af7e-43af-8329-9910d087c6a8",
+        1: "146acbde-e555-48f1-83a3-e23b1ea618ce",
+        2: "64b8429c-d27e-4b60-84f8-fb62c0c41232",
+        3: "ed7c7559-0cf1-488e-8023-695b9d8d9729",
+        4: "a833519d-3dfb-4746-8ec0-8bb66d80817f",
+        5: "26518222-ea4d-4318-8b97-19e23bf1d090",
+        6: "1085d1c6-18e5-4345-b135-3d5785ae8a95"
 }
+
 # These values must currently be set
 # They will be provided by the gateway at a later stage
 recording_date = datetime.datetime(2016, 1, 18, 18, 0)

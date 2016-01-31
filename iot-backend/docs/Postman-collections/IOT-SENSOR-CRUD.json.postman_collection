@@ -71,7 +71,7 @@
 			"description": "",
 			"collectionId": "f3c9e7c3-2adb-8bdd-92c0-b4fa47cb8d04",
 			"responses": [],
-			"rawModeData": "{\n  \"isActive\":true,\n  \"location\":\"Berlin, Mitte\",\n  \"sensorTypes\": [\n      \"ACCELERATION\",\n      \"ORIENTATION\"],\n  \"attachedGateway\": \"39fbd278-5fba-407f-92de-531920ef2ddc\",\n  \"attachedClusters\": [],\n  \"name\": \"Arm rechts\"\n }\n"
+			"rawModeData": "{\n  \"isActive\":true,\n  \"location\":\"Berlin, Mitte\",\n  \"types\": [\n      \"ACCELERATION\",\n      \"ORIENTATION\"],\n  \"attachedGateway\": \"39fbd278-5fba-407f-92de-531920ef2ddc\",\n  \"attachedClusters\": [],\n  \"name\": \"Arm rechts\"\n }\n"
 		},
 		{
 			"id": "c41c0db2-c470-0be4-aa03-e28fa237fbf6",
