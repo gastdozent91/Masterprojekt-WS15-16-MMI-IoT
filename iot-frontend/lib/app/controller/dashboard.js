@@ -9,9 +9,9 @@ module.exports = me = {};
 me.render = function(req, res) {
   var out = {
     user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-    sensors: req.sensors,
-    gateways: req.gateways,
-    clusters: req.clusters
+    sensors: req.sensors || [],
+    gateways: req.gateways || [],
+    clusters: req.clusters || []
   };
   var dashboard = new Dashboard(out);
   var body = ReactDOM.renderToString(dashboard);
