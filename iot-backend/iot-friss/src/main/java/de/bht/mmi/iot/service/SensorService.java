@@ -1,7 +1,5 @@
 package de.bht.mmi.iot.service;
 
-import de.bht.mmi.iot.dto.SensorPostDto;
-import de.bht.mmi.iot.dto.SensorPutDto;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Sensor;
@@ -18,9 +16,11 @@ public interface SensorService {
 
     Iterable<Sensor> getAllSensorsByGatewayId(String gatewayId) throws EntityNotFoundException;
 
-    Sensor createSensor(SensorPostDto sensor, UserDetails authenticatedUser) throws EntityNotFoundException;
+    Iterable<Sensor> getAllSensorsByClusterId(String clusterId) throws EntityNotFoundException;
 
-    Sensor updateSensor(String sensorId, SensorPutDto sensor, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
+    Sensor createSensor(Sensor sensor) throws EntityNotFoundException, NotAuthorizedException;
+
+    Sensor updateSensor(String sensorId, Sensor sensor, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
 
     void deleteSensor(String sensorId) throws EntityNotFoundException;
 

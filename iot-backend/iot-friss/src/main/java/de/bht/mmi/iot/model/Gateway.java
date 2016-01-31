@@ -5,13 +5,17 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import de.bht.mmi.iot.constants.DbConstants;
 
+import javax.validation.constraints.NotNull;
+
 @DynamoDBTable(tableName = DbConstants.TABLENAME_GATEWAY)
 public class Gateway {
 
     private String id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String owner;
 
     public Gateway(String name, String owner) {

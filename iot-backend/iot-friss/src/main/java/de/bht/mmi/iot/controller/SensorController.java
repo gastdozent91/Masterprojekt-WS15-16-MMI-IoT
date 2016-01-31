@@ -1,8 +1,6 @@
 package de.bht.mmi.iot.controller;
 
 import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.dto.SensorPostDto;
-import de.bht.mmi.iot.dto.SensorPutDto;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Sensor;
@@ -40,16 +38,17 @@ public class SensorController {
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Sensor createSensor(@RequestBody SensorPostDto sensor,
-                               @AuthenticationPrincipal UserDetails authenticatedUser) throws EntityNotFoundException {
-        return sensorService.createSensor(sensor, authenticatedUser);
+    public Sensor createSensor(@RequestBody @Validated Sensor sensor,
+                               @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        return sensorService.createSensor(sensor);
     }
 
     // PUT
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     public Sensor updateSensor(@PathVariable("id") String id,
-                               @RequestBody @Validated SensorPutDto sensor,
+                               @RequestBody @Validated Sensor sensor,
                                @AuthenticationPrincipal UserDetails authenticatedUser)
             throws NotAuthorizedException, EntityNotFoundException {
         return sensorService.updateSensor(id, sensor, authenticatedUser);

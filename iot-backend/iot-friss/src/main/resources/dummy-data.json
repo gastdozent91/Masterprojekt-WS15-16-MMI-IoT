@@ -1,0 +1,135 @@
+{
+  "users": [
+    {
+      "username": "max",
+      "password": "test123",
+      "firstname": "Max",
+      "lastname": "Mustermann",
+      "roles": ["ROLE_USER"],
+      "sensors": [
+        "aeeae543-af7e-43af-8329-9910d087c6a8",
+        "146acbde-e555-48f1-83a3-e23b1ea618ce",
+        "64b8429c-d27e-4b60-84f8-fb62c0c41232",
+        "ed7c7559-0cf1-488e-8023-695b9d8d9729",
+        "a833519d-3dfb-4746-8ec0-8bb66d80817f",
+        "26518222-ea4d-4318-8b97-19e23bf1d090",
+        "1085d1c6-18e5-4345-b135-3d5785ae8a95"
+      ]
+    }
+  ],
+  "gateways": [
+    {
+      "id": "914e6e00-8cdd-428e-b418-bee0b248a34c",
+      "name": "gateway1",
+      "owner": "admin"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
+      "name": "cluster1",
+      "owner": "admin",
+      "creationDate": "2016-01-31T20:00:40Z"
+    }
+  ],
+  "sensors": [
+    {
+      "id": "aeeae543-af7e-43af-8329-9910d087c6a8",
+      "name": "BeinRechts",
+      "types": [
+        "acceleration",
+        "orientation"
+      ],
+      "location": "Berlin, Germany",
+      "attachedCluster": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
+      "attachedGateway": "914e6e00-8cdd-428e-b418-bee0b248a34c",
+      "owner": "max",
+      "creationDate": "2016-01-31T20:11:00Z",
+      "isActive": true
+    },
+    {
+      "id": "146acbde-e555-48f1-83a3-e23b1ea618ce",
+      "name": "ArmRechts",
+      "types": [
+        "acceleration",
+        "orientation"
+      ],
+      "location": "Berlin, Germany",
+      "attachedCluster": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
+      "attachedGateway": "914e6e00-8cdd-428e-b418-bee0b248a34c",
+      "owner": "max",
+      "creationDate": "2016-01-31T20:12:00Z",
+      "isActive": true
+    },
+    {
+      "id": "64b8429c-d27e-4b60-84f8-fb62c0c41232",
+      "name": "ArmLinks",
+      "types": [
+        "acceleration",
+        "orientation"
+      ],
+      "location": "Berlin, Germany",
+      "attachedCluster": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
+      "attachedGateway": "914e6e00-8cdd-428e-b418-bee0b248a34c",
+      "owner": "max",
+      "creationDate": "2016-01-31T20:13:00Z",
+      "isActive": true
+    },
+    {
+      "id": "ed7c7559-0cf1-488e-8023-695b9d8d9729",
+      "name": "BeinLinks",
+      "types": [
+        "acceleration",
+        "orientation"
+      ],
+      "location": "Berlin, Germany",
+      "attachedCluster": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
+      "attachedGateway": "914e6e00-8cdd-428e-b418-bee0b248a34c",
+      "owner": "max",
+      "creationDate": "2016-01-31T20:14:00Z",
+      "isActive": true
+    },
+    {
+      "id": "a833519d-3dfb-4746-8ec0-8bb66d80817f",
+      "name": "Ruecken",
+      "types": [
+        "acceleration",
+        "orientation"
+      ],
+      "location": "Berlin, Germany",
+      "attachedCluster": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
+      "attachedGateway": "914e6e00-8cdd-428e-b418-bee0b248a34c",
+      "owner": "max",
+      "creationDate": "2016-01-31T20:15:00Z",
+      "isActive": true
+    },
+    {
+      "id": "26518222-ea4d-4318-8b97-19e23bf1d090",
+      "name": "Schulter",
+      "types": [
+        "acceleration",
+        "orientation"
+      ],
+      "location": "Berlin, Germany",
+      "attachedCluster": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
+      "attachedGateway": "914e6e00-8cdd-428e-b418-bee0b248a34c",
+      "owner": "max",
+      "creationDate": "2016-01-31T20:16:00Z",
+      "isActive": true
+    },
+    {
+      "id": "1085d1c6-18e5-4345-b135-3d5785ae8a95",
+      "name": "Kopf",
+      "types": [
+        "acceleration",
+        "orientation"
+      ],
+      "location": "Berlin, Germany",
+      "attachedCluster": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
+      "attachedGateway": "914e6e00-8cdd-428e-b418-bee0b248a34c",
+      "owner": "max",
+      "creationDate": "2016-01-31T20:17:00Z",
+      "isActive": true
+    }
+  ]
+}

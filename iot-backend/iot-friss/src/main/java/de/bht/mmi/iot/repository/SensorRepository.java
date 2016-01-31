@@ -10,4 +10,6 @@ public interface SensorRepository extends CrudRepository<Sensor, String> {
 
     Iterable<Sensor> findByAttachedGateway(@Param("attachedGateway") String gatewayId);
 
+    Iterable<Sensor> findByAttachedCluster(@Param("attachedCluster") String clusterId);
+
 }

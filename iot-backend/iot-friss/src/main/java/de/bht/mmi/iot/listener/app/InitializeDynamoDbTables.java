@@ -1,8 +1,8 @@
 package de.bht.mmi.iot.listener.app;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bht.mmi.iot.config.DbInitMode;
 import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.dto.SensorPostDto;
 import de.bht.mmi.iot.exception.EntityExistsException;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
@@ -11,6 +11,7 @@ import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.service.*;
+import de.bht.mmi.iot.util.DummyData;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -58,6 +58,12 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
     @Autowired
     private ClusterService clusterService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Value("classpath:dummy-data.json")
+    private Resource dummyDataResource;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         final DbInitMode dbInitMode = DbInitMode.fromPropertyValue(dbInitModeValue);
@@ -78,7 +84,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
                     throw new RuntimeException(String.format("Unsupported dbInitMode: '%s' ",
                             dbInitMode.getPropertyValue()));
             }
-        } catch (NotAuthorizedException | EntityNotFoundException | EntityExistsException e) {
+        } catch (NotAuthorizedException | EntityNotFoundException | EntityExistsException | IOException e) {
             throw new RuntimeException(String.format("Unable to initialize database in mode: '%s'",
                     dbInitMode.getPropertyValue()), e);
         }
@@ -114,64 +120,37 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         tableService.createMeasurementTable();
     }
 
-    private void addDummyData() throws NotAuthorizedException, EntityNotFoundException, EntityExistsException {
-        // User
-        final User user = new User("max", "test123");
-        user.addRole(RoleConstants.ROLE_USER);
-        user.setFirstname("max");
-        user.setLastname("mustermann");
-        userService.saveUser(user);
-        LOGGER.info(String.format("User %s created", user.getUsername()));
+    private void addDummyData() throws NotAuthorizedException, EntityNotFoundException, EntityExistsException, IOException {
 
-        UserDetails userDetails = userService.loadUserByUsername("admin");
+        final DummyData dummyData = objectMapper.readValue(dummyDataResource.getFile(), DummyData.class);
+
+        // User
+        final List<User> users = dummyData.getUsers();
+        for (User user : users) {
+            userService.saveUser(user);
+            LOGGER.info(String.format("User '%s' created", user.getUsername()));
+        }
 
         // Gateway
-        Gateway gateway = gatewayService.createGateway(new Gateway("gateway1",user.getUsername()));
-        LOGGER.info(String.format("Gateway %s created", gateway.getName()));
+        final List<Gateway> gateways = dummyData.getGateways();
+        for (Gateway gateway : gateways) {
+            gatewayService.createGateway(gateway);
+            LOGGER.info(String.format("Gateway '%s' with id '%s' created", gateway.getName(), gateway.getId()));
+        }
 
         //Cluster
-        Cluster cluster = clusterService.createCluster(new Cluster("cluster1", user.getUsername(), null));
-        LOGGER.info(String.format("Cluster %s created", cluster.getName()));
+        final List<Cluster> clusters = dummyData.getClusters();
+        for (Cluster cluster : clusters) {
+            clusterService.createCluster(cluster);
+            LOGGER.info(String.format("Cluster '%s' with id '%s' created", cluster.getName(), cluster.getId()));
+        }
 
         // Sensor
-        ArrayList<String> sensorTypes = new ArrayList<String>();
-        sensorTypes.add("acceleration");
-        sensorTypes.add("orientation");
-
-        Sensor sensor = sensorService.createSensor(
-                new SensorPostDto(true, "Berlin, Germany", sensorTypes,
-                        gateway.getId(), Collections.emptyList(), "Arm rechts"), userDetails);
-        LOGGER.info(String.format("Sensor %s created", sensor.getId()));
-
-        Sensor sensor2 = sensorService.createSensor(
-                new SensorPostDto(true, "13.301172256,52.44152832,33.4", sensorTypes,
-                        gateway.getId(), Collections.emptyList(), "Arm links"),
-                userService.loadUserByUsername("admin"));
-        LOGGER.info(String.format("Sensor %s created", sensor2.getId()));
-
-        Sensor sensor3 = sensorService.createSensor(new SensorPostDto(true,
-                "$GPGGA,160955.000,5226.4877,N,01318.0644,E,1,11,0.79,35.1,M,44.9,M,,*50", sensorTypes,
-                gateway.getId(),
-                Arrays.asList(cluster.getId()), "Kopf"), userService.loadUserByUsername("admin"));
-        LOGGER.info(String.format("Sensor %s created", sensor3.getId()));
-
-
-        ArrayList<String> sensorList = new ArrayList<String>();
-        sensorList.add(sensor.getId());
-        sensorList.add(sensor2.getId());
-        sensorList.add(sensor3.getId());
-        user.setSensorList(sensorList);
-        userService.updateUser(user);
-        LOGGER.info(String.format("Added Sensors %s, %s, %s to User %s", sensor.getId(), sensor2.getId(),
-                sensor3.getId(), user.getUsername()));
-
-        cluster.setSensorList(sensorList);
-        clusterService.updateCluster(cluster.getId(), cluster, userDetails);
-        LOGGER.info(String.format("Added Sensors %s, %s, %s to Cluster %s", sensor.getId(), sensor2.getId(),
-                sensor3.getId(), cluster.getName()));
-
-        gatewayService.updateGateway(gateway.getId(),gateway,userDetails);
-        LOGGER.info(String.format("Added Cluster %s to Gateway %s",cluster.getName(),gateway.getName()));
+        final List<Sensor> sensors = dummyData.getSensors();
+        for (Sensor sensor : sensors) {
+            sensorService.createSensor(sensor);
+            LOGGER.info(String.format("Sensor '%s' with id '%s' created", sensor.getName(), sensor.getId()));
+        }
 
     }
 

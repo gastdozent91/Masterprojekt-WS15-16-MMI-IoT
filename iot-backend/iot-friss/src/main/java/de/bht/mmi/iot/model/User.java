@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @Contain({RoleConstants.ROLE_ADMIN, RoleConstants.ROLE_USER})
     private Set<String> roles = new HashSet<String>();
 
-    private List<String> sensorList = Collections.emptyList();
+    private List<String> sensors = Collections.emptyList();
 
     public User(String username, String password) {
         this.username = username;
@@ -108,12 +108,12 @@ public class User implements UserDetails {
         return this.roles.add(role.toUpperCase());
     }
 
-    public List<String> getSensorList() {
-        return sensorList;
+    public List<String> getSensors() {
+        return sensors;
     }
 
-    public void setSensorList(List<String> sensorList) {
-        this.sensorList = sensorList;
+    public void setSensors(List<String> sensors) {
+        this.sensors = sensors;
     }
 
     @Override

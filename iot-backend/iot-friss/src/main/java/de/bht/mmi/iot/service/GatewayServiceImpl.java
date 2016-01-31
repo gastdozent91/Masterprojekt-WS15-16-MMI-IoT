@@ -6,8 +6,6 @@ import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -22,8 +20,6 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Autowired
     private UserService userService;
-
-    private Logger LOGGER = LoggerFactory.getLogger(GatewayServiceImpl.class);
 
     @Override
     public Iterable<Gateway> getAll() {
@@ -47,11 +43,8 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Override
     public Gateway createGateway(Gateway gateway) throws EntityNotFoundException {
-        if (userService.loadUserByUsername(gateway.getOwner()) != null) {
-            return gatewayRepository.save(gateway);
-        } else {
-            throw new EntityNotFoundException(String.format("User with username '%s' not found", gateway.getOwner()));
-        }
+        userService.loadUserByUsername(gateway.getOwner());
+        return gatewayRepository.save(gateway);
     }
 
     @Override
@@ -59,15 +52,14 @@ public class GatewayServiceImpl implements GatewayService {
             throws EntityNotFoundException, NotAuthorizedException {
         final Gateway oldGateway = getGateway(gatewayId);
         final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
-        if (oldGateway != null && !oldGateway.equals(gateway)) {
-            if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)) {
-                oldGateway.setName(gateway.getName());
-                return gatewayRepository.save(oldGateway);
-            } else {
-                throw new NotAuthorizedException(String.format("You are not authorized to access gateway with id '%s'", gatewayId));
-            }
+
+        if ((oldGateway != null && oldGateway.getOwner() == authenticatedUser.getUsername()) ||
+                userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
+            gateway.setId(gatewayId);
+            return gatewayRepository.save(gateway);
         } else {
-            throw new EntityNotFoundException(String.format("Gateway with id '%s' not found", gatewayId));
+            throw new NotAuthorizedException(
+                    String.format("You are not authorized to update gateway with id '%s'", gatewayId));
         }
     }
 
@@ -75,7 +67,6 @@ public class GatewayServiceImpl implements GatewayService {
     public void deleteGateway(String gatewayId) throws EntityNotFoundException {
         getGateway(gatewayId);
         gatewayRepository.delete(gatewayId);
-        LOGGER.debug(String.format("Gateway with id '%s' deleted", gatewayId));
     }
 
 }

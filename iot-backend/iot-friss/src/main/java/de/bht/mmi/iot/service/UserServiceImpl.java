@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
                     StringUtils.join(notFoundSensorIds, ", ")));
         }
 
-        user.setSensorList(sensorList);
+        user.setSensors(sensorList);
         return userRepository.save(user);
     }
 

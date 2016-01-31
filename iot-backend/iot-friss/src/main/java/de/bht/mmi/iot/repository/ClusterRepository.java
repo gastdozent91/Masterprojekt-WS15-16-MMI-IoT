@@ -5,5 +5,4 @@ import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
 import org.springframework.data.repository.CrudRepository;
 
 @EnableScan
-public interface ClusterRepository extends CrudRepository<Cluster, String> {
-}
+public interface ClusterRepository extends CrudRepository<Cluster, String> { }

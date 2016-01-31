@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -56,7 +57,7 @@ public class GatewayController {
     // POST
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Gateway createGateway(@RequestBody Gateway gateway) throws EntityNotFoundException {
+    public Gateway createGateway(@RequestBody @Validated Gateway gateway) throws EntityNotFoundException {
         return gatewayService.createGateway(gateway);
     }
 
@@ -64,7 +65,7 @@ public class GatewayController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     public Gateway updateGateway(@PathVariable("id") String id,
-                                 @RequestBody Gateway gateway,
+                                 @RequestBody @Validated Gateway gateway,
                                  @AuthenticationPrincipal UserDetails authenticatedUser)
             throws NotAuthorizedException, EntityNotFoundException {
         return gatewayService.updateGateway(id, gateway, authenticatedUser);

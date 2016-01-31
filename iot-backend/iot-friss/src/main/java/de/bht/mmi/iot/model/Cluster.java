@@ -8,29 +8,29 @@ import de.bht.mmi.iot.constants.DbConstants;
 import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
 import org.joda.time.DateTime;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @DynamoDBTable(tableName = DbConstants.TABLENAME_CLUSTER)
 public class Cluster {
 
     private String id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String owner;
 
+    @NotNull
     private DateTime creationDate;
-
-    private List<String> sensorList;
 
     public Cluster() {
         this.creationDate = new DateTime();
     }
 
-    public Cluster(String name, String owner, List<String> sensorList) {
+    public Cluster(String name, String owner) {
         this.name = name;
         this.owner = owner;
-        this.sensorList = sensorList;
     }
 
     @DynamoDBHashKey(attributeName = DbConstants.ATTRIBUTE_ID)
@@ -58,14 +58,6 @@ public class Cluster {
 
     public void setCreationDate(DateTime creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public List<String> getSensorList() {
-        return sensorList;
-    }
-
-    public void setSensorList(List<String> sensorList) {
-        this.sensorList = sensorList;
     }
 
     public String getOwner() {

@@ -6,8 +6,6 @@ import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Cluster;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.ClusterRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -21,8 +19,6 @@ public class ClusterServiceImpl implements ClusterService{
     @Autowired
     private UserService userService;
 
-    private Logger LOGGER = LoggerFactory.getLogger(ClusterServiceImpl.class);
-
     @Override
     public Iterable<Cluster> getAll() {
         return clusterRepository.findAll();
@@ -30,7 +26,7 @@ public class ClusterServiceImpl implements ClusterService{
 
     @Override
     public Cluster getCluster(String clusterId) throws EntityNotFoundException {
-        Cluster cluster = clusterRepository.findOne(clusterId);
+        final Cluster cluster = clusterRepository.findOne(clusterId);
         if (cluster != null) {
             return cluster;
         } else {
@@ -40,29 +36,23 @@ public class ClusterServiceImpl implements ClusterService{
 
     @Override
     public Cluster createCluster(Cluster cluster) throws EntityNotFoundException {
-        if (userService.loadUserByUsername(cluster.getOwner()) != null ) {
-            return clusterRepository.save(cluster);
-        } else {
-            throw new EntityNotFoundException(String.format("User with username '%s' not found", cluster.getOwner()));
-        }
+        userService.loadUserByUsername(cluster.getOwner());
+        return clusterRepository.save(cluster);
     }
 
     @Override
     public Cluster updateCluster(String clusterId, Cluster cluster, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        final Cluster oldCluster = getCluster(clusterId);
+        final Cluster oldCluster = clusterRepository.findOne(clusterId);
         final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
-        if (oldCluster != null && !oldCluster.equals(cluster)) {
-            if (user.getRoles().contains(RoleConstants.ROLE_ADMIN)) {
-                oldCluster.setName(cluster.getName());
-                oldCluster.setSensorList(cluster.getSensorList());
-                return clusterRepository.save(oldCluster);
-            } else {
-                throw new NotAuthorizedException(
-                        String.format("You are not authorized to access cluster with id '%s'", clusterId));
-            }
+
+        if ((oldCluster != null && oldCluster.getOwner() == authenticatedUser.getUsername()) ||
+                userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
+            cluster.setId(clusterId);
+            return clusterRepository.save(cluster);
         } else {
-            throw new EntityNotFoundException(String.format("Cluster with id '%s' not found", clusterId));
+            throw new NotAuthorizedException(
+                    String.format("You are not authorized to update cluster with id '%s'", clusterId));
         }
     }
 
@@ -70,7 +60,6 @@ public class ClusterServiceImpl implements ClusterService{
     public void deleteCluster(String clusterId) throws EntityNotFoundException {
         getCluster(clusterId);
         clusterRepository.delete(clusterId);
-        LOGGER.debug(String.format("Cluster with id '%s' deleted", clusterId));
     }
 
 }
