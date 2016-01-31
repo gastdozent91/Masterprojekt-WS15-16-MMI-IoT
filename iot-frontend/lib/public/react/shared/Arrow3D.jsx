@@ -45,7 +45,7 @@ var Arrow3D = React.createClass({
     geometry = new THREE.CylinderGeometry(1, 100, 200, 32);
     material = new THREE.MeshNormalMaterial({
       wireframe: true,
-      wireframeLinewidth: 2
+      wireframeLinewidth: 3
     });
 
     mesh = new THREE.Mesh(geometry, material);

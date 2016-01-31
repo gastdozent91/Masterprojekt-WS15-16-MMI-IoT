@@ -11,7 +11,10 @@ var Graph = React.createClass({
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    return true;
+    if (nextProps.value === this.props.value)
+      return false
+    else
+      return true;
   },
 
   //componentWillReceiveProps: function(nextProps) {

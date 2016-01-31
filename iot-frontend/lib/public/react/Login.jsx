@@ -13,6 +13,10 @@ var Login = React.createClass({
   },
 
   componentDidMount: function() {
+    window.addEventListener('keydown', function(e) {
+      if (e.code === 'Enter')
+        this.handleClick();
+    }.bind(this));
   },
 
   handleChangeName: function(event) {
