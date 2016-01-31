@@ -7,7 +7,6 @@ import pika
 import time
 from math import floor
 import pytz
-import iso8601
 from optparse import OptionParser
 
 __author__ = 'Elias Lerch'
@@ -112,14 +111,14 @@ def getBulkLen():
     return random.randrange(minSize, maxSize)
 
 
-def sendBulk(sensorDataBulk, optionsMap):
+def sendBulk(sensorDataBulk, routingkey, optionsMap):
     if optionsMap.simulated:
         print("sending bulk of data, sensorValues: {}".format(len(sensorDataBulk)))
     else:
         print("sending bulk of data, sensorValues: {}".format(len(sensorDataBulk)))
 
         rabbitmqchannel.basic_publish(optionsMap.exchange,
-                                      "", # TODO: routing_key is sensor_id
+                                      routingkey,
                                       json.dumps(sensorDataBulk),
                                       pika.BasicProperties(content_type="text/plain", delivery_mode=1))
 
@@ -204,21 +203,24 @@ if __name__ == '__main__':
     # make bulks but dont send them
     c = 1
     dataIndex = 0
-    while dataIndex < len(output):
-        bulkDataAmount = getBulkLen()
-        if dataIndex + bulkDataAmount > len(output):
-            bulkDataAmount = len(output)-dataIndex
+    dataIndecies = [0 for item in sensor_uuid]
+    while True:
         for i in range(0, sensor_id.__len__()):
-            sendBulk(monoSensorBulks[i][dataIndex:(dataIndex + bulkDataAmount)],
+            bulkDataAmount = getBulkLen()
+            if dataIndecies[i] + bulkDataAmount > len(monoSensorBulks[i]):
+                bulkDataAmount = len(monoSensorBulks[i])-dataIndecies[i]
+            sendBulk(monoSensorBulks[i][dataIndecies[i]:(dataIndecies[i] + bulkDataAmount)],
+                     monoSensorBulks[i][0]['id'],
                      options)
-        dataIndex += bulkDataAmount
-        time.sleep(options.sleeptime)
-        if options.loop and dataIndex >= len(output):
-            print("looping data")
-            dataIndex = 0
-            #adding time to samples
-            for monoSensorBulk in monoSensorBulks:
-                for sample in monoSensorBulk:
+            dataIndecies[i] += bulkDataAmount
+            if options.loop and dataIndecies[i] >= len(monoSensorBulks[i]):
+                print("looping data for sensortype "+str(i))
+                dataIndecies[i] = 0
+                #adding time to samples
+                for sample in monoSensorBulks[i]:
                     curYear = int(sample['time'][0:4])
                     sample['time'] = str(curYear+1)+sample['time'][4:len(sample['time'])]
+        time.sleep(options.sleeptime)
+        if not options.loop:
+            break;
     rabbitmqConnection.close()
