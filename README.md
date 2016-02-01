@@ -1,4 +1,4 @@
-# Installation
+# Installation Production
 
 ### Puppet
 ```sh
@@ -26,28 +26,48 @@ node default {
 }
 ```
 
-```sh
+```bash
 # Apply the manifest to current node
 $ puppet apply /etc/puppet/manifests/site.pp
 ```
 
+### Build WAR
+
+```bash
+$ sudo su - ${{system_username}} or su - ${{system_username}}
+$ cd ${{iot_repo_clone_dir}}/iot-backend
+$ cp ./docs/resources/example-application-production.properties \
+  ./iot-friss/src/main/resources/application-production.properties
+
+# ADVICE
+# -----------------
+# Change credentials in application-production.properties
+# -----------------
+```
+
+```bash
+$ cd ${{iot_repo_clone_dir}}/iot-backend
+$ ./gradlew :iot-friss:war
+```
+The WAR archive is resided in ./iot-friss/build/libs.
+This directory is mounted as a data volume to the Tomcat Docker container.
+
 ### Docker
-```sh
+```bash
 $ sudo su - ${{system_username}} or su - ${{system_username}}
 $ cd ${{iot_repo_clone_dir}}/iot-infrastructure
 
-# SECURITY ADVICE
-# ----------------
-# Change credentials, path to iot-frontend/Dockerfile etc in docker-compose.yml and tomcat-users.xml
+# ADVICE
+# -----------------
+# - Change credentials in docker-compose-production.yml and tomcat-users.xml
+# - If ${{iot_repo_clone_dir}} was changed, please change paths
+#   in docker-compose-production.yml (nodejs -> build, tomcat -> volumes)
+# -----------------
 
 # Start all containers
-$ docker-compose up -d
+$ docker-compose -f docker-compose-production.yml up -d
 
 # Stop all containers
 $ docker-compose stop
 
 ```
-
-## Build and deploy WAR
-
-TODO:

@@ -5,6 +5,7 @@ class iot_provisioning::install inherits iot_provisioning {
     $system_user_home = $::iot_provisioning::system_user_home
     $iot_repo_clone_dir = $::iot_provisioning::iot_repo_clone_dir
 
+    contain 'jdk_oracle'
     contain 'git'
     contain 'docker'
     contain 'docker_compose'
@@ -21,5 +22,5 @@ class iot_provisioning::install inherits iot_provisioning {
         owner => $system_username,
         group => $system_usergroup
     }
-    
+
 }

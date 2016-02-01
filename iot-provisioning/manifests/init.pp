@@ -52,6 +52,10 @@ class iot_provisioning (
   $iot_repo_clone_dir = $::iot_provisioning::params::iot_repo_clone_dir
 ) inherits iot_provisioning::params {
 
+    class { 'jdk_oracle':
+      version => 8,
+      default_java => true
+    }
     class { 'git': } ~>
     class { 'docker':
         docker_users => [ $system_username ],

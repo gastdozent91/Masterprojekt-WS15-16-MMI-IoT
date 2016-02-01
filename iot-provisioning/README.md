@@ -8,6 +8,7 @@ Installs:
 * git
 * docker
 * docker-compose
+* oracle-jdk-8
 
 Affects:
 

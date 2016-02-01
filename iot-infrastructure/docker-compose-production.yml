@@ -1,0 +1,48 @@
+# Amazon DynamoDB
+# --------------------------------------
+dynamodb:
+  build: docker/dynamodb-local
+  ports:
+    - "8000:8000"
+  container_name: iot-dynamodb
+
+# RabbitMQ
+# --------------------------------------
+rabbit:
+  build: docker/rabbitmq
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+    - "15674:15674"
+  container_name: iot-rabbit
+  hostname: iot-rabbit
+  environment:
+    - RABBITMQ_DEFAULT_USER=guest
+    - RABBITMQ_DEFAULT_PASS=guest
+
+# NodeJS
+# --------------------------------------
+nodejs:
+  build: /home/iot/iot-app/iot-frontend
+  ports:
+    - "8080:3000"
+  container_name: iot-nodejs
+  environment:
+    - NODE_ENV=production
+  links:
+    - dynamodb
+
+# Apache Tomcat
+# --------------------------------------
+tomcat:
+  build: docker/tomcat
+  ports:
+    - "8888:8080"
+  container_name: iot-tomcat
+  environment:
+    - SPRING_PROFILES_ACTIVE=production
+  volumes:
+    - /home/iot/iot-app/iot-backend/iot-friss/build/libs:/usr/local/tomcat/webapps
+  links:
+    - dynamodb
+    - rabbit
