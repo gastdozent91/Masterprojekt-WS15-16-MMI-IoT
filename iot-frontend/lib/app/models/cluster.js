@@ -33,15 +33,15 @@ me.getOne = (user, id) => {
   });
 };
 
-me.getSensors = (user, sensorList) => {
+me.getSensors = (user, id) => {
   return new Bluebird((resolve, reject) => {
-    var promiseArray = [];
-    sensorList.forEach(id => {
-      promiseArray.push(Sensor.getOne(user, id));
-    });
-    Bluebird.all(promiseArray).then(sensors => {
-      resolve(sensors);
-    });
+    request
+      .get(endpoint + '/cluster/' + id + '/sensor')
+      .auth(user.Username, user.password)
+      .end((err, res) => {
+        if (err) reject(err);
+        resolve(res.body);
+      });
   });
 };
 

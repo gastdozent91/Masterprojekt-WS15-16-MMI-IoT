@@ -51,7 +51,7 @@ var SingleUser = React.createClass({
 
   renderSensors: function() {
     var that = this;
-    if (!this.props.userToCheck.sensorList.length) {
+    if (!this.props.userToCheck.sensors.length) {
       return (
         <div className='row'>
           <div className='columns'>
@@ -60,7 +60,7 @@ var SingleUser = React.createClass({
         </div>
       );
     }
-    return this.props.userToCheck.sensorList.map(function(sensor) {
+    return this.props.userToCheck.sensors.map(function(sensor) {
       return (
         <div className='row' key={sensor}>
           <a href={'/sensor/' + sensor}>

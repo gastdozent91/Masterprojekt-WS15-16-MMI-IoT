@@ -19,7 +19,7 @@ var SingleSensor = React.createClass({
         ['id', 'ID'],
         'location',
         ['creationDate', 'created'],
-        ['sensorTypes','sensor types'],
+        ['types','sensor types'],
         'owner',
         ['attachedGateway', 'attached to gateway']
       ],
@@ -385,15 +385,14 @@ var SingleSensor = React.createClass({
 
   renderClusters:function(){
     var that = this;
-    return this.props.sensor.attachedClusters.map(function(cluster){
-      return(
-        <div className='row' key={cluster}>
-          <a href={'/cluster/' + cluster}>
+    var cluster = this.props.sensor.attachedCluster;
+    return(
+      <div className='row' key={cluster}>
+        <a href={'/cluster/' + cluster}>
           <div className='large-12 columns selectable-row'>{cluster}</div>
-</a>
-      </div>
-      );
-    });
+        </a>
+    </div>
+    );
   },
 
   //renderGraph: function(){

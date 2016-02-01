@@ -71,7 +71,7 @@ var SingleGateway = React.createClass({
         <td>{sensor.name}</td>
         <td>{sensor.id}</td>
         <td>{sensor.location}</td>
-        <td>{sensor.sensorTypes.join(', ')}</td>
+        <td>{sensor.types.join(', ')}</td>
       </tr>
     );
   },

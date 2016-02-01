@@ -33,10 +33,10 @@ me.getOne = (req, res, next) => {
 };
 
 me.getSensors = (req, res, next) => {
-  Model.getSensors(req.user, req.cluster.sensorList)
+  Model.getSensors(req.user, req.cluster.id)
   .then(sensors => {
     req.sensors = sensors;
-    delete req.cluster.sensorList;
+    //delete req.cluster.sensorList;
     next();
   })
   .catch(err => {

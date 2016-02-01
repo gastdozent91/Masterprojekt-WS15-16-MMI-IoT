@@ -13,7 +13,7 @@ var SingleCluster = React.createClass({
     console.log('props', this.props);
     return {
       fields:[
-        ['id','ID'],
+        ['id','name'],
         'owner',
         ['creationDate', 'created']
       ]
@@ -85,7 +85,7 @@ var SingleCluster = React.createClass({
         <td>{sensor.name}</td>
         <td>{sensor.id}</td>
         <td>{sensor.location}</td>
-        <td>{sensor.sensorTypes.join(', ')}</td>
+        <td>{sensor.types.join(', ')}</td>
       </tr>
     );
   },

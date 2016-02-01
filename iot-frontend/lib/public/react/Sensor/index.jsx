@@ -74,7 +74,7 @@ var MultipleSensors = React.createClass({
   },
 
   renderSensor: function(sensor, i) {
-    var state = sensor.active ? 'active' : 'inactive';
+    var state = sensor.isActive ? 'active' : 'inactive';
     var sensorClass = 'row ' + state + ' selectable-row';
     return (
       <a href={'/sensor/' + sensor.id} key={'sensor #'+i}>
@@ -86,7 +86,7 @@ var MultipleSensors = React.createClass({
             {sensor.location}
           </div>
           <div className='large-3 columns'>
-            {sensor.sensorTypes.join(', ')}
+            {sensor.types.join(', ')}
           </div>
           <div className='large-3 columns' style={{textAlign: 'end'}}>
             {sensor.attachedGateway}

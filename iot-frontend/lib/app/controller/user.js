@@ -9,9 +9,10 @@ module.exports = me = {};
 me.getAll = (req, res, next) => {
   Model.getAll(req.user)
   .then(users => {
+    console.log(users);
     users.forEach(user => {
-      user.sensorCount = user.sensorList.length;
-      delete user.sensorList;
+      user.sensorCount = user.sensors.length;
+      delete user.sensors;
     });
     req.users = users;
     next();
