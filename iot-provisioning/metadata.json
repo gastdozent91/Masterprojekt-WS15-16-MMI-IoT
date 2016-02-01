@@ -1,17 +1,17 @@
 {
-    "name": "maasch-iot_infrastructure",
-    "version": "0.2.1",
+    "name": "maasch-iot_provisioning",
+    "version": "0.3.0",
     "author": "maasch",
     "summary": "Infrastructure for Masterproject (MI) Beuth - Hoefig WS15/16",
     "license": "BSD 2-Clause license",
-    "source": "https://github.com/steven-maasch/iot_infrastructure",
-    "project_page": "https://github.com/steven-maasch/iot_infrastructure",
+    "source": "https://github.com/TomWieschalla/Masterprojekt-WS15-16-MMI-IoT",
+    "project_page": "https://github.com/TomWieschalla/Masterprojekt-WS15-16-MMI-IoT",
     "issues_url": null,
     "operatingsystem_support": [
         {
-            "operatingsystem": "CentOS",
+            "operatingsystem": "Debian",
             "operatingsystemrelease": [
-                "7"
+                "8"
             ]
         }
     ],

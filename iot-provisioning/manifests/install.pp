@@ -1,25 +1,25 @@
-class iot_infrastructure::install inherits iot_infrastructure {
+class iot_provisioning::install inherits iot_provisioning {
 
-    $system_username = $::iot_infrastructure::system_username
-    $system_usergroup = $::iot_infrastructure::system_usergroup
-    $system_user_home = $::iot_infrastructure::system_user_home
-    $dockerfiles_dir = $::iot_infrastructure::dockerfiles_dir
+    $system_username = $::iot_provisioning::system_username
+    $system_usergroup = $::iot_provisioning::system_usergroup
+    $system_user_home = $::iot_provisioning::system_user_home
+    $iot_repo_clone_dir = $::iot_provisioning::iot_repo_clone_dir
 
     contain 'git'
     contain 'docker'
     contain 'docker_compose'
 
-    contain 'iot_infrastructure::system_user'
+    contain 'iot_provisioning::system_user'
 
     file { $system_user_home:
         ensure => directory,
         owner => $system_username
     }
 
-    file { $dockerfiles_dir:
+    file { $iot_repo_clone_dir:
         ensure => directory,
         owner => $system_username,
         group => $system_usergroup
     }
-
+    
 }

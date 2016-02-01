@@ -23,7 +23,7 @@ rabbit:
 # # NodeJS
 # # --------------------------------------
 # nodejs:
-#   build: /home/maasch/projects/Masterprojekt-WS15-16-MMI-IoT/iot-frontend
+#   build: /home/iot/iot-app/iot-frontend
 #   ports:
 #     - "8080:3000"
 #   container_name: iot-nodejs

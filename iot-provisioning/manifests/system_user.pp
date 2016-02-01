@@ -1,8 +1,8 @@
-class iot_infrastructure::system_user inherits iot_infrastructure {
+class iot_provisioning::system_user inherits iot_provisioning {
 
-    $username = $::iot_infrastructure::system_username
-    $usergroup = $::iot_infrastructure::system_usergroup
-    $user_home = $::iot_infrastructure::system_user_home
+    $username = $::iot_provisioning::system_username
+    $usergroup = $::iot_provisioning::system_usergroup
+    $user_home = $::iot_provisioning::system_user_home
 
     group { $usergroup:
         ensure => present,
@@ -18,7 +18,7 @@ class iot_infrastructure::system_user inherits iot_infrastructure {
         home => $user_home,
         system => true,
         managehome => true,
-        comment => "$username system user",
+        comment => 'iot system user',
         require => Group[$usergroup]
     }
 
