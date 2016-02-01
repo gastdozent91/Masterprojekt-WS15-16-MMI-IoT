@@ -2,6 +2,7 @@
 
 ### Puppet
 ```sh
+# Become root
 $ sudo -i or su -
 
 # Install puppet
@@ -11,7 +12,7 @@ $ apt-get install puppet
 $ puppet module install maasch-iot_provisioning
 
 # Create manifest for current node (masterless puppet)
-$ vim /etc/puppet/manifests/site.pp
+$ vi /etc/puppet/manifests/site.pp
 ```
 
 #### Content of site.pp
@@ -30,6 +31,10 @@ node default {
 # Apply the manifest to current node
 $ puppet apply /etc/puppet/manifests/site.pp
 ```
+
+### NodeJS
+
+TODO: 
 
 ### Build WAR
 
@@ -61,11 +66,11 @@ $ cd ${{iot_repo_clone_dir}}/iot-infrastructure
 # -----------------
 # - Change credentials in docker-compose-production.yml and tomcat-users.xml
 # - If ${{iot_repo_clone_dir}} was changed, please change paths
-#   in docker-compose-production.yml (nodejs -> build, tomcat -> volumes)
+#   in docker-compose.prod.yml (nodejs -> build, tomcat -> volumes)
 # -----------------
 
 # Start all containers
-$ docker-compose -f docker-compose-production.yml up -d
+$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 # Stop all containers
 $ docker-compose stop

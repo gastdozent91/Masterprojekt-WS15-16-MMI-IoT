@@ -16,6 +16,3 @@ rabbit:
     - "15674:15674"
   container_name: iot-rabbit
   hostname: iot-rabbit
-  environment:
-    - RABBITMQ_DEFAULT_USER=guest
-    - RABBITMQ_DEFAULT_PASS=guest

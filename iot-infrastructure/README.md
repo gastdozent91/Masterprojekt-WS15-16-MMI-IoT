@@ -6,7 +6,7 @@
 
 ## Usage
 
-### Docker Compose
+### Docker Compose (Development)
 
 ```bash
 # Start all containers detached
@@ -16,51 +16,19 @@ docker-compose up -d
 docker-compose stop
 ```
 
-## Start single container
+In development only RabbitMQ and DynamoDB be started because we are working with Gradle Tomcat Plugin and local NodeJS installation.
 
-### DynamoDB
-```bash
-# Build image
-docker build -t iot/dynamodb docker/dynamodb-local
-
-# Run in foreground
-docker run -it --rm -p 8000:8000 --name iot-dynamodb iot/dynamodb
-
-# Run detached
-docker run -d -p 8000:8000 --name iot-dynamodb iot/dynamodb
-```
-### RabbitMQ
+### Docker Compose (Production)
 
 ```bash
-# Build image
-docker build -t iot/rabbitmq docker/rabbitmq
+# Start all containers detached
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
-# Run in foreground
-docker run -it --rm -p 5672:5672 -p 15672:15672 -p 15674:15674 \
---hostname iot-rabbit --name iot-rabbit iot/rabbitmq
-
-# Run detached
-docker run -d -p 5672:5672 -p 15672:15672 -p 15674:15674 \
---hostname iot-rabbit --name iot-rabbit iot/rabbitmq
-```
-
-### NodeJS
-
-Follows
-
-### Tomcat
-
-```bash
-# Build image
-docker build -t iot/tomcat docker/tomcat
-
-# Run in foreground
-docker run -it --rm -p 8080:8080 --name iot-tomcat iot/tomcat
-
-# Run detached
-docker run -d -p 8080:8080 --name iot-tomcat iot/tomcat
+# Stop all containers
+docker-compose stop
 ```
 
 ## Links
 - [Compose CLI reference](https://docs.docker.com/compose/reference/)
-- [RabbitMQ Web-Stomp Plugin](https://www.rabbitmq.com/web-stomp.html)
+- [Extending services and Compose files](https://docs.docker.com/compose/extends/)
+- [Gradle Tomcat Plugin](https://github.com/bmuschko/gradle-tomcat-plugin)
