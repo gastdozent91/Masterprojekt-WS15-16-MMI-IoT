@@ -66,6 +66,7 @@ var SingleGateway = React.createClass({
   },
 
   renderSensor: function(sensor){
+    var types = sensor.types || [];
     return (
       <tr className='selectable-row' style={{cursor: 'pointer'}} onClick={this.handleClickOnSensor(sensor.id)} key={sensor.id}>
         <td>{sensor.name}</td>

@@ -23,7 +23,8 @@ var SingleSensor = React.createClass({
         ['creationDate', 'created'],
         ['types','sensor types'],
         'owner',
-        ['attachedGateway', 'attached to gateway']
+        ['attachedGateway', 'attached to gateway'],
+        ['attachedCluster', 'attached to cluster']
       ],
       data: []
     };
@@ -111,9 +112,9 @@ var SingleSensor = React.createClass({
       }
       var text = value;
       if(id === 'creationDate'){
-        var parts = /^([0-9]{4}-[0-9]{2}-[0-9]{2})T([0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+)Z$/.exec(text);
-        text = parts[1] + ' ' + parts[2];
-      }else if(id === 'sensorTypes'){
+        var date = new Date(text);
+        text = date.getDate() + '. ' + (date.getMonth()+1) + '. ' + date.getFullYear() + ' - ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      }else if(id === 'types'){
         text = that.props.sensor[field[0]].join(', ');
       }
       return(
@@ -123,18 +124,6 @@ var SingleSensor = React.createClass({
         </tr>
       );
     });
-  },
-
-  renderClusters:function(){
-    var that = this;
-    var cluster = this.props.sensor.attachedCluster;
-    return(
-      <div className='row' key={cluster}>
-        <a href={'/cluster/' + cluster}>
-          <div className='large-12 columns selectable-row'>{cluster}</div>
-        </a>
-    </div>
-    );
   },
 
   //renderGraph: function(){
@@ -157,12 +146,6 @@ var SingleSensor = React.createClass({
                     {this.renderFields()}
                   </tbody>
                 </table>
-            </div>
-          </div>
-          <div className='row column' style={{float: 'none'}}>
-            <div className='callout'>
-              <h5>attached cluster</h5>
-              {this.renderClusters()}
             </div>
           </div>
           <div className='row column' style={{float:'none'}}>

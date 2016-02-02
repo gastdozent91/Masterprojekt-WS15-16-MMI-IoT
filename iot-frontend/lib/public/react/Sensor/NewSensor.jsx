@@ -144,4 +144,3 @@ var NewSensor = React.createClass({
 });
 
 module.exports = NewSensor;
-

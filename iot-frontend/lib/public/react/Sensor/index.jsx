@@ -86,7 +86,7 @@ var MultipleSensors = React.createClass({
             {sensor.location}
           </div>
           <div className='large-3 columns'>
-            {sensor.types.join(', ')}
+            {sensor.types === null ? '' : sensor.types.join(', ')}
           </div>
           <div className='large-3 columns' style={{textAlign: 'end'}}>
             {sensor.attachedGateway}

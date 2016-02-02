@@ -74,7 +74,6 @@ var SingleUser = React.createClass({
   },
 
   render: function() {
-    console.log(this.props.userToCheck);
     return (
       <div>
         <TopBar user={this.props.user} activePage='users'/>

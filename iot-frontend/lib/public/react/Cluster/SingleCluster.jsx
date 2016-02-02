@@ -1,6 +1,8 @@
 var React = require('react')
   , TopBar = require('../shared/TopBar');
 
+var AddSensor = require('./AddSensor');
+
 var SingleCluster = React.createClass({
 
   propTypes: {
@@ -16,8 +18,13 @@ var SingleCluster = React.createClass({
         ['id','name'],
         'owner',
         ['creationDate', 'created']
-      ]
+      ],
+      addingSensor: false
     };
+  },
+
+  handleAddSensor: function(){
+    this.setState({addingSensor:  !this.state.addingSensor});
   },
 
   renderFields: function(){
@@ -37,8 +44,8 @@ var SingleCluster = React.createClass({
       }
       var text = value;
       if(id === 'creationDate'){
-        var parts = /^([0-9]{4}-[0-9]{2}-[0-9]{2})T([0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+)Z$/.exec(text);
-        text = parts[1] + ' ' + parts[2];
+        var date = new Date(text);
+        text = date.getDate() + '. ' + (date.getMonth()+1) + '. ' + date.getFullYear() + ' - ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
       }
       return(
         <tr key={caption}>
@@ -97,14 +104,17 @@ var SingleCluster = React.createClass({
   },
 
   render: function() {
-    console.log(this.props.cluster);
+    var displayStyle = this.state.addingSensor ? 'block' : 'none';
     return (
       <div>
         <TopBar user={this.props.user} activePage='clusters'/>
           <div style={{marginTop: 25}}>
             <div className='row column' style={{float: 'none'}}>
               <div className='callout'>
-                <h3>{this.props.cluster.name}</h3>
+                <div className='row column'>
+                  <div className='small-10 columns'><h3>{this.props.cluster.name}</h3></div>
+                  <div className='small-2 columns'></div>
+                </div>
                 <table style={{width: '100%'}}>
                   <tbody style={{borderWidth: 0}}>
                     {this.renderFields()}
@@ -112,11 +122,17 @@ var SingleCluster = React.createClass({
                 </table>
               </div>
               <div className='callout'>
-                <h5>attached sensors</h5>
+                <div className='row column'>
+                  <div className='small-8 columns'><h5>attached sensors</h5></div>
+                  <div className='small-4 columns' style={{textAlign: 'right'}}><div onClick={this.handleAddSensor} className='button'>Add Sensor</div></div>
+                </div>
                 {this.renderSensors()}
               </div>
             </div>
           </div>
+
+          {this.state.addingSensor ? <AddSensor cancleCallback={this.handleAddSensor} cluster={this.props.cluster}/> : null}
+          <div className='background-area' style={{display: this.state.addingSensor ? 'block' : 'none'}}></div>
         </div>
     );
   }
