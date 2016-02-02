@@ -4,7 +4,6 @@ import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Cluster;
-import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.ClusterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +21,11 @@ public class ClusterServiceImpl implements ClusterService{
     @Override
     public Iterable<Cluster> getAll() {
         return clusterRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Cluster> getAllByOwner(String username) {
+        return clusterRepository.findAllByOwner(username);
     }
 
     @Override
@@ -44,9 +48,9 @@ public class ClusterServiceImpl implements ClusterService{
     public Cluster updateCluster(String clusterId, Cluster cluster, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
         final Cluster oldCluster = clusterRepository.findOne(clusterId);
-        final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
+        userService.loadUserByUsername(authenticatedUser.getUsername());
 
-        if ((oldCluster != null && oldCluster.getOwner() == authenticatedUser.getUsername()) ||
+        if ((oldCluster != null && oldCluster.getOwner().equals(authenticatedUser.getUsername())) ||
                 userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
             cluster.setId(clusterId);
             return clusterRepository.save(cluster);

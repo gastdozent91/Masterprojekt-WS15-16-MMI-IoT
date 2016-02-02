@@ -78,7 +78,7 @@ public class SensorServiceImpl implements SensorService {
         gatewayService.getGateway(sensor.getAttachedGateway());
 
         final Sensor oldSensor = getSensor(sensorId);
-        if ((oldSensor != null && oldSensor.getOwner() == authenticatedUser.getUsername()) ||
+        if ((oldSensor != null && oldSensor.getOwner().equals(authenticatedUser.getUsername())) ||
                 userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
             sensor.setId(sensorId);
             return sensorRepository.save(sensor);

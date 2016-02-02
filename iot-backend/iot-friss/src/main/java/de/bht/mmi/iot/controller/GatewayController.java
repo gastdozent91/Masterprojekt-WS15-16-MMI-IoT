@@ -7,6 +7,7 @@ import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.service.GatewayService;
 import de.bht.mmi.iot.service.SensorService;
+import de.bht.mmi.iot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +26,9 @@ public class GatewayController {
     @Autowired
     private SensorService sensorService;
 
+    @Autowired
+    private UserService userService;
+
     // GET
     /**
      *
@@ -33,9 +37,14 @@ public class GatewayController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
-    public Iterable<Gateway> getAllGateways(@RequestParam(value = "ids", required = false) String ids) {
+    public Iterable<Gateway> getAllGateways(@RequestParam(value = "ids", required = false) String ids,
+                                            @AuthenticationPrincipal UserDetails authenticatedUser) {
         if (ids == null) {
-            return gatewayService.getAll();
+            if (userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
+                return gatewayService.getAll();
+            } else {
+                return gatewayService.getAllByOwner(authenticatedUser.getUsername());
+            }
         } else {
             final String[] gatewayIds = ids.split(",");
             return gatewayService.getAllForIds(gatewayIds);

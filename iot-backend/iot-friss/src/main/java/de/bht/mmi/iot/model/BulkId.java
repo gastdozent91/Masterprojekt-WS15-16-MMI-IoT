@@ -6,7 +6,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
 import org.joda.time.DateTime;
 
-public class BulkId {
+import java.io.Serializable;
+
+public class BulkId implements Serializable {
 
     private String sensorId;
 

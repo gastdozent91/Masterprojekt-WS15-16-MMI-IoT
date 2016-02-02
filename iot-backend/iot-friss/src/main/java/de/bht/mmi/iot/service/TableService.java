@@ -12,8 +12,6 @@ public interface TableService {
 
     void createClusterTable();
 
-    void createMeasurementTable();
-
     void createBulkTable();
 
     List<String> getTableNames();

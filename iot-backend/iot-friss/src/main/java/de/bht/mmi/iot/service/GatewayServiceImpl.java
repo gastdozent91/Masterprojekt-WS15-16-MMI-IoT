@@ -4,7 +4,6 @@ import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Gateway;
-import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,6 +31,11 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
+    public Iterable<Gateway> getAllByOwner(String username) {
+        return gatewayRepository.findAllByOwner(username);
+    }
+
+    @Override
     public Gateway getGateway(String gatewayId) throws EntityNotFoundException {
         Gateway gateway = gatewayRepository.findOne(gatewayId);
         if (gateway != null) {
@@ -51,9 +55,9 @@ public class GatewayServiceImpl implements GatewayService {
     public Gateway updateGateway(String gatewayId, Gateway gateway, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
         final Gateway oldGateway = getGateway(gatewayId);
-        final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
+        userService.loadUserByUsername(authenticatedUser.getUsername());
 
-        if ((oldGateway != null && oldGateway.getOwner() == authenticatedUser.getUsername()) ||
+        if ((oldGateway != null && oldGateway.getOwner().equals(authenticatedUser.getUsername())) ||
                 userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
             gateway.setId(gatewayId);
             return gatewayRepository.save(gateway);
