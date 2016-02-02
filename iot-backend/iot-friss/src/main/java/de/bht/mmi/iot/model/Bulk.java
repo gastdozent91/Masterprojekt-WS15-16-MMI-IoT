@@ -43,7 +43,7 @@ public class Bulk {
         }
         bulkId.setBulkReceived(bulkReceived);
     }
-    
+
     public List<Measurement> getMeasurements() {
         return measurements;
     }

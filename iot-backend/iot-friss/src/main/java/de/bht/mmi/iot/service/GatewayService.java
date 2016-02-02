@@ -11,6 +11,8 @@ public interface GatewayService {
 
     Iterable<Gateway> getAllForIds(String... gatewayId);
 
+    Iterable<Gateway> getAllByOwner(String username);
+
     Gateway getGateway(String gatewayId) throws EntityNotFoundException;
 
     Gateway createGateway(Gateway gateway) throws EntityNotFoundException;

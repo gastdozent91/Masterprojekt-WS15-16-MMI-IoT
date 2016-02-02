@@ -14,7 +14,7 @@ var Login = React.createClass({
 
   componentDidMount: function() {
     window.addEventListener('keydown', function(e) {
-      if (e.code === 'Enter')
+      if (e.code === 'Enter' || e.code === 'NumpadEnter')
         this.handleClick();
     }.bind(this));
   },
@@ -76,4 +76,3 @@ var Login = React.createClass({
 });
 
 module.exports = Login;
-

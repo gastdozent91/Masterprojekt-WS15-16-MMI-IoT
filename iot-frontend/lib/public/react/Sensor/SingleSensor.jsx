@@ -4,7 +4,8 @@ var React = require('react')
   , rabbit = require('../../js/rabbit')
   , TopBar = require('../shared/TopBar');
 
-var EditSensor = require('./EditSensor');
+var EditSensor = require('./EditSensor')
+  , DeleteSensor = require('./DeleteSensor');
 
 var SingleSensor = React.createClass({
 
@@ -29,7 +30,8 @@ var SingleSensor = React.createClass({
         ['attachedCluster', 'attached to cluster']
       ],
       data: [],
-      editSensor: false
+      editSensor: false,
+      deleteSensor: false
     };
   },
 
@@ -140,8 +142,12 @@ var SingleSensor = React.createClass({
     this.setState({editSensor: !this.state.editSensor})
   },
 
+  handleDeleteSensor: function(){
+    this.setState({deleteSensor: !this.state.deleteSensor});
+  },
+
   render: function() {
-    var displayStyle = this.state.editSensor ? 'block' : 'none';
+    var displayStyle = this.state.editSensor || this.state.deleteSensor ? 'block' : 'none';
     return (
       <div>
         <TopBar user={this.props.user} activePage='sensors' />
@@ -150,7 +156,10 @@ var SingleSensor = React.createClass({
             <div className='callout'>
               <div className='row column'>
                 <div className='small-8 columns'><h3>{this.props.sensor.name}</h3></div>
-                <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleEditSensor}>edit</div></div>
+                <div className='small-4 columns' style={{textAlign: 'right'}}>
+                  <div className='button' onClick={this.handleEditSensor}>edit</div>
+                  <div className='button alert' onClick={this.handleDeleteSensor}>delete</div>
+                </div>
               </div>
                 <table style={{width: '100%'}}>
                   <tbody style={{borderWidth: 0}}>
@@ -198,6 +207,7 @@ var SingleSensor = React.createClass({
           ? <EditSensor cancleCallback={this.handleEditSensor}
             sensor={this.props.sensor}/>
           : null}
+        {this.state.deleteSensor ? <DeleteSensor cancleCallback={this.handleDeleteSensor} sensor={this.props.sensor}/> : null}
           <div className='background-area'
             style={{display: displayStyle}}>
           </div>

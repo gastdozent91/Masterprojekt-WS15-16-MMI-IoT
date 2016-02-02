@@ -9,6 +9,8 @@ public interface ClusterService {
 
     Iterable<Cluster> getAll();
 
+    Iterable<Cluster> getAllByOwner(String username);
+
     Cluster getCluster(String clusterId) throws EntityNotFoundException;
 
     Cluster createCluster(Cluster cluster) throws EntityNotFoundException;

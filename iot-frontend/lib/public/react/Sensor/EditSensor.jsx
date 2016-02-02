@@ -132,14 +132,14 @@ var EditSensor = React.createClass({
 
         <tbody style={{borderWidth: 0}}>
           {this.state.clusters.map(function(cluster){
-            return that.renderGateway(cluster);
+            return that.renderCluster(cluster);
           })}
         </tbody>
       </table>
     );
   },
 
-  renderGateway: function(cluster){
+  renderCluster: function(cluster){
     return(
       <tr className='selectable-row' key={cluster.id}>
         <td><input type='radio'></input></td>

@@ -57,7 +57,7 @@
 		},
 		{
 			"id": "1a3bba71-95ca-d1ad-49f4-4155edac0b7c",
-			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
+			"headers": "Authorization: Basic bWF4OnRlc3QxMjM=\n",
 			"url": "http://localhost:8080/iot-friss/cluster",
 			"preRequestScript": "",
 			"pathVariables": {},
@@ -68,7 +68,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1453123098302,
+			"time": 1454454605598,
 			"name": "GET ALL",
 			"description": "",
 			"collectionId": "3cc42241-faaa-34e1-e3a4-7fd24ad7b8c3",

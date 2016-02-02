@@ -115,7 +115,7 @@
 		},
 		{
 			"id": "e09bc273-8862-89ff-2b17-33d90918bb66",
-			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
+			"headers": "Authorization: Basic bWF4OnRlc3QxMjM=\n",
 			"url": "http://localhost:8080/iot-friss/gateway",
 			"preRequestScript": "",
 			"pathVariables": {},
@@ -126,7 +126,7 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1452943461236,
+			"time": 1454454593614,
 			"name": "GET ALL",
 			"description": "",
 			"collectionId": "8b0a8961-9985-8956-8df9-33f8bd3abc6f",

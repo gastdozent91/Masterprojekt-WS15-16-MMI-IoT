@@ -1,6 +1,6 @@
 {
 	"id": "5936be70-e3dd-30f1-6039-df2c8cf75987",
-	"name": "IOT MEASUREMENT",
+	"name": "IOT BULK",
 	"description": "",
 	"order": [
 		"43337c27-ec71-4f1a-bfcf-7ab529540171"
@@ -8,13 +8,13 @@
 	"folders": [],
 	"timestamp": 1453747448022,
 	"owner": 0,
+	"remoteLink": "",
 	"public": false,
-	"hasRequests": true,
 	"requests": [
 		{
 			"id": "43337c27-ec71-4f1a-bfcf-7ab529540171",
 			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
-			"url": "http://localhost:8080/iot-friss/measurement?sensor_id=d8c6af7a-26d9-45fa-bf40-dd66b1fb93f6&after=2016-01-25T18:30:48.444Z&sort_order=asc&page=0&page_size=50",
+			"url": "http://localhost:8080/iot-friss/bulk?sensor_id=aeeae543-af7e-43af-8329-9910d087c6a8&after=2016-01-25T18:30:48.444Z&sort_order=asc&page=0&page_size=50",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "GET",
@@ -24,8 +24,8 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1453747685587,
-			"name": "GET MEASUREMENT",
+			"time": 1454454548480,
+			"name": "GET BULK",
 			"description": "",
 			"collectionId": "5936be70-e3dd-30f1-6039-df2c8cf75987",
 			"responses": []

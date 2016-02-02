@@ -17,9 +17,11 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class FrissListener {
@@ -40,15 +42,14 @@ public class FrissListener {
             exchange = @Exchange(value = AmqpConstants.FRISS_EXCHANGE_NAME, type = ExchangeTypes.TOPIC),
             key = AmqpConstants.ALL_MESSAGE_ROUTING_KEY)
     )
-    public void processFriss(@Header("amqp_receivedRoutingKey") String routingKey,
+    public void processFriss(@Headers Map<String, Object> header,
+                             @Header("amqp_receivedRoutingKey") String routingKey,
                              @Header("timestamp") Long timestamp,
                              String data) {
         try {
-            LOGGER.info("Routing key: {}", routingKey);
-            LOGGER.info("Timestamp: {}", timestamp.toString());
+            LOGGER.debug("Received bulk message with headers: {}", header);
 
             final List<Measurement> measurements = objectMapper.readValue(data, listOfMeasurementTypeRef);
-
             final Bulk bulk = new Bulk();
             bulk.setSensorId(routingKey);
             bulk.setBulkReceived(new DateTime(timestamp));
@@ -56,7 +57,7 @@ public class FrissListener {
 
             dynamoDBMapper.save(bulk);
         } catch (Exception e) {
-            LOGGER.error("Unable to process bulk message", e);
+            LOGGER.error(String.format("Unable to process bulk message with id:%s", header.get("id")), e);
         }
     }
 

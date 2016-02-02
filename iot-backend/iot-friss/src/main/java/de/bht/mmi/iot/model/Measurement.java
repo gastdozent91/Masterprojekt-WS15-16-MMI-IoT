@@ -1,15 +1,21 @@
 package de.bht.mmi.iot.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshalling;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
-//@DynamoDBTable(tableName = DbConstants.TABLENAME_MEASUREMENT)
 @DynamoDBDocument
 public class Measurement {
 
-    //@Id
-    //private MeasurementId measurementId;
+    @JsonProperty("id")
+    private String sensorId;
+
+    @JsonProperty("time")
+    private DateTime timeOfMeasurement;
 
     private List<Number> acceleration;
 
@@ -17,32 +23,22 @@ public class Measurement {
 
     private String location;
 
-//    @DynamoDBHashKey(attributeName = DbConstants.ATTRIBUTE_SENSOR_ID)
-//    @JsonProperty("id")
-//    public String getSensorId() {
-//        return measurementId != null ? measurementId.getSensorId() : null;
-//    }
-//
-//    public void setSensorId(String sensorId) {
-//        if (measurementId == null) {
-//            measurementId = new MeasurementId();
-//        }
-//        this.measurementId.setSensorId(sensorId);
-//    }
+    public String getSensorId() {
+        return sensorId;
+    }
 
-//    @DynamoDBRangeKey(attributeName = DbConstants.ATTRIBUTE_TIME_OF_MEASUREMENT)
-//    @DynamoDBMarshalling(marshallerClass = JodaDateTimeMarshaller.class)
-//    @JsonProperty("time")
-//    public DateTime getTimeOfMeasurement() {
-//        return measurementId != null ? measurementId.getTimeOfMeasurement() : null;
-//    }
-//
-//    public void setTimeOfMeasurement(DateTime timeOfMeasurement) {
-//        if (measurementId == null) {
-//            measurementId = new MeasurementId();
-//        }
-//        measurementId.setTimeOfMeasurement(timeOfMeasurement);
-//    }
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
+    }
+
+    @DynamoDBMarshalling(marshallerClass = JodaDateTimeMarshaller.class)
+    public DateTime getTimeOfMeasurement() {
+        return timeOfMeasurement;
+    }
+
+    public void setTimeOfMeasurement(DateTime timeOfMeasurement) {
+        this.timeOfMeasurement = timeOfMeasurement;
+    }
 
     public List<Number> getAcceleration() {
         return acceleration;

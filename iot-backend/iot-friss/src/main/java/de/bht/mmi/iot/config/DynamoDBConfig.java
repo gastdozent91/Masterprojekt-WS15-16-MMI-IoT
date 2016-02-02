@@ -3,8 +3,6 @@ package de.bht.mmi.iot.config;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
@@ -13,7 +11,6 @@ import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRep
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import javax.annotation.PostConstruct;
 
@@ -39,7 +36,6 @@ public class DynamoDBConfig {
     private ProvisionedThroughput provisionedThroughput;
 
     @Bean
-    @Primary
     public AmazonDynamoDB amazonDynamoDB() {
         final AmazonDynamoDB amazonDynamoDB = new AmazonDynamoDBClient(amazonAWSCredentials());
         if (StringUtils.isNotBlank(amazonDynamoDBEndpoint)) {
@@ -51,15 +47,6 @@ public class DynamoDBConfig {
     @Bean
     public AWSCredentials amazonAWSCredentials() {
         return new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey);
-    }
-
-    @Bean
-    public AmazonDynamoDBAsync amazonDynamoDBAsync() {
-        final AmazonDynamoDBAsync amazonDynamoDBAsync = new AmazonDynamoDBAsyncClient(amazonAWSCredentials());
-        if (StringUtils.isNotBlank(amazonDynamoDBEndpoint)) {
-            amazonDynamoDBAsync.setEndpoint(amazonDynamoDBEndpoint);
-        }
-        return amazonDynamoDBAsync;
     }
 
     @Bean

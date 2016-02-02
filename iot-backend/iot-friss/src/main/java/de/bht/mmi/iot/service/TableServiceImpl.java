@@ -67,19 +67,6 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public void createMeasurementTable() {
-        final CreateTableResult createTableResult = dynamoDB.createTable(
-                Arrays.asList(new AttributeDefinition(DbConstants.ATTRIBUTE_SENSOR_ID, ScalarAttributeType.S),
-                        new AttributeDefinition(DbConstants.ATTRIBUTE_TIME_OF_MEASUREMENT, ScalarAttributeType.S)),
-                DbConstants.TABLENAME_MEASUREMENT,
-                Arrays.asList(new KeySchemaElement(DbConstants.ATTRIBUTE_SENSOR_ID, KeyType.HASH),
-                        new KeySchemaElement(DbConstants.ATTRIBUTE_TIME_OF_MEASUREMENT, KeyType.RANGE)),
-                dynamoDBConfig.getProvisionedThroughput());
-        LOGGER.info(generateTableStatusLogMessage(
-                DbConstants.TABLENAME_MEASUREMENT, createTableResult.getTableDescription().getTableStatus()));
-    }
-
-    @Override
     public void createBulkTable() {
         final CreateTableResult createTableResult = dynamoDB.createTable(
                 Arrays.asList(new AttributeDefinition(DbConstants.ATTRIBUTE_SENSOR_ID, ScalarAttributeType.S),

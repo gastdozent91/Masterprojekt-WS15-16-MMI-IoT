@@ -117,7 +117,6 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         tableService.createSensorTable();
         tableService.createGatewayTable();
         tableService.createClusterTable();
-        tableService.createMeasurementTable();
         tableService.createBulkTable();
     }
 

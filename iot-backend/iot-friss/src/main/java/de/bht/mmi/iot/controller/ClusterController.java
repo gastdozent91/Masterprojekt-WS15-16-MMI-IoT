@@ -7,6 +7,7 @@ import de.bht.mmi.iot.model.Cluster;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.service.ClusterService;
 import de.bht.mmi.iot.service.SensorService;
+import de.bht.mmi.iot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,11 +26,18 @@ public class ClusterController {
     @Autowired
     private SensorService sensorService;
 
+    @Autowired
+    private UserService userService;
+
     // GET
     @RequestMapping(method = RequestMethod.GET)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public Iterable<Cluster> getAllCluster() {
-        return clusterService.getAll();
+    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
+    public Iterable<Cluster> getAllCluster(@AuthenticationPrincipal UserDetails authenticatedUser) {
+        if (userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
+            return clusterService.getAll();
+        } else {
+            return clusterService.getAllByOwner(authenticatedUser.getUsername());
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -50,7 +58,6 @@ public class ClusterController {
     public Cluster createCluster(@RequestBody @Validated Cluster cluster) throws EntityNotFoundException {
         return clusterService.createCluster(cluster);
     }
-
 
     // PUT
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
