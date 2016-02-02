@@ -22,7 +22,7 @@ var AddSensor = React.createClass({
       .get('/api/sensor')
       .end(function(err, res) {
         if (err) return console.log(err);
-        console.log(res.body);
+        
         that.setState({sensors: res.body});
       });
   },
@@ -59,7 +59,6 @@ var AddSensor = React.createClass({
 
     return this.state.sensors.map(function(sensor){
       var ty = sensor.types || [];
-      console.log(sensor.attachedCluster === that.props.cluster.id);
       return(
         <tr className='selectable-row' key={sensor.id} onClick={that.handleRowClick('check' + sensor.id)}>
           <td valign='middle'><input ref={'check' + sensor.id} type='checkbox' checked={sensor.attachedCluster === that.props.cluster.id ? 'checked' : null}></input></td>

@@ -1,7 +1,8 @@
 var React = require('react')
   , TopBar = require('../shared/TopBar');
 
-var AddSensor = require('./AddSensor');
+var AddSensor = require('./AddSensor')
+  , EditSensor = require('./EditSensor');
 
 var SingleCluster = React.createClass({
 
@@ -12,19 +13,23 @@ var SingleCluster = React.createClass({
   },
 
   getInitialState: function() {
-    console.log('props', this.props);
     return {
       fields:[
-        ['id','name'],
+        ['id','ID'],
         'owner',
         ['creationDate', 'created']
       ],
-      addingSensor: false
+      addingSensor: false,
+      editSensor: false
     };
   },
 
   handleAddSensor: function(){
     this.setState({addingSensor:  !this.state.addingSensor});
+  },
+
+  handleEditSensor: function(){
+    this.setState({editSensor: !this.state.editSensor});
   },
 
   renderFields: function(){
@@ -104,7 +109,7 @@ var SingleCluster = React.createClass({
   },
 
   render: function() {
-    var displayStyle = this.state.addingSensor ? 'block' : 'none';
+    var displayStyle = this.state.addingSensor || this.state.editSensor ? 'block' : 'none';
     return (
       <div>
         <TopBar user={this.props.user} activePage='clusters'/>
@@ -112,8 +117,8 @@ var SingleCluster = React.createClass({
             <div className='row column' style={{float: 'none'}}>
               <div className='callout'>
                 <div className='row column'>
-                  <div className='small-10 columns'><h3>{this.props.cluster.name}</h3></div>
-                  <div className='small-2 columns'></div>
+                  <div className='small-8 columns'><h3>{this.props.cluster.name}</h3></div>
+                  <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleEditSensor}>edit</div></div>
                 </div>
                 <table style={{width: '100%'}}>
                   <tbody style={{borderWidth: 0}}>
@@ -132,7 +137,8 @@ var SingleCluster = React.createClass({
           </div>
 
           {this.state.addingSensor ? <AddSensor cancleCallback={this.handleAddSensor} cluster={this.props.cluster}/> : null}
-          <div className='background-area' style={{display: this.state.addingSensor ? 'block' : 'none'}}></div>
+          {this.state.editSensor ? <EditSensor cancleCallback={this.handleEditSensor} cluster={this.props.cluster}/> : null}
+          <div className='background-area' style={{display: displayStyle}}></div>
         </div>
     );
   }
