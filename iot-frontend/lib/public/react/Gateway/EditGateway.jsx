@@ -17,7 +17,7 @@ var EditGateway = React.createClass({
   handleSaveClick: function(){
     //TODO send new data to backend
     var json = this.props.gateway;
-    json.name = this.refs['name'].value;
+    json.name = this.refs.name.value;
 
     console.log(json);
     this.props.cancleCallback();

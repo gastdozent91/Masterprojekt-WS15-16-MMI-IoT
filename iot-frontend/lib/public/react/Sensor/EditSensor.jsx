@@ -53,11 +53,11 @@ var EditSensor = React.createClass({
 
   handleNameChange: function(event){
     this.setState({
-      nameValue: this.refs['name'].value,
-      locationValue: this.refs['location'].value,
-      sensorTypesValue: this.refs['types'].value,
-      attachedGatewayValue: this.refs['attachedGateway'].value,
-      attachedClusterValue: this.refs['attachedCluster'].value
+      nameValue: this.refs.name.value,
+      locationValue: this.refs.location.value,
+      sensorTypesValue: this.refs.types.value,
+      attachedGatewayValue: this.refs.attachedGateway.value,
+      attachedClusterValue: this.refs.attachedClusters.value
     });
   },
 
@@ -106,14 +106,14 @@ var EditSensor = React.createClass({
 
         <tbody style={{borderWidth: 0}}>
           {this.state.clusters.map(function(cluster){
-            return that.renderGateway(cluster);
+            return that.renderCluster(cluster);
           })}
         </tbody>
       </table>
     );
   },
 
-  renderGateway: function(cluster){
+  renderCluster: function(cluster){
     return(
       <tr className='selectable-row' key={cluster.id}>
         <td><input type='radio'></input></td>
