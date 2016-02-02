@@ -1,0 +1,33 @@
+# RabbitMQ
+# --------------------------------------
+rabbit:
+  environment:
+    - RABBITMQ_DEFAULT_USER=guest
+    - RABBITMQ_DEFAULT_PASS=guest
+
+# NodeJS
+# --------------------------------------
+nodejs:
+  build: /home/iot/iot-app/iot-frontend
+  ports:
+    - "3000:3000"
+  container_name: iot-nodejs
+  environment:
+    - NODE_ENV=production
+  links:
+    - dynamodb
+
+# Apache Tomcat
+# --------------------------------------
+tomcat:
+  build: docker/tomcat
+  ports:
+    - "8080:8080"
+  container_name: iot-tomcat
+  environment:
+    - SPRING_PROFILES_ACTIVE=production
+  volumes:
+    - /home/iot/iot-app/iot-backend/iot-friss/build/libs:/usr/local/tomcat/webapps
+  links:
+    - dynamodb
+    - rabbit

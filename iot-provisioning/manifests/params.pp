@@ -1,9 +1,9 @@
-class iot_infrastructure::params {
+class iot_provisioning::params {
     $system_username = 'iot'
     $system_usergroup = $system_username
     $system_user_home = "/home/$system_username"
-    $dockerfiles_dirname = "iot-docker"
-    $dockerfiles_dir = "$system_user_home/$dockerfiles_dirname"
-    $dockerfiles_repo = 'https://github.com/steven-maasch/mmi-iot-infrastructure.git'
-    $docker_compose_exec_timeout = 600
+    $iot_repo = 'https://github.com/TomWieschalla/Masterprojekt-WS15-16-MMI-IoT.git'
+    $iot_repo_clone_dir = $system_user_home
+    $iot_repo_frontend_subdir = '/iot-frontend'
+    $iot_repo_docker_compose_subdir = '/iot-infrastructure'
 }

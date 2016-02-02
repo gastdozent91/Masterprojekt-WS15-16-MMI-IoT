@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'iot_infrastructure' do
+describe 'iot_provisioning' do
 
     context 'with defaults for all parameters' do
         it { should contain_class('iot_infrastructure') }

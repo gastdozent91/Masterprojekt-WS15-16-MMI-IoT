@@ -220,6 +220,7 @@ if __name__ == '__main__':
                 for sample in monoSensorBulks[i]:
                     curYear = int(sample['time'][0:4])
                     sample['time'] = str(curYear+1)+sample['time'][4:len(sample['time'])]
+        print("-----")
         time.sleep(options.sleeptime)
         if not options.loop:
             break;
