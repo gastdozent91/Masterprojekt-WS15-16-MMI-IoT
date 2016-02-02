@@ -5,7 +5,7 @@ var AddSensor = React.createClass({
 
   propTypes: {
     cancleCallback: React.PropTypes.func,
-    cluster: React.PropTypes.object,
+    gateway: React.PropTypes.object,
     sensors: React.PropTypes.array
   },
 
@@ -36,13 +36,14 @@ var AddSensor = React.createClass({
 
   handleSaveClick: function(){
     var that = this;
-    // TODO clone
+
+    //TODO clone
     this.state.sensors.map(function(sensor){
       var json = sensor;
       if(that.refs['check' + sensor.id].checked){
-        json.attachedCluster = that.props.cluster.id;
+        json.attachedGateway = that.props.gateway.id;
       }else{
-        json.attachedCluster = null;
+        json.attachedGateway = null;
       }
         request
           .put('/sensor/' + sensor.id)
@@ -62,7 +63,7 @@ var AddSensor = React.createClass({
       var ty = sensor.types || [];
       return(
         <tr className='selectable-row' key={sensor.id} onClick={that.handleRowClick('check' + sensor.id)}>
-          <td valign='middle'><input ref={'check' + sensor.id} type='checkbox' checked={sensor.attachedCluster === that.props.cluster.id ? 'checked' : null}></input></td>
+          <td valign='middle'><input ref={'check' + sensor.id} type='checkbox' checked={sensor.attachedGateway === that.props.gateway.id ? 'checked' : null}></input></td>
           <td>{sensor.name}</td>
           <td>{sensor.id}</td>
           <td>{sensor.location}</td>
@@ -75,7 +76,7 @@ var AddSensor = React.createClass({
   render: function() {
     return (
       <div className='iot-modal callout'>
-        <h2 id='modalTitle'>Add Sensor to Cluster: {this.props.cluster.name}</h2>
+        <h2 id='modalTitle'>Add Sensor to Cluster: {this.props.gateway.name}</h2>
         <div className="body">
           <table style={{width: '100%'}}>
               <thead>

@@ -1,7 +1,7 @@
 var React = require('react')
   , request = require('superagent');
 
-var EditSensor = React.createClass({
+var EditCluster = React.createClass({
 
   propTypes: {
     cancleCallback: React.PropTypes.func,
@@ -54,4 +54,4 @@ var EditSensor = React.createClass({
 
 });
 
-module.exports = EditSensor;
+module.exports = EditCluster;

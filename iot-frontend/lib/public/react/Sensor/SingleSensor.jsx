@@ -4,6 +4,8 @@ var React = require('react')
   , rabbit = require('../../js/rabbit')
   , TopBar = require('../shared/TopBar');
 
+var EditSensor = require('./EditSensor');
+
 var SingleSensor = React.createClass({
 
   propTypes: {
@@ -26,7 +28,8 @@ var SingleSensor = React.createClass({
         ['attachedGateway', 'attached to gateway'],
         ['attachedCluster', 'attached to cluster']
       ],
-      data: []
+      data: [],
+      editSensor: false
     };
   },
 
@@ -133,14 +136,22 @@ var SingleSensor = React.createClass({
       //</div>);
   //},
 
+  handleEditSensor: function(){
+    this.setState({editSensor: !this.state.editSensor})
+  },
+
   render: function() {
+    var displayStyle = this.state.editSensor ? 'block' : 'none';
     return (
       <div>
         <TopBar user={this.props.user} activePage='sensors' />
         <div style={{marginTop: 25}}>
           <div className='row column' style={{float: 'none'}}>
             <div className='callout'>
-                <h3>{this.props.sensor.name}</h3>
+              <div className='row column'>
+                <div className='small-8 columns'><h3>{this.props.sensor.name}</h3></div>
+                <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleEditSensor}>edit</div></div>
+              </div>
                 <table style={{width: '100%'}}>
                   <tbody style={{borderWidth: 0}}>
                     {this.renderFields()}
@@ -168,13 +179,13 @@ var SingleSensor = React.createClass({
               <div className='row'>
                 <div className='large-6 columns'>
                   <h5>Orientation</h5>
-                  { !this.state.isLive ? null : 
+                  { !this.state.isLive ? null :
                   <Arrow3D quad={this.state.cQ}/>
                   }
                 </div>
                 <div className='large-6 columns'>
                   <h5>Acceleration</h5>
-                  { !this.state.isLive ? null : 
+                  { !this.state.isLive ? null :
                   <Graph value={this.state.cA} all={this.state.data}/>
                   }
                 </div>
@@ -182,6 +193,9 @@ var SingleSensor = React.createClass({
             </div>
           </div>
         </div>
+
+        {this.state.editSensor ? <EditSensor cancleCallback={this.handleEditSensor} sensor={this.props.sensor}/> : null}
+        <div className='background-area' style={{display: displayStyle}}></div>
       </div>
     );
   }

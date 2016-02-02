@@ -2,7 +2,7 @@ var React = require('react')
   , TopBar = require('../shared/TopBar');
 
 var AddSensor = require('./AddSensor')
-  , EditSensor = require('./EditSensor');
+  , EditCluster = require('./EditCluster');
 
 var SingleCluster = React.createClass({
 
@@ -28,7 +28,7 @@ var SingleCluster = React.createClass({
     this.setState({addingSensor:  !this.state.addingSensor});
   },
 
-  handleEditSensor: function(){
+  handleEditCluster: function(){
     this.setState({editSensor: !this.state.editSensor});
   },
 
@@ -118,7 +118,7 @@ var SingleCluster = React.createClass({
               <div className='callout'>
                 <div className='row column'>
                   <div className='small-8 columns'><h3>{this.props.cluster.name}</h3></div>
-                  <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleEditSensor}>edit</div></div>
+                  <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleEditCluster}>edit</div></div>
                 </div>
                 <table style={{width: '100%'}}>
                   <tbody style={{borderWidth: 0}}>
@@ -137,7 +137,7 @@ var SingleCluster = React.createClass({
           </div>
 
           {this.state.addingSensor ? <AddSensor cancleCallback={this.handleAddSensor} cluster={this.props.cluster}/> : null}
-          {this.state.editSensor ? <EditSensor cancleCallback={this.handleEditSensor} cluster={this.props.cluster}/> : null}
+          {this.state.editSensor ? <EditCluster cancleCallback={this.handleEditCluster} cluster={this.props.cluster}/> : null}
           <div className='background-area' style={{display: displayStyle}}></div>
         </div>
     );

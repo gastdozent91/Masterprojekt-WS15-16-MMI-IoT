@@ -1,6 +1,9 @@
 var React = require('react')
   , TopBar = require('../shared/TopBar');
 
+var EditGateway = require('./EditGateway')
+  , AddSensor = require('./AddSensor');
+
 var SingleGateway = React.createClass({
 
   propTypes: {
@@ -16,7 +19,9 @@ var SingleGateway = React.createClass({
         ['id', 'ID'],
         'name',
         'owner'
-      ]
+      ],
+      editSensor: false,
+      addSensor: false
     };
   },
 
@@ -83,15 +88,27 @@ var SingleGateway = React.createClass({
     }
   },
 
+  handleEditGateway: function(){
+    this.setState({editSensor : !this.state.editSensor});
+  },
+
+  handleAddSensor: function(){
+    this.setState({addSensor: !this.state.addSensor})
+  },
+
   render: function() {
     console.log(this.props.gateway);
+    var displayStyle = this.state.editSensor || this.state.addSensor ? 'block' : 'none';
     return (
       <div>
         <TopBar user={this.props.user} activePage='gateways'/>
         <div style={{marginTop: 25}}>
           <div className='row columns' style={{float: 'none'}}>
             <div className='callout'>
-              <h3>{this.props.gateway.name}</h3>
+              <div className='row column'>
+                <div className='small-8 columns'><h3>{this.props.gateway.name}</h3></div>
+                <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleEditGateway}>edit</div></div>
+              </div>
                 <table style={{width: '100%'}}>
                   <tbody style={{borderWidth: 0}}>
                     {this.renderFields()}
@@ -99,11 +116,18 @@ var SingleGateway = React.createClass({
                 </table>
             </div>
             <div className='callout'>
-              <h5>attached sensors</h5>
+              <div className='row column'>
+                <div className='small-8 columns'><h5>attached sensors</h5></div>
+                <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleAddSensor}>Add Sensor</div></div>
+              </div>
               {this.renderSensors()}
             </div>
           </div>
         </div>
+
+        {this.state.addSensor ? <AddSensor cancleCallback={this.handleAddSensor} gateway={this.props.gateway}/> : null}
+        {this.state.editSensor ? <EditGateway cancleCallback={this.handleEditGateway} gateway={this.props.gateway}/> : null}
+        <div className='background-area' style={{display: displayStyle}}></div>
       </div>
     );
   }
