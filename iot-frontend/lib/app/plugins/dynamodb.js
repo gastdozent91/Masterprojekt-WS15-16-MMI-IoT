@@ -3,6 +3,8 @@ var AWS = require('aws-sdk')
 
 module.exports = me = {};
 
+AWS.config.loadFromPath('./config/aws_config.json');
+
 AWS.config.update({
   region: 'us-west-2',
   endpoint: config.dynamo_endpoint

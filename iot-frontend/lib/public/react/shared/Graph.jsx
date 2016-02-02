@@ -2,7 +2,7 @@ var React = require('react')
   , d3 = require('d3');
 
 var format
-  , firstfn
+  , firstfn, secondfn, thirdfn
   , dateFn
   , x
   , y
@@ -21,7 +21,7 @@ var Graph = React.createClass({
     return {
       spanClass: {minWidth: 20},
       created: false,
-      max: '2016-01-18 18:00:08.435',
+      max: '2016-01-18T18:00:08.435',
       data: [],
     };
   },
@@ -34,6 +34,7 @@ var Graph = React.createClass({
   //},
 
   componentWillReceiveProps: function(nextProps) {
+    if (nextProps.value === null) return;
     var newData = this.state.data.concat([nextProps.value]);
     if (newData.length > 1000)
       newData.splice(0, 1);
@@ -50,8 +51,10 @@ var Graph = React.createClass({
   },
 
   create: function() {
-    format = d3.time.format('%Y-%m-%d %H:%M:%S.%L');
+    format = d3.time.format('%Y-%m-%dT%H:%M:%S.%L');
     firstfn = function(d) { return d.acceleration[0]; }
+    secondfn = function(d) { return d.acceleration[1]; }
+    thirdfn = function(d) { return d.acceleration[2]; }
     dateFn = function(d) {
       //console.log('d', d);
       //console.log(format.parse(d.date));
@@ -70,7 +73,7 @@ var Graph = React.createClass({
 
     xAxis = d3.svg.axis()
       .scale(x)
-      .tickFormat(d3.time.format("%H:%M:%S"))
+      .tickFormat(d3.time.format("%S.%L"))
       .orient("bottom");
 
     yAxis = d3.svg.axis()
@@ -94,12 +97,26 @@ var Graph = React.createClass({
       .call(yAxis)
       .call(this.customAxis);
 
-    svg.selectAll("circle").data(this.state.data).enter()
+    svg.selectAll("circle.blue").data(this.state.data).enter()
       .append("svg:circle")
       .attr("r", 2)
-      .attr('color', '#ff0000')
+      .attr('class', 'blue')
       .attr("cx", function(d) { return x(dateFn(d)) })
       .attr("cy", function(d) { return y(firstfn(d)) }) 
+
+    svg.selectAll("circle.red").data(this.state.data).enter()
+      .append("svg:circle")
+      .attr("r", 2)
+      .attr('class', 'red')
+      .attr("cx", function(d) { return x(dateFn(d)) })
+      .attr("cy", function(d) { return y(secondfn(d)) }) 
+
+    svg.selectAll("circle.green").data(this.state.data).enter()
+      .append("svg:circle")
+      .attr("r", 2)
+      .attr('class', 'green')
+      .attr("cx", function(d) { return x(dateFn(d)) })
+      .attr("cy", function(d) { return y(thirdfn(d)) }) 
 
     this.setState({created: true});
     this.refresh();
@@ -119,11 +136,26 @@ var Graph = React.createClass({
   refresh: function() {
     //x.domain(d3.extent(this.state.data, dateFn))
     //y.domain(d3.extent(this.state.data, firstfn))
-    svg.selectAll("circle").data(this.state.data).enter()
+    svg.selectAll("circle.blue").data(this.state.data).enter()
       .append("svg:circle")
       .attr("r", 2)
+      .attr('class', 'blue')
       .attr("cx", function(d) { return x(dateFn(d)) })
       .attr("cy", function(d) { return y(firstfn(d)) }) 
+
+    svg.selectAll("circle.red").data(this.state.data).enter()
+      .append("svg:circle")
+      .attr("r", 2)
+      .attr('class', 'red')
+      .attr("cx", function(d) { return x(dateFn(d)) })
+      .attr("cy", function(d) { return y(secondfn(d)) }) 
+
+    svg.selectAll("circle.green").data(this.state.data).enter()
+      .append("svg:circle")
+      .attr("r", 2)
+      .attr('class', 'green')
+      .attr("cx", function(d) { return x(dateFn(d)) })
+      .attr("cy", function(d) { return y(thirdfn(d)) }) 
   },
 
   render: function() {
