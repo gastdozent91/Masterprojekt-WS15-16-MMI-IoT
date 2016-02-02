@@ -4,7 +4,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bht.mmi.iot.constants.AmqpConstants;
+import de.bht.mmi.iot.model.Bulk;
 import de.bht.mmi.iot.model.Measurement;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -12,21 +14,19 @@ import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.messaging.handler.annotation.Headers;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class FrissListener {
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrissListener.class);
+
+    private static final TypeReference<List<Measurement>> listOfMeasurementTypeRef = new TypeReference<List<Measurement>>() {};
 
     @Autowired
     @Qualifier("measurementObjectMapper")
@@ -35,23 +35,28 @@ public class FrissListener {
     @Autowired
     private DynamoDBMapper dynamoDBMapper;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FrissListener.class);
-
-    private static final TypeReference<List<Measurement>> listOfMeasurementTypeRef = new TypeReference<List<Measurement>>() {};
-
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(),
             exchange = @Exchange(value = AmqpConstants.FRISS_EXCHANGE_NAME, type = ExchangeTypes.TOPIC),
             key = AmqpConstants.ALL_MESSAGE_ROUTING_KEY)
     )
-    public void processFriss(@Headers Map<String, String> amqpHeaders, String data) {
-        LOGGER.info("Received message with amqpHeaders: {}", amqpHeaders);
+    public void processFriss(@Header("amqp_receivedRoutingKey") String routingKey,
+                             @Header("timestamp") Long timestamp,
+                             String data) {
         try {
+            LOGGER.info("Routing key: {}", routingKey);
+            LOGGER.info("Timestamp: {}", timestamp.toString());
+
             final List<Measurement> measurements = objectMapper.readValue(data, listOfMeasurementTypeRef);
-            dynamoDBMapper.batchSave(measurements);
-            LOGGER.info("Attempt to save {} measurements", measurements.size());
+
+            final Bulk bulk = new Bulk();
+            bulk.setSensorId(routingKey);
+            bulk.setBulkReceived(new DateTime(timestamp));
+            bulk.setMeasurements(measurements);
+
+            dynamoDBMapper.save(bulk);
         } catch (Exception e) {
-            LOGGER.error("Unable to parse bulk message body", e);
+            LOGGER.error("Unable to process bulk message", e);
         }
     }
 

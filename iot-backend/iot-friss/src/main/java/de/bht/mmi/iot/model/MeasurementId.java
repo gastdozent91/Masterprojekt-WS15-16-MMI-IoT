@@ -1,9 +1,5 @@
 package de.bht.mmi.iot.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMarshalling;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import de.bht.mmi.iot.converter.JodaDateTimeMarshaller;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -14,7 +10,7 @@ public class MeasurementId implements Serializable {
 
     private DateTime timeOfMeasurement;
 
-    @DynamoDBHashKey
+    //@DynamoDBHashKey
     public String getSensorId() {
         return sensorId;
     }
@@ -23,8 +19,8 @@ public class MeasurementId implements Serializable {
         this.sensorId = sensorId;
     }
 
-    @DynamoDBRangeKey
-    @DynamoDBMarshalling(marshallerClass = JodaDateTimeMarshaller.class)
+    //@DynamoDBRangeKey
+    //@DynamoDBMarshalling(marshallerClass = JodaDateTimeMarshaller.class)
     public DateTime getTimeOfMeasurement() {
         return timeOfMeasurement;
     }

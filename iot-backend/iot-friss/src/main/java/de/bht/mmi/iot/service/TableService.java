@@ -14,6 +14,8 @@ public interface TableService {
 
     void createMeasurementTable();
 
+    void createBulkTable();
+
     List<String> getTableNames();
 
     void deleteTable(String tableName);

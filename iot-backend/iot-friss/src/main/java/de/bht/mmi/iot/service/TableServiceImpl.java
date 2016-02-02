@@ -79,6 +79,19 @@ public class TableServiceImpl implements TableService {
                 DbConstants.TABLENAME_MEASUREMENT, createTableResult.getTableDescription().getTableStatus()));
     }
 
+    @Override
+    public void createBulkTable() {
+        final CreateTableResult createTableResult = dynamoDB.createTable(
+                Arrays.asList(new AttributeDefinition(DbConstants.ATTRIBUTE_SENSOR_ID, ScalarAttributeType.S),
+                        new AttributeDefinition(DbConstants.ATTRIBUTE_BULK_RECEIVED, ScalarAttributeType.S)),
+                DbConstants.TABLENAME_BULK,
+                Arrays.asList(new KeySchemaElement(DbConstants.ATTRIBUTE_SENSOR_ID, KeyType.HASH),
+                        new KeySchemaElement(DbConstants.ATTRIBUTE_BULK_RECEIVED, KeyType.RANGE)),
+                dynamoDBConfig.getProvisionedThroughput());
+        LOGGER.info(generateTableStatusLogMessage(
+                DbConstants.TABLENAME_BULK, createTableResult.getTableDescription().getTableStatus()));
+    }
+
     public List<String> getTableNames() {
         return DbConstants.getAllTableNames();
     }

@@ -118,6 +118,7 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         tableService.createGatewayTable();
         tableService.createClusterTable();
         tableService.createMeasurementTable();
+        tableService.createBulkTable();
     }
 
     private void addDummyData() throws NotAuthorizedException, EntityNotFoundException, EntityExistsException, IOException {
