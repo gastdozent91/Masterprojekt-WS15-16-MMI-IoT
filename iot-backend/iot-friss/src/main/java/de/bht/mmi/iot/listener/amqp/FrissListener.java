@@ -1,6 +1,7 @@
 package de.bht.mmi.iot.listener.amqp;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bht.mmi.iot.constants.AmqpConstants;
 import de.bht.mmi.iot.model.Measurement;
@@ -18,6 +19,7 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -35,6 +37,8 @@ public class FrissListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FrissListener.class);
 
+    private static final TypeReference<List<Measurement>> listOfMeasurementTypeRef = new TypeReference<List<Measurement>>() {};
+
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(),
             exchange = @Exchange(value = AmqpConstants.FRISS_EXCHANGE_NAME, type = ExchangeTypes.TOPIC),
@@ -43,9 +47,10 @@ public class FrissListener {
     public void processFriss(@Headers Map<String, String> amqpHeaders, String data) {
         LOGGER.info("Received message with amqpHeaders: {}", amqpHeaders);
         try {
-            final Object[] measurements = objectMapper.readValue(data, Measurement[].class);
+            final List<Measurement> measurements = objectMapper.readValue(data, listOfMeasurementTypeRef);
             dynamoDBMapper.batchSave(measurements);
-        } catch (IOException e) {
+            LOGGER.info("Attempt to save {} measurements", measurements.size());
+        } catch (Exception e) {
             LOGGER.error("Unable to parse bulk message body", e);
         }
     }
