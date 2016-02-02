@@ -19,7 +19,7 @@ var AddSensor = React.createClass({
   handleSensors: function(){
     var that = this;
     request
-      .get('http://localhost:3000/api/sensor')
+      .get('/api/sensor')
       .end(function(err, res) {
         if (err) return console.log(err);
         console.log(res.body);
@@ -32,6 +32,26 @@ var AddSensor = React.createClass({
     return function(){
       that.refs[ref].checked = !that.refs[ref].checked;
     };
+  },
+
+  handleSaveClick: function(){
+    var that = this;
+    this.state.sensors.map(function(sensor){
+      var json = sensor;
+      if(that.refs['check' + sensor.id].checked){
+        json.attachedCluster = that.props.cluster.id;
+      }else{
+        json.attachedCluster = null;
+      }
+        request
+          .put('/sensor/' + sensor.id)
+          .send(json)
+          .end(function(err, res){
+            if(err) return;
+
+            console.log(res);
+          });
+    });
   },
 
   renderSensors: function(){
@@ -74,7 +94,7 @@ var AddSensor = React.createClass({
           <div className='row columns' style={{marginTop: 25, textAlign: 'right'}}>
             <div className='small-12 column'>
               <div className='button alert' onClick={this.props.cancleCallback}>cancle</div>
-              <div className='button'>save</div></div>
+              <div className='button' onClick={this.handleSaveClick}>save</div></div>
           </div>
         </div>
       </div>
