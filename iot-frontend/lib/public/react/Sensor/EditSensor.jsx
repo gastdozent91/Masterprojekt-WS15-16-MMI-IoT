@@ -1,4 +1,5 @@
 var React = require('react')
+  , _ = require('underscore')
   , request = require('superagent');
 
 var EditSensor = React.createClass({
@@ -11,12 +12,10 @@ var EditSensor = React.createClass({
   getInitialState: function() {
     this.loadClusters();
     this.loadGateways();
+    var sensor = _.clone(this.props.sensor);
+    sensor.types = sensor.types.join(', ');
     return {
-      nameValue: this.props.sensor.name,
-      locationValue: this.props.sensor.location,
-      sensorTypesValue: this.props.sensor.types.join(', '),
-      attachedGatewayValue: this.props.sensor.attachedGateway,
-      attachedClusterValue: this.props.sensor.attachedCluster,
+      sensor: sensor,
       clusters: [],
       gateways: []
     };
@@ -48,16 +47,43 @@ var EditSensor = React.createClass({
     //TODO send new data to backend
 
     //TODO clone
-    var json = this.props.sensor;
+    var json = _.clone(this.state.sensor);
+    var types = json.types.split(',');
+    types = types.map(function(type) {
+      return type.trim();
+    });
+    json.types = types;
+    console.log(json);
+    request.put('/sensor')
+    .send(json)
+    .end(function(err, res) {
+      console.log('hallo');
+      console.log(err);
+      console.log(res);
+    });
   },
 
   handleNameChange: function(event){
+    var sensor = _.clone(this.state.sensor);
+    sensor.name = this.refs.name.value;
     this.setState({
-      nameValue: this.refs['name'].value,
-      locationValue: this.refs['location'].value,
-      sensorTypesValue: this.refs['types'].value,
-      attachedGatewayValue: this.refs['attachedGateway'].value,
-      attachedClusterValue: this.refs['attachedCluster'].value
+      sensor: sensor
+    });
+  },
+
+  handleLocationChange: function(event){
+    var sensor = _.clone(this.state.sensor);
+    sensor.location = this.refs.location.value;
+    this.setState({
+      sensor: sensor
+    });
+  },
+
+  handleTypesChange: function(event){
+    var sensor = _.clone(this.state.sensor);
+    sensor.types = this.refs.types.value;
+    this.setState({
+      sensor: sensor
     });
   },
 
@@ -132,7 +158,7 @@ var EditSensor = React.createClass({
           </div>
 
           <div className='small-8 column'>
-            <input type='text' value={this.state.nameValue} ref='name' onChange={this.handleNameChange}/>
+            <input type='text' value={this.state.sensor.name} ref='name' onChange={this.handleNameChange}/>
           </div>
         </div>
         <div className='row columns'>
@@ -140,7 +166,7 @@ var EditSensor = React.createClass({
             location
           </div>
           <div className='small-8 column'>
-            <input type='text' value={this.state.locationValue} ref='location' onChange={this.handleNameChange}/>
+            <input type='text' value={this.state.sensor.location} ref='location' onChange={this.handleLocationChange}/>
           </div>
         </div>
         <div className='row columns'>
@@ -148,7 +174,7 @@ var EditSensor = React.createClass({
             sensor types
           </div>
           <div className='small-8 column'>
-            <input type='text' value={this.state.sensorTypesValue} ref='types' onChange={this.handleNameChange}/>
+            <input type='text' value={this.state.sensor.types} ref='types' onChange={this.handleTypesChange}/>
           </div>
         </div>
         <div className='row columns'>

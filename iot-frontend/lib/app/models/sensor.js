@@ -35,12 +35,12 @@ me.getOne = (user, sensorname) => {
 me.update = (user, sensorToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/sensor/' + sensorToUpdate.username)
+      .put(endpoint + '/sensor/' + sensorToUpdate.id)
       .send(sensorToUpdate)
       .auth(user.Username, user.password)
       .end((err, res) => {
         if (err) reject(err);
-        resolve(res);
+        resolve(res.statusCode);
       });
   });
 };

@@ -6,6 +6,14 @@ var React = require('react')
 
 module.exports = me = {};
 
+me.isAdmin = function(user) {
+  return isAdmin(user);
+};
+
+var isAdmin = function(user) {
+  return user.roles.values.indexOf('ROLE_ADMIN') > -1;
+};
+
 me.getAll = (req, res, next) => {
   Model.getAll(req.user)
   .then(users => {
@@ -46,18 +54,14 @@ me.update = (req, res, next) => {
 };
 
 me.delete = (req, res, next) => {
-  var userToDelete = 'max';
+  var userToDelete = 'ray';
   Model.delete(req.user, userToDelete)
   .then(result => {
-    res.json(result);
+    res.json(result.status);
   })
   .catch(err => {
     res.json(err);
   });
-  //User.delete(req.user, userToDelete, (err, result) => {
-    //if (err) res.json(err);
-    //res.json(result);
-  //});
 };
 
 me.create = (req, res, next) => {
@@ -71,18 +75,16 @@ me.create = (req, res, next) => {
 };
 
 me.getSensors = (req, res, next) => {
-  var userWithSensors = 'max';
+  if (isAdmin(req.user)) next();
+  var userWithSensors = req.user.Username;
   Model.getSensors(req.user, userWithSensors)
   .then(result => {
-    res.json(result);
+    req.sensors = result.body;
+    next();
   })
   .catch(err => {
     res.json(err);
   });
-  //User.getSensors(req.user, userWithSensors, (err, result) => {
-    //if (err) res.json(err);
-    //res.json(result);
-  //});
 };
 
 me.setSensors = (req, res, next) => {
@@ -95,10 +97,6 @@ me.setSensors = (req, res, next) => {
   .catch(err => {
     res.json(err);
   });
-  //User.setSensors(req.user, userWithSensors, sensors, (err, result) => {
-    //if (err) res.json(err);
-    //res.json(result);
-  //});
 };
 
 me.render = (req, res) => {

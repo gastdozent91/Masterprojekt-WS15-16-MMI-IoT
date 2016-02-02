@@ -97,6 +97,7 @@ app.get('/clusters',
 app.get('/sensors',
   login.shouldBeLoggedIn,
   sensor.getAll,
+  user.getSensors,
   sensor.render
 );
 
@@ -151,21 +152,79 @@ app.get('/api/gateway',
   gateway.sendJson
 );
 
+// create user
 app.post('/user',
   login.shouldBeLoggedIn,
   user.create
 );
 
+// delete user
+app.delete('/user',
+  login.shouldBeLoggedIn,
+  user.delete
+);
+
+// update user
+app.put('/user',
+  login.shouldBeLoggedIn,
+  user.update
+);
+
+// attach sensors to user
+app.put('/user',
+  login.shouldBeLoggedIn,
+  user.setSensors
+);
+
+// create sensor
 app.post('/sensor',
   login.shouldBeLoggedIn,
   sensor.create
 );
 
+// delete sensor
+app.delete('/sensor/:id',
+  login.shouldBeLoggedIn,
+  sensor.create
+);
+
+// update sensor
+app.put('/sensor',
+  login.shouldBeLoggedIn,
+  sensor.update
+);
+
+// create gateway
 app.post('/gateway',
   login.shouldBeLoggedIn,
   gateway.create
 );
 
+// delete gateway
+app.delete('/gateway',
+  login.shouldBeLoggedIn,
+  gateway.create
+);
+
+// update gateway
+app.put('/gateway',
+  login.shouldBeLoggedIn,
+  gateway.create
+);
+
+// create cluster
+app.post('/cluster',
+  login.shouldBeLoggedIn,
+  cluster.create
+);
+
+// delete cluster
+app.post('/cluster',
+  login.shouldBeLoggedIn,
+  cluster.create
+);
+
+// update cluster
 app.post('/cluster',
   login.shouldBeLoggedIn,
   cluster.create

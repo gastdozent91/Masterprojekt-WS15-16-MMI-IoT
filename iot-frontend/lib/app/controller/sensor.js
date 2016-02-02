@@ -1,6 +1,8 @@
 var React = require('react')
   , ReactDOM = require('react-dom/server')
   , Model = require('../models/sensor')
+  , User = require('./user')
+  , UserModel = require('../models/user')
   , Sensor = React.createFactory(
       require('../../public/react/Sensor')
     )
@@ -11,14 +13,18 @@ var React = require('react')
 module.exports = me = {};
 
 me.getAll = (req, res, next) => {
-  Model.getAll(req.user)
-  .then(sensors => {
-    req.sensors = sensors;
+  if (User.isAdmin(req.user)) {
+    Model.getAll(req.user)
+    .then(sensors => {
+      req.sensors = sensors;
+      next();
+    })
+    .catch(err => {
+      res.json(err);
+    });
+  } else {
     next();
-  })
-  .catch(err => {
-    res.json(err);
-  });
+  }
 };
 
 me.getOne = (req, res, next) => {
@@ -39,6 +45,26 @@ me.create = (req, res, next) => {
   })
   .catch(err => {
     res.json(err.status);
+  });
+};
+
+me.update = (req, res, next) => {
+  var changedSensor = req.body;
+  Model.update(req.user, changedSensor, (err, result) => {
+    if (err) res.json(err);
+    console.log(result);
+    res.json(result);
+  });
+};
+
+me.delete = (req, res, next) => {
+  var sensorToDelete = req.params.id;
+  Model.delete(req.user, sensorToDelete)
+  .then(result => {
+    res.json(result.status);
+  })
+  .catch(err => {
+    res.json(err);
   });
 };
 
