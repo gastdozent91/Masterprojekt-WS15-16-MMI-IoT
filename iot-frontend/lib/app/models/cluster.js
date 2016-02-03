@@ -13,7 +13,7 @@ me.getAll = (user) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/cluster')
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -25,7 +25,7 @@ me.getOne = (user, id) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/cluster/' + id)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -37,7 +37,7 @@ me.getSensors = (user, id) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/cluster/' + id + '/sensor')
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -50,7 +50,7 @@ me.update = (user, clusterToUpdate) => {
     request
       .put(endpoint + '/cluster/' + clusterToUpdate.username)
       .send(clusterToUpdate)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -62,7 +62,7 @@ me.delete = (user, clusterToDelete) => {
   return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/cluster/' + clusterToDelete)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -75,7 +75,7 @@ me.create = (user, clusterToCreate) => {
     request
       .post(endpoint + '/cluster')
       .send(clusterToCreate)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);

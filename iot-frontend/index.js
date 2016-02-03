@@ -26,6 +26,8 @@ app.use(bodyParser.json());
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
+    console.log('username', username);
+    console.log('password', password);
     User.find(username, function(err, user) {
       if (err) {return done(err);}
       if (!user) {
@@ -41,7 +43,7 @@ passport.use(new LocalStrategy(
 
 passport.serializeUser(function(user, done) {
   console.log('serialize');
-    done(null, user.Username);
+    done(null, user.username);
 });
 
 passport.deserializeUser(function(username, done) {

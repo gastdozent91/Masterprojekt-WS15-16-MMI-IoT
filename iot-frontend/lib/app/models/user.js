@@ -12,7 +12,7 @@ me.getAll = (user) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/user')
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -24,7 +24,7 @@ me.getOne = (user, username) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/user/' + username)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res.body);
@@ -37,7 +37,7 @@ me.update = (user, userToUpdate) => {
     request
       .put(endpoint + '/user/' + userToUpdate.username)
       .send(userToUpdate)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -49,7 +49,7 @@ me.delete = (user, userToDelete) => {
   return new Bluebird((resolve, reject) => {
     request
       .delete(endpoint + '/user/' + userToDelete)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -62,7 +62,7 @@ me.create = (user, userToCreate) => {
     request
       .post(endpoint + '/user')
       .send(userToCreate)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -74,7 +74,7 @@ me.getSensors = (user, userWithSensors) => {
   return new Bluebird((resolve, reject) => {
     request
       .get(endpoint + '/user/' + userWithSensors + '/sensor')
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -87,7 +87,7 @@ me.setSensors = (user, userWithSensors, sensors) => {
     request
       .put(endpoint + '/user/' + userWithSensors + '/sensor')
       .send(sensors)
-      .auth(user.Username, user.password)
+      .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);
@@ -106,7 +106,7 @@ me.find = function(username, cb) {
     TableName: 'User',
     KeyConditionExpression: '#n = :n',
     ExpressionAttributeNames:{
-      "#n": 'Username'
+      "#n": 'username'
     },
     ExpressionAttributeValues: {
       ":n": username
