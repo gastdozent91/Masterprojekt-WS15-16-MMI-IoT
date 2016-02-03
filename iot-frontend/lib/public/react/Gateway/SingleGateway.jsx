@@ -105,9 +105,18 @@ var SingleGateway = React.createClass({
         <div style={{marginTop: 25}}>
           <div className='row columns' style={{float: 'none'}}>
             <div className='callout'>
-              <div className='row column'>
-                <div className='small-8 columns'><h3>{this.props.gateway.name}</h3></div>
-                <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleEditGateway}>edit</div></div>
+              <div className='row'>
+                <div className='small-8 columns'>
+                  <h3>{this.props.gateway.name}</h3>
+                </div>
+                <div className='small-4 columns'
+                  style={{textAlign: 'right'}}>
+                  <div className='button'
+                    style={{marginRight:0}}
+                    onClick={this.handleEditGateway}>
+                    edit
+                </div>
+              </div>
               </div>
                 <table style={{width: '100%'}}>
                   <tbody style={{borderWidth: 0}}>
@@ -116,9 +125,18 @@ var SingleGateway = React.createClass({
                 </table>
             </div>
             <div className='callout'>
-              <div className='row column'>
-                <div className='small-8 columns'><h5>attached sensors</h5></div>
-                <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleAddSensor}>Add Sensor</div></div>
+              <div className='row'>
+                <div className='small-8 columns'>
+                  <h5>attached sensors</h5>
+                </div>
+                <div className='small-4 columns'
+                  style={{textAlign: 'right'}}>
+                  <div className='button'
+                    style={{marginRight:0}}
+                    onClick={this.handleAddSensor}>
+                    Add Sensor
+                </div>
+              </div>
               </div>
               {this.renderSensors()}
             </div>

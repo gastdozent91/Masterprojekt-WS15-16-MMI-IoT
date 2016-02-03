@@ -2,6 +2,8 @@ var React = require('react')
   , Arrow3D = require('../shared/Arrow3D')
   , Graph = require('../shared/Graph')
   , rabbit = require('../../js/rabbit')
+  , DynamoArrow = require('../shared/DynamoArrow')
+  , DynamoGraph = require('../shared/DynamoGraph')
   , TopBar = require('../shared/TopBar');
 
 var EditSensor = require('./EditSensor')
@@ -170,11 +172,11 @@ var SingleSensor = React.createClass({
         <div style={{marginTop: 25}}>
           <div className='row column' style={{float: 'none'}}>
             <div className='callout'>
-              <div className='row column' style={{marginRight: 0}}>
+              <div className='row' style={{marginRight: 0}}>
                 <div className='small-8 columns'>
                   <h3>{this.props.sensor.name}</h3>
                 </div>
-                <div className='small-4 columns' style={{textAlign: 'right'}}>
+                <div className='small-4 columns' style={{textAlign: 'right', paddingRight: 0}}>
                   <div className='button' onClick={this.handleEditSensor}>
                     edit
                   </div>
@@ -212,14 +214,16 @@ var SingleSensor = React.createClass({
               <div className='row'>
                 <div className='large-6 columns'>
                   <h5>Orientation</h5>
-                  { !this.state.isLive ? null :
-                  <Arrow3D quad={this.state.cQ}/>
+                  { this.state.isLive
+                    ? <Arrow3D quad={this.state.cQ}/>
+                    : <DynamoArrow />
                   }
                 </div>
                 <div className='large-6 columns'>
                   <h5>Acceleration</h5>
-                  { !this.state.isLive ? null :
-                  <Graph value={this.state.cA} all={this.state.data}/>
+                  { this.state.isLive
+                    ? <Graph value={this.state.cA} all={this.state.data}/>
+                    : <DynamoGraph />
                   }
                 </div>
               </div>
