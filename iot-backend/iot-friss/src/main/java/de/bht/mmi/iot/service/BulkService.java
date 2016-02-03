@@ -20,4 +20,8 @@ public interface BulkService {
             String sensorId, DateTime after, int page, int pageSize, Sort.Direction sortDirection)
             throws EntityNotFoundException;
 
+    Page<Bulk> findBySensorIdAndBulkReceivedBetween(
+            String sensorId, DateTime start, DateTime end, int page, int pageSize, Sort.Direction sortDirection)
+            throws EntityNotFoundException;
+
 }

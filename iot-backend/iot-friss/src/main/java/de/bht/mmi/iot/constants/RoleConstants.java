@@ -6,6 +6,12 @@ public final class RoleConstants {
 
     public static final String ROLE_USER = "ROLE_USER";
 
+    public static final String ROLE_CREATE_CLUSTER = "ROLE_CREATE_CLUSTER";
+
+    public static final String ROLE_CREATE_GATEWAY = "ROLE_CREATE_GATEWAY";
+
+    public static final String ROLE_CREATE_SENSOR = "ROLE_CREATE_SENSOR";
+
     /**
      * Spring Expression Language (SpEL) expression - hasRole admin
      */

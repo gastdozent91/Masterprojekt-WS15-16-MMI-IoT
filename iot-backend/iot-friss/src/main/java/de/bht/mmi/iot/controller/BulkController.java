@@ -36,37 +36,22 @@ public class BulkController {
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     public Page<Bulk> getAllBySensorIdAndBulkReceivedBeforeXorAfter(
             @RequestParam("sensor_id") String sensorId,
-            @RequestParam(value = "before", required = false) String before,
-            @RequestParam(value = "after", required = false) String after,
+            @RequestParam(value = "start") String start,
+            @RequestParam(value = "end") String end,
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "page_size", required = false, defaultValue = "100") int pageSize,
             @RequestParam(value = "sort_order", required = false, defaultValue = "desc") String sort)
             throws EntityNotFoundException, BadRequestException {
-
-
-        if (!((before != null) ^ (after != null))) {
-            throw new BadRequestException("Parameters 'before' and 'after' are exclusive or.");
-        }
-        final String date = (before != null) ? before : after;
-        Sort.Direction sortDirection;
-        DateTime dateTime;
         try {
-            sortDirection = Sort.Direction.fromString(sort);
-            dateTime = DateTime.parse(date, ISODateTimeFormat.dateTime());
+            final DateTime startDate = DateTime.parse(start, ISODateTimeFormat.dateTime());
+            final DateTime endDate = DateTime.parse(end, ISODateTimeFormat.dateTime());
+            final Sort.Direction sortDirection = Sort.Direction.fromString(sort);
+            return bulkService.findBySensorIdAndBulkReceivedBetween(sensorId,
+                    startDate, endDate,
+                    page, pageSize, sortDirection);
         } catch (IllegalArgumentException e) {
             throw new BadRequestException(e.getMessage());
         }
-
-        Page<Bulk> result;
-        if (before != null) {
-            result = bulkService.findBySensorIdAndBulkReceivedBefore(sensorId, dateTime, page, pageSize,
-                    sortDirection);
-        } else {
-            result = bulkService.findBySensorIdAndBulkReceivedAfter(sensorId, dateTime, page, pageSize,
-                    sortDirection);
-        }
-        return result;
-
     }
 
 }
