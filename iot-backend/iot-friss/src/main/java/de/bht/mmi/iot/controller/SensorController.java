@@ -37,7 +37,7 @@ public class SensorController {
     // POST
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
+    @PreAuthorize("hasAnyRole('" + RoleConstants.ROLE_ADMIN + "', '" + RoleConstants.ROLE_CREATE_SENSOR + "')")
     public Sensor createSensor(@RequestBody @Validated Sensor sensor,
                                @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {

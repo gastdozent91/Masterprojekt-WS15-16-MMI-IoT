@@ -52,5 +52,17 @@ public class BulkServiceImpl implements BulkService {
                 new PageRequest(page, pageSize, new Sort(sortDirection, "bulkReceived")));
     }
 
+    @Override
+    public Page<Bulk> findBySensorIdAndBulkReceivedBetween(
+            String sensorId, DateTime start, DateTime end, int page, int pageSize, Sort.Direction sortDirection)
+            throws EntityNotFoundException {
+        final Sensor sensor = sensorService.getSensor(sensorId);
+        return bulkRepository.findBySensorIdAndBulkReceivedBetween(
+                sensor.getId(),
+                start,
+                end,
+                new PageRequest(page, pageSize, new Sort(sortDirection, "bulkReceived")));
+    }
+
 }
 

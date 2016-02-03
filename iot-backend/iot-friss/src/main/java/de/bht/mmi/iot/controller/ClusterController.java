@@ -54,7 +54,7 @@ public class ClusterController {
 
     // POST
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
+    @PreAuthorize("hasAnyRole('" + RoleConstants.ROLE_ADMIN + "', '" + RoleConstants.ROLE_CREATE_CLUSTER + "')")
     public Cluster createCluster(@RequestBody @Validated Cluster cluster) throws EntityNotFoundException {
         return clusterService.createCluster(cluster);
     }
