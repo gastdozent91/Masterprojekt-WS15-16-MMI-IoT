@@ -67,15 +67,30 @@ var SingleSensor = React.createClass({
     var max = body.length
     var hz = Math.floor(1000/max);
     var i = 0;
+    //var myInterval = setInterval(function() {
+      //if (i == max) {
+        //i = 0;
+        //clearInterval(myInterval);
+      //}
+      //var date = body[i].time;
+      //that.setState({
+        //cQ: body[i].orientation,
+        //cA: {acceleration: body[i].acceleration, time: date}
+      //});
+      //i++;
+    //}, hz);
     this.setState({data: body}, function() {
       var myInterval = setInterval(function() {
-        if (i == max) clearInterval(myInterval);
+        if (i++ == max - 1) {
+          i = 0;
+          clearInterval(myInterval);
+          return;
+        }
         var date = that.state.data[i].time;
         that.setState({
           cQ: that.state.data[i].orientation,
           cA: {acceleration: that.state.data[i].acceleration, time: date}
         });
-        i++;
       }, hz);
     });
   },
@@ -147,18 +162,27 @@ var SingleSensor = React.createClass({
   },
 
   render: function() {
-    var displayStyle = this.state.editSensor || this.state.deleteSensor ? 'block' : 'none';
+    var displayStyle = this.state.editSensor || this.state.deleteSensor
+                        ? 'block' : 'none';
     return (
       <div>
         <TopBar user={this.props.user} activePage='sensors' />
         <div style={{marginTop: 25}}>
           <div className='row column' style={{float: 'none'}}>
             <div className='callout'>
-              <div className='row column'>
-                <div className='small-8 columns'><h3>{this.props.sensor.name}</h3></div>
+              <div className='row column' style={{marginRight: 0}}>
+                <div className='small-8 columns'>
+                  <h3>{this.props.sensor.name}</h3>
+                </div>
                 <div className='small-4 columns' style={{textAlign: 'right'}}>
-                  <div className='button' onClick={this.handleEditSensor}>edit</div>
-                  <div className='button alert' onClick={this.handleDeleteSensor}>delete</div>
+                  <div className='button' onClick={this.handleEditSensor}>
+                    edit
+                  </div>
+                  <div className='button alert'
+                    style={{marginRight:0}}
+                    onClick={this.handleDeleteSensor}>
+                    delete
+                  </div>
                 </div>
               </div>
                 <table style={{width: '100%'}}>

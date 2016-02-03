@@ -23,6 +23,7 @@ var Graph = React.createClass({
       created: false,
       max: '2016-01-18T18:00:08.435',
       data: [],
+      all: this.props.all
     };
   },
 
@@ -35,10 +36,13 @@ var Graph = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.value === null) return;
+    var newAll = this.state.all.concat(nextProps.all);
+    if (newAll.length > 400)
+      newAll.splice(0, 100);
     var newData = this.state.data.concat([nextProps.value]);
-    if (newData.length > 1000)
+    if (newData.length > 400)
       newData.splice(0, 1);
-    this.setState({data: newData}, function() {
+    this.setState({data: newData, all: newAll}, function() {
       if (this.state.created) {
         this.refresh();
       } else {
@@ -63,12 +67,12 @@ var Graph = React.createClass({
     var max = format.parse(this.state.max);
     x = d3.time.scale()
       .range([10, this.refs.graphWindow.offsetWidth - 20])
-      .domain(d3.extent(this.props.all, dateFn))
+      .domain(d3.extent(this.state.all, dateFn))
       //.domain([d3.min(this.state.data, dateFn), max])
 
     y = d3.scale.linear()
       .range([280, 10])
-      .domain(d3.extent(this.props.all, firstfn))
+      .domain(d3.extent(this.state.all, firstfn))
       //.domain([d3.min(this.state.data, firstfn), 1])
 
     xAxis = d3.svg.axis()
@@ -134,8 +138,8 @@ var Graph = React.createClass({
   },
 
   refresh: function() {
-    //x.domain(d3.extent(this.state.data, dateFn))
-    //y.domain(d3.extent(this.state.data, firstfn))
+    x.domain(d3.extent(this.state.all, dateFn))
+    y.domain(d3.extent(this.state.all, firstfn))
     svg.selectAll("circle.blue").data(this.state.data).enter()
       .append("svg:circle")
       .attr("r", 2)

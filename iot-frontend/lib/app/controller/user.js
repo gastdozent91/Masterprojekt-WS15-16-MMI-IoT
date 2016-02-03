@@ -76,7 +76,7 @@ me.create = (req, res, next) => {
 
 me.getSensors = (req, res, next) => {
   if (isAdmin(req.user)) next();
-  var userWithSensors = req.user.Username;
+  var userWithSensors = req.user.username;
   Model.getSensors(req.user, userWithSensors)
   .then(result => {
     req.sensors = result.body;
