@@ -46,16 +46,16 @@ var MultipleSensors = React.createClass({
       <div>
         <div className='row'>
           <div className='large-3 columns'>
+            <b>Name</b>
+          </div>
+          <div className='large-3 columns'>
             <b>ID</b>
           </div>
           <div className='large-3 columns'>
             <b>Location</b>
           </div>
-          <div className='large-3 columns'>
-            <b>Type</b>
-          </div>
           <div className='large-3 columns' style={{textAlign: 'end'}}>
-            <b>Gateway</b>
+            <b>Type</b>
           </div>
         </div>
         {this.state.sensors
@@ -80,16 +80,16 @@ var MultipleSensors = React.createClass({
       <a href={'/sensor/' + sensor.id} key={'sensor #'+i}>
         <div className={sensorClass}>
           <div className='large-3 columns'>
+            {sensor.name}
+          </div>
+          <div className='large-3 columns' style={{overflow: 'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
             {sensor.id}
           </div>
           <div className='large-3 columns' style={{overflow: 'hidden'}}>
             {sensor.location}
           </div>
-          <div className='large-3 columns'>
-            {sensor.types === null ? '' : sensor.types.join(', ')}
-          </div>
           <div className='large-3 columns' style={{textAlign: 'end'}}>
-            {sensor.attachedGateway}
+            {sensor.types === null ? '' : sensor.types.join(', ')}
           </div>
         </div>
       </a>

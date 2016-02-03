@@ -78,9 +78,10 @@ app.get('/logout',
 
 app.get('/',
   login.shouldBeLoggedIn,
-  //sensor.getAll,
-  //gateway.getAll,
-  //cluster.getAll,
+  sensor.getAll,
+  user.getSensors,
+  gateway.getAll,
+  cluster.getAll,
   dashboard.render
 );
 
@@ -187,7 +188,7 @@ app.post('/sensor',
 // delete sensor
 app.delete('/sensor/:id',
   login.shouldBeLoggedIn,
-  sensor.create
+  sensor.delete
 );
 
 // update sensor

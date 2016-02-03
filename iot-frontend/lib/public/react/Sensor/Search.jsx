@@ -15,18 +15,21 @@ var Search = React.createClass({
   handleSearchChange: function() {
     //TODO: enable sensortype again
     var input = this.refs.search.value.toLowerCase();
-    var checkName = input.indexOf('id:') > -1
+    var checkId = input.indexOf('id:') > -1
       , checkLocation = input.indexOf('location:') > -1
       , checkType = input.indexOf('type:') > -1
-      , checkGateway = input.indexOf('gateway:') > -1;
+      , checkName = input.indexOf('name:') > -1
+
+      //, checkGateway = input.indexOf('gateway:') > -1;
 
     var sensors = [];
-    if (checkName || checkLocation || checkGateway || checkType) {
+    if (checkName || checkLocation || checkId || checkType) {
       var filterList = [
+        'name',
         'id',
         'location',
         'type',
-        'gateway'
+        //'gateway'
       ];
       var dic = {};
       var splittedInput = input.split(';');
@@ -46,7 +49,7 @@ var Search = React.createClass({
       sensors = this.props.sensors.filter(function(sensor) {
         var bool = true;
         var value;
-        if (checkName) {
+        if (checkId) {
           value = dic.id;
           bool = sensor.id.toLowerCase().indexOf(value) > -1;
         }
@@ -58,9 +61,13 @@ var Search = React.createClass({
           //value = dic.type;
           //bool = sensor.sensorType.toLowerCase().indexOf(value) > -1;
         //}
-        if (bool && checkGateway) {
+        //if (bool && checkGateway) {
+          //value = dic.gateway;
+          //bool = sensor.attachedGateway.toLowerCase().indexOf(value) > -1;
+        //}
+        if (bool && checkName) {
           value = dic.gateway;
-          bool = sensor.attachedGateway.toLowerCase().indexOf(value) > -1;
+          bool = sensor.name.toLowerCase().indexOf(value) > -1;
         }
         return bool;
       });
@@ -72,8 +79,10 @@ var Search = React.createClass({
         if (bool) return true;
         bool = sensor.location.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
-        bool = sensor.attachedGateway.toLowerCase().indexOf(input) > -1;
+        bool = sensor.name.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
+        //bool = sensor.attachedGateway.toLowerCase().indexOf(input) > -1;
+        //if (bool) return true;
         //bool = sensor.sensorType.toLowerCase().indexOf(input) > -1;
         //if (bool) return true;
       });
@@ -87,7 +96,7 @@ var Search = React.createClass({
         onChange={this.handleSearchChange}>
           <input type='text'
             ref='search'
-            placeholder='id: Gyro; location: Berlin; type: Gyro; gateway: supergateway' />
+            placeholder='name: Arm; id: 123...; location: Berlin; type: Gyro;' />
       </div>
     );
   }

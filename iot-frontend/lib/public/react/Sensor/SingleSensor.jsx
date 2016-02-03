@@ -228,10 +228,10 @@ var SingleSensor = React.createClass({
         </div>
 
         {this.state.editSensor
-          ? <EditSensor cancleCallback={this.handleEditSensor}
+          ? <EditSensor cancelCallback={this.handleEditSensor}
             sensor={this.props.sensor}/>
           : null}
-        {this.state.deleteSensor ? <DeleteSensor cancleCallback={this.handleDeleteSensor} sensor={this.props.sensor}/> : null}
+        {this.state.deleteSensor ? <DeleteSensor cancelCallback={this.handleDeleteSensor} sensor={this.props.sensor}/> : null}
           <div className='background-area'
             style={{display: displayStyle}}>
           </div>

@@ -5,7 +5,7 @@ var React = require('react')
 var EditSensor = React.createClass({
 
   propTypes: {
-    cancleCallback: React.PropTypes.func,
+    cancelCallback: React.PropTypes.func,
     sensor: React.PropTypes.object
   },
 
@@ -111,7 +111,7 @@ var EditSensor = React.createClass({
   renderGateway: function(gateway){
     return(
       <tr className='selectable-row' key={gateway.id}>
-        <td><input type='radio'></input></td>
+        <td><input type='radio' style={{margin:0}}></input></td>
         <td>{gateway.name}</td>
         <td>{gateway.id}</td>
       </tr>
@@ -142,7 +142,7 @@ var EditSensor = React.createClass({
   renderCluster: function(cluster){
     return(
       <tr className='selectable-row' key={cluster.id}>
-        <td><input type='radio'></input></td>
+        <td><input type='radio' style={{margin:0}}></input></td>
         <td>{cluster.name}</td>
         <td>{cluster.id}</td>
       </tr>
@@ -183,9 +183,9 @@ var EditSensor = React.createClass({
           </div>
           {this.renderGateways()}
         </div>
-        <div className='row columns'>
+        <div className='row columns' style={{float:'none'}}>
           <div className='small-12 column'>
-            attaced cluster
+            attached cluster
           </div>
           {this.renderClusters()}
         </div>
@@ -201,7 +201,7 @@ var EditSensor = React.createClass({
             {this.renderFields()}
           <div className='row columns' style={{marginTop: 25, textAlign: 'right'}}>
             <div className='small-12 column'>
-              <div className='button alert' onClick={this.props.cancleCallback}>cancle</div>
+              <div className='button alert' onClick={this.props.cancelCallback}>cancel</div>
               <div className='button' onClick={this.handleSaveClick}>save</div></div>
           </div>
         </div>
