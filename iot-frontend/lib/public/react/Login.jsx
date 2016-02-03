@@ -46,6 +46,9 @@ var Login = React.createClass({
   render: function() {
     return (
       <div>
+        <div className='logo-container'>
+          <img src='/img/Friss_Logo.png'/>
+        </div>
         <div className='row column login-container'>
           <div className='callout'>
             <div className='row'>
@@ -66,6 +69,10 @@ var Login = React.createClass({
                   type='submit'
                   onClick={this.handleClick}
                   value='Log In'/>
+                <input className='secondary button'
+                  type='submit'
+                  onClick={this.handleClick}
+                  value='Register'/>
               </div>
             </div>
           </div>

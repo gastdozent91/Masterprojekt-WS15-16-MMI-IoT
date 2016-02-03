@@ -34,6 +34,11 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest('build/public/fonts'))
 })
 
+gulp.task('img', function() {
+  return gulp.src('lib/public/img/*')
+         .pipe(gulp.dest('build/public/img'))
+})
+
 gulp.task('clean', function() {
   var jsFiles = fs.readdirSync('build/public/js');
   jsFiles.forEach(function(file) {
@@ -71,6 +76,7 @@ gulp.task('createBuildDir', function() {
   fs.existsSync('build/public') || fs.mkdirSync('build/public')
   fs.existsSync('build/public/js') || fs.mkdirSync('build/public/js')
   fs.existsSync('build/public/css') || fs.mkdirSync('build/public/css')
+  fs.existsSync('build/public/img') || fs.mkdirSync('build/public/img')
 })
 
 gulp.task('copyFoundation', function() {
@@ -92,7 +98,7 @@ gulp.task('lintjsx', function() {
   .pipe(jshint.reporter('default', {verbose: true}))
 })
 
-gulp.task('sync', ['jade', 'stylus', 'fonts'])
+gulp.task('sync', ['jade', 'stylus', 'fonts', 'img'])
 gulp.task('async', ['rename'])
 
 gulp.task('first', gulpsync.sync([

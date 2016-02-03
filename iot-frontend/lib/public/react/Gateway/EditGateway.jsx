@@ -4,7 +4,7 @@ var React = require('react')
 var EditGateway = React.createClass({
 
   propTypes: {
-    cancleCallback: React.PropTypes.func,
+    cancelCallback: React.PropTypes.func,
     gateway: React.PropTypes.object
   },
 
@@ -20,7 +20,7 @@ var EditGateway = React.createClass({
     json.name = this.refs.name.value;
 
     console.log(json);
-    this.props.cancleCallback();
+    this.props.cancelCallback();
   },
 
   handleNameChange: function(event){
@@ -44,7 +44,7 @@ var EditGateway = React.createClass({
           </div>
           <div className='row columns' style={{marginTop: 25, textAlign: 'right'}}>
             <div className='small-12 column'>
-              <div className='button alert' onClick={this.props.cancleCallback}>cancle</div>
+              <div className='button alert' onClick={this.props.cancelCallback}>cancel</div>
               <div className='button' onClick={this.handleSaveClick}>save</div></div>
           </div>
         </div>

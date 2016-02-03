@@ -116,9 +116,18 @@ var SingleCluster = React.createClass({
           <div style={{marginTop: 25}}>
             <div className='row column' style={{float: 'none'}}>
               <div className='callout'>
-                <div className='row column'>
-                  <div className='small-8 columns'><h3>{this.props.cluster.name}</h3></div>
-                  <div className='small-4 columns' style={{textAlign: 'right'}}><div className='button' onClick={this.handleEditCluster}>edit</div></div>
+                <div className='row'>
+                  <div className='small-8 columns'>
+                    <h3>{this.props.cluster.name}</h3>
+                  </div>
+                  <div className='small-4 columns'
+                    style={{textAlign: 'right'}}>
+                    <div className='button'
+                      style={{marginRight:0}}
+                      onClick={this.handleEditCluster}>
+                      edit
+                  </div>
+                </div>
                 </div>
                 <table style={{width: '100%'}}>
                   <tbody style={{borderWidth: 0}}>
@@ -127,17 +136,26 @@ var SingleCluster = React.createClass({
                 </table>
               </div>
               <div className='callout'>
-                <div className='row column'>
-                  <div className='small-8 columns'><h5>attached sensors</h5></div>
-                  <div className='small-4 columns' style={{textAlign: 'right'}}><div onClick={this.handleAddSensor} className='button'>Add Sensor</div></div>
+                <div className='row'>
+                  <div className='small-8 columns'>
+                    <h5>attached sensors</h5>
+                  </div>
+                  <div className='small-4 columns'
+                    style={{textAlign: 'right'}}>
+                    <div onClick={this.handleAddSensor}
+                      style={{marginRight:0}}
+                      className='button'>
+                      Add Sensor
+                  </div>
+                </div>
                 </div>
                 {this.renderSensors()}
               </div>
             </div>
           </div>
 
-          {this.state.addingSensor ? <AddSensor cancleCallback={this.handleAddSensor} cluster={this.props.cluster}/> : null}
-          {this.state.editSensor ? <EditCluster cancleCallback={this.handleEditCluster} cluster={this.props.cluster}/> : null}
+          {this.state.addingSensor ? <AddSensor cancelCallback={this.handleAddSensor} cluster={this.props.cluster}/> : null}
+          {this.state.editSensor ? <EditCluster cancelCallback={this.handleEditCluster} cluster={this.props.cluster}/> : null}
           <div className='background-area' style={{display: displayStyle}}></div>
         </div>
     );

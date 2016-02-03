@@ -45,7 +45,7 @@ var Dashboard = React.createClass({
     var withNoCluster = 0;
     var active = 0;
     this.props.sensors.forEach(function(sensor) {
-      if (sensor.attachedClusters.length === 0)
+      if (sensor.attachedCluster.length === 0)
         withNoCluster++;
       if (sensor.active)
         active++;

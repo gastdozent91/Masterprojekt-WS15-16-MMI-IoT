@@ -14,10 +14,13 @@ var DeleteSensor = React.createClass({
   },
 
   handleSaveClick: function(){
-    //TODO send new data to backend
-
-    //TODO clone
-    var json = this.props.sensor;
+    request.delete('/sensor/' + this.props.sensor.id)
+      .end(function(err, res) {
+        console.log(err, res);
+        if (res.statusCode === 200) {
+          window.location.pathname = '/sensors';
+        }
+      });
   },
 
   render: function() {
