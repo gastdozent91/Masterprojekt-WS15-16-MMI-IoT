@@ -125,8 +125,8 @@ var SingleGateway = React.createClass({
           </div>
         </div>
 
-        {this.state.addSensor ? <AddSensor cancleCallback={this.handleAddSensor} gateway={this.props.gateway}/> : null}
-        {this.state.editSensor ? <EditGateway cancleCallback={this.handleEditGateway} gateway={this.props.gateway}/> : null}
+        {this.state.addSensor ? <AddSensor cancelCallback={this.handleAddSensor} gateway={this.props.gateway}/> : null}
+        {this.state.editSensor ? <EditGateway cancelCallback={this.handleEditGateway} gateway={this.props.gateway}/> : null}
         <div className='background-area' style={{display: displayStyle}}></div>
       </div>
     );

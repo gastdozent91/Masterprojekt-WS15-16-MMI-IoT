@@ -136,8 +136,8 @@ var SingleCluster = React.createClass({
             </div>
           </div>
 
-          {this.state.addingSensor ? <AddSensor cancleCallback={this.handleAddSensor} cluster={this.props.cluster}/> : null}
-          {this.state.editSensor ? <EditCluster cancleCallback={this.handleEditCluster} cluster={this.props.cluster}/> : null}
+          {this.state.addingSensor ? <AddSensor cancelCallback={this.handleAddSensor} cluster={this.props.cluster}/> : null}
+          {this.state.editSensor ? <EditCluster cancelCallback={this.handleEditCluster} cluster={this.props.cluster}/> : null}
           <div className='background-area' style={{display: displayStyle}}></div>
         </div>
     );

@@ -4,7 +4,7 @@ var React = require('react')
 var AddSensor = React.createClass({
 
   propTypes: {
-    cancleCallback: React.PropTypes.func,
+    cancelCallback: React.PropTypes.func,
     gateway: React.PropTypes.object,
     sensors: React.PropTypes.array
   },
@@ -94,7 +94,7 @@ var AddSensor = React.createClass({
           </table>
           <div className='row columns' style={{marginTop: 25, textAlign: 'right'}}>
             <div className='small-12 column'>
-              <div className='button alert' onClick={this.props.cancleCallback}>cancle</div>
+              <div className='button alert' onClick={this.props.cancelCallback}>cancel</div>
               <div className='button' onClick={this.handleSaveClick}>save</div></div>
           </div>
         </div>
