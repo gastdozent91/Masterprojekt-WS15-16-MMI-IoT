@@ -18,10 +18,6 @@ me.getAll = (req, res, next) => {
   Model.getAll(req.user)
   .then(users => {
     console.log(users);
-    users.forEach(user => {
-      user.sensorCount = user.sensors.length;
-      delete user.sensors;
-    });
     req.users = users;
     next();
     //res.json(users);

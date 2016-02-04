@@ -79,7 +79,6 @@ app.get('/logout',
 app.get('/',
   login.shouldBeLoggedIn,
   sensor.getAll,
-  user.getSensors,
   gateway.getAll,
   cluster.getAll,
   dashboard.render
@@ -100,7 +99,6 @@ app.get('/clusters',
 app.get('/sensors',
   login.shouldBeLoggedIn,
   sensor.getAll,
-  user.getSensors,
   sensor.render
 );
 

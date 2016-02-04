@@ -13,18 +13,14 @@ var React = require('react')
 module.exports = me = {};
 
 me.getAll = (req, res, next) => {
-  if (User.isAdmin(req.user)) {
-    Model.getAll(req.user)
-    .then(sensors => {
-      req.sensors = sensors;
-      next();
-    })
-    .catch(err => {
-      res.json(err);
-    });
-  } else {
+  Model.getAll(req.user)
+  .then(sensors => {
+    req.sensors = sensors;
     next();
-  }
+  })
+  .catch(err => {
+    res.json(err);
+  });
 };
 
 me.getOne = (req, res, next) => {

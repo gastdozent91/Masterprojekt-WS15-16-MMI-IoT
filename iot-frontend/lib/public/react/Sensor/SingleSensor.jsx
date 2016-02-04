@@ -135,7 +135,7 @@ var SingleSensor = React.createClass({
       var text = value;
       if(id === 'creationDate'){
         var date = new Date(text);
-        text = date.getDate() + '. ' + (date.getMonth()+1) + '. ' + date.getFullYear() + ' - ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+        text = date.toLocaleString();
       }else if(id === 'types'){
         text = that.props.sensor[field[0]].join(', ');
       }

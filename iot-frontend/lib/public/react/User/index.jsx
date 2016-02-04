@@ -91,7 +91,7 @@ var Users = React.createClass({
             {user.lastname || 'missing'}
           </div>
           <div className='large-1 columns'>
-            {user.sensorCount || 0}
+            0
           </div>
           <div className='large-2 columns' style={{textAlign: 'end'}}>
             { this.renderRole(user) }
