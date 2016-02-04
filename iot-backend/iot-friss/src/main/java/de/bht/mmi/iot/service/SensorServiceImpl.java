@@ -36,6 +36,9 @@ public class SensorServiceImpl implements SensorService {
     @Autowired
     private ClusterService clusterService;
 
+    @Autowired
+    private CacheService cacheService;
+
     @Override
     public Iterable<Sensor> getAll() {
         return sensorRepository.findAll();
@@ -164,7 +167,9 @@ public class SensorServiceImpl implements SensorService {
         } else {
             if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_UPDATE_SENSOR)
                     || oldSensor.getOwner().equals(authenticatedUser.getUsername())) {
-                return saveSensor(sensor);
+                final Sensor savedSensor = saveSensor(sensor);
+                cacheService.getCache(CacheConstants.CACHE_SENSOR_ACTIVE).evict(savedSensor.getId());
+                return savedSensor;
             }
         }
         throw new NotAuthorizedException("You are not authorized to save/update sensors");

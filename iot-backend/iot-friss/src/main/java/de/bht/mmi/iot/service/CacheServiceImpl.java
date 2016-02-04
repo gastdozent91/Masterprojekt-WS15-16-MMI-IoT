@@ -18,12 +18,17 @@ public class CacheServiceImpl implements CacheService {
     }
 
     @Override
-    public void clearOne(String cacheName) throws EntityNotFoundException {
+    public Cache getCache(String cacheName) throws EntityNotFoundException {
         final Cache cache = cacheManager.getCache(cacheName);
         if (cache == null) {
             throw new EntityNotFoundException(String.format("Cache with name: '%s' does not exists", cacheName));
         }
-        cache.clear();
+        return cache;
+    }
+
+    @Override
+    public void clearOne(String cacheName) throws EntityNotFoundException {
+        getCache(cacheName).clear();
     }
 
     @Override

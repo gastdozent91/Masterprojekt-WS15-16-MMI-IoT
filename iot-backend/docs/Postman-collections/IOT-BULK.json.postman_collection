@@ -24,9 +24,9 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1454544497751,
+			"time": 1454600553648,
 			"name": "GET BULK",
-			"description": "",
+			"description": "Parameters 'start' and 'end' are required in UTC",
 			"collectionId": "5c1a837e-397f-fb8c-82cc-033ce6f65433",
 			"responses": []
 		}

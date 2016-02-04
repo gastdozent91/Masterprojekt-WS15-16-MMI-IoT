@@ -53,7 +53,7 @@ public class FrissListener {
 
             // Check if sensor is active - routingKey == sensorId
             if (!sensorService.isActive(routingKey)) {
-                LOGGER.info("Sensor with id: '{}' not active", routingKey);
+                LOGGER.warn("Sensor with id: '{}' not active", routingKey);
                 return;
             }
 
@@ -65,7 +65,7 @@ public class FrissListener {
             bulk.setMeasurements(measurements);
             dynamoDBMapper.save(bulk);
         } catch (EntityNotFoundException e) {
-            LOGGER.info("Sensor with id: '{}' not found");
+            LOGGER.warn("Sensor with id: '{}' not found");
         } catch (Exception e) {
             LOGGER.error(String.format("Unable to process bulk message with id: '%s'", messageId), e);
         }
