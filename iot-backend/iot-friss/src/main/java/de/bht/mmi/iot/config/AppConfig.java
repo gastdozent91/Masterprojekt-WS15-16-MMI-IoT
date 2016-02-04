@@ -32,7 +32,7 @@ public class AppConfig {
 
     @Bean
     @Profile("development")
-    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurerDev() {
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurerDev() {
         final PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
         pspc.setLocation(new ClassPathResource("application-development.properties"));
         return pspc;
@@ -40,7 +40,7 @@ public class AppConfig {
 
     @Bean
     @Profile("production")
-    public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurerProd() {
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurerProd() {
         final PropertySourcesPlaceholderConfigurer pspc = new PropertySourcesPlaceholderConfigurer();
         pspc.setLocation(new ClassPathResource("application-production.properties"));
         return pspc;
