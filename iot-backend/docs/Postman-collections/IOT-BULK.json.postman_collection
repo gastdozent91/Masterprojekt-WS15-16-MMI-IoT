@@ -1,20 +1,20 @@
 {
-	"id": "5936be70-e3dd-30f1-6039-df2c8cf75987",
+	"id": "5c1a837e-397f-fb8c-82cc-033ce6f65433",
 	"name": "IOT BULK",
 	"description": "",
 	"order": [
-		"43337c27-ec71-4f1a-bfcf-7ab529540171"
+		"dc3d18fb-b1a3-78ee-00b9-212ca384b573"
 	],
 	"folders": [],
 	"timestamp": 1453747448022,
 	"owner": 0,
-	"remoteLink": "",
 	"public": false,
+	"hasRequests": true,
 	"requests": [
 		{
-			"id": "43337c27-ec71-4f1a-bfcf-7ab529540171",
-			"headers": "Authorization: Basic YWRtaW46YWRtaW4=\n",
-			"url": "http://localhost:8080/iot-friss/bulk?sensor_id=aeeae543-af7e-43af-8329-9910d087c6a8&after=2016-01-25T18:30:48.444Z&sort_order=asc&page=0&page_size=50",
+			"id": "dc3d18fb-b1a3-78ee-00b9-212ca384b573",
+			"headers": "Authorization: Basic bWF4MTp0ZXN0MTIz\n",
+			"url": "http://localhost:8080/iot-friss/bulk?sensor_id=a833519d-3dfb-4746-8ec0-8bb66d80817f&start=2016-01-25T18:30:48.444Z&end=2016-01-25T18:30:48.444Z&page=0&page_size=50&sort_order=asc",
 			"preRequestScript": "",
 			"pathVariables": {},
 			"method": "GET",
@@ -24,10 +24,10 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1454454548480,
+			"time": 1454544497751,
 			"name": "GET BULK",
 			"description": "",
-			"collectionId": "5936be70-e3dd-30f1-6039-df2c8cf75987",
+			"collectionId": "5c1a837e-397f-fb8c-82cc-033ce6f65433",
 			"responses": []
 		}
 	]
