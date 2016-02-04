@@ -39,7 +39,11 @@ public class User implements UserDetails {
     @Contain({RoleConstants.ROLE_ADMIN, RoleConstants.ROLE_USER})
     private Set<String> roles = new HashSet<String>();
 
-    private List<String> sensors = Collections.emptyList();
+    private List<String> releasedForSensors = Collections.emptyList();
+
+    private List<String> releasedForGateways = Collections.emptyList();
+
+    private List<String> releasedForClusters = Collections.emptyList();
 
     public User(String username, String password) {
         this.username = username;
@@ -108,12 +112,28 @@ public class User implements UserDetails {
         return this.roles.add(role.toUpperCase());
     }
 
-    public List<String> getSensors() {
-        return sensors;
+    public List<String> getReleasedForSensors() {
+        return releasedForSensors;
     }
 
-    public void setSensors(List<String> sensors) {
-        this.sensors = sensors;
+    public void setReleasedForSensors(List<String> releasedForSensors) {
+        this.releasedForSensors = releasedForSensors;
+    }
+
+    public List<String> getReleasedForGateways() {
+        return releasedForGateways;
+    }
+
+    public void setReleasedForGateways(List<String> releasedForGateways) {
+        this.releasedForGateways = releasedForGateways;
+    }
+
+    public List<String> getReleasedForClusters() {
+        return releasedForClusters;
+    }
+
+    public void setReleasedForClusters(List<String> releasedForClusters) {
+        this.releasedForClusters = releasedForClusters;
     }
 
     @Override

@@ -50,4 +50,21 @@ public class Gateway {
     public void setOwner(String owner) {
         this.owner = owner;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Gateway)) return false;
+
+        Gateway gateway = (Gateway) o;
+
+        return !(id != null ? !id.equals(gateway.id) : gateway.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
 }

@@ -31,13 +31,8 @@ public class ClusterController {
 
     // GET
     @RequestMapping(method = RequestMethod.GET)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
-    public Iterable<Cluster> getAllCluster(@AuthenticationPrincipal UserDetails authenticatedUser) {
-        if (userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
-            return clusterService.getAll();
-        } else {
-            return clusterService.getAllByOwner(authenticatedUser.getUsername());
-        }
+    public Iterable<Cluster> getAllCluster(@AuthenticationPrincipal UserDetails authenticatedUser) throws EntityNotFoundException {
+        return clusterService.getAll(authenticatedUser);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -47,33 +42,35 @@ public class ClusterController {
     }
 
     @RequestMapping(value = "/{id}/sensor", method = RequestMethod.GET)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
-    public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id) throws EntityNotFoundException {
-        return sensorService.getAllSensorsByClusterId(id);
+    public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id,
+                                                  @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        return sensorService.getAllByCluster(id,authenticatedUser);
     }
 
     // POST
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('" + RoleConstants.ROLE_ADMIN + "', '" + RoleConstants.ROLE_CREATE_CLUSTER + "')")
-    public Cluster createCluster(@RequestBody @Validated Cluster cluster) throws EntityNotFoundException {
-        return clusterService.createCluster(cluster);
+    public Cluster createCluster(@RequestBody @Validated Cluster cluster,
+                                 @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        return clusterService.saveCluster(cluster, authenticatedUser);
     }
 
     // PUT
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     public Cluster updateCluster(@PathVariable("id") String id,
                                  @RequestBody @Validated Cluster cluster,
                                  @AuthenticationPrincipal UserDetails authenticatedUser)
             throws NotAuthorizedException, EntityNotFoundException {
-        return clusterService.updateCluster(id, cluster, authenticatedUser);
+        cluster.setId(id);
+        return clusterService.saveCluster(cluster, authenticatedUser);
     }
 
     // DELETE
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public void deleteCluster(@PathVariable("id") String id) throws EntityNotFoundException {
-        clusterService.deleteCluster(id);
+    public void deleteCluster(@PathVariable("id") String id, @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        clusterService.deleteCluster(id, authenticatedUser);
     }
 
 }

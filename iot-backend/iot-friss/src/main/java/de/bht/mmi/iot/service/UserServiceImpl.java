@@ -8,14 +8,12 @@ import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -98,24 +96,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserSensors(String username, List<String> sensorList, UserDetails authenticatedUser)
+    public User updateUserReleasedForSensors(String username, List<String> sensorIds, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
         final User user = loadUserByUsername(username, authenticatedUser);
+        user.setReleasedForSensors(sensorIds);
+        return userRepository.save(user);
+    }
 
-        // Check if every sensorId references a known sensor
-        final List<String> notFoundSensorIds = new ArrayList<>(sensorList.size());
-        for (String sensorId : sensorList) {
-            if (sensorRepository.findOne(sensorId) == null) {
-                notFoundSensorIds.add(sensorId);
-            }
-        }
-        if (!notFoundSensorIds.isEmpty()) {
-            throw new EntityNotFoundException(String.format(
-                    "The following sensorIds do not reference known sensors: %s",
-                    StringUtils.join(notFoundSensorIds, ", ")));
-        }
+    @Override
+    public User updateUserReleasedForGateways(String username, List<String> gatewayIds, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        final User user = loadUserByUsername(username, authenticatedUser);
+        user.setReleasedForGateways(gatewayIds);
+        return userRepository.save(user);
+    }
 
-        user.setSensors(sensorList);
+    @Override
+    public User updateUserReleasedForClusters(String username, List<String> clusterIds, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        final User user = loadUserByUsername(username, authenticatedUser);
+        user.setReleasedForClusters(clusterIds);
         return userRepository.save(user);
     }
 
@@ -128,6 +128,17 @@ public class UserServiceImpl implements UserService {
                 break;
         }
         return isRolePresent;
+    }
+
+
+    @Override
+    public boolean isAnyRolePresent(UserDetails userDetails, String... roles) {
+        for (String role : roles) {
+            if (isRolePresent(userDetails, role)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

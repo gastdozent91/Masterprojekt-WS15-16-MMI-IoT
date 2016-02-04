@@ -1,15 +1,18 @@
 package de.bht.mmi.iot.service;
 
-import de.bht.mmi.iot.constants.RoleConstants;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.*;
+
+import static de.bht.mmi.iot.constants.RoleConstants.*;
 
 @Service
 public class GatewayServiceImpl implements GatewayService {
@@ -23,6 +26,26 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public Iterable<Gateway> getAll() {
         return gatewayRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Gateway> getAll(UserDetails authenticatedUser) throws EntityNotFoundException {
+        final String username = authenticatedUser.getUsername();
+        if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_GET_ALL_GATEWAY)) {
+            return getAll();
+        } else {
+            final Set<Gateway> result = new HashSet<>();
+            CollectionUtils.addAll(result, getAllByOwner(username));
+            CollectionUtils.addAll(result, getAllReleasedForUser(username));
+            return result;
+        }
+    }
+
+    @Override
+    public Iterable<Gateway> getAllReleasedForUser(String username) throws EntityNotFoundException {
+        final User user = userService.loadUserByUsername(username);
+        final Iterable<Gateway> userGateways = gatewayRepository.findAll(user.getReleasedForGateways());
+        return userGateways != null ? userGateways : Collections.emptyList();
     }
 
     @Override
@@ -46,31 +69,49 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public Gateway createGateway(Gateway gateway) throws EntityNotFoundException {
+    public Gateway saveGateway(Gateway gateway) throws EntityNotFoundException {
         userService.loadUserByUsername(gateway.getOwner());
         return gatewayRepository.save(gateway);
     }
 
     @Override
-    public Gateway updateGateway(String gatewayId, Gateway gateway, UserDetails authenticatedUser)
+    public Gateway saveGateway(Gateway gateway, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        final Gateway oldGateway = getGateway(gatewayId);
-        userService.loadUserByUsername(authenticatedUser.getUsername());
 
-        if ((oldGateway != null && oldGateway.getOwner().equals(authenticatedUser.getUsername())) ||
-                userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
-            gateway.setId(gatewayId);
-            return gatewayRepository.save(gateway);
-        } else {
-            throw new NotAuthorizedException(
-                    String.format("You are not authorized to update gateway with id '%s'", gatewayId));
+        Gateway oldGateway = null;
+        if (gateway.getId() != null) {
+            oldGateway = gatewayRepository.findOne(gateway.getId());
         }
+
+        if (oldGateway == null) {
+            if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_CREATE_GATEWAY)) {
+                return saveGateway(gateway);
+            }
+        } else {
+            if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_UPDATE_GATEWAY)
+                    || oldGateway.getOwner().equals(authenticatedUser.getUsername())) {
+                return saveGateway(gateway);
+            }
+        }
+        throw new NotAuthorizedException("You are not authorized to save/update gateways");
     }
 
     @Override
     public void deleteGateway(String gatewayId) throws EntityNotFoundException {
         getGateway(gatewayId);
         gatewayRepository.delete(gatewayId);
+    }
+
+    @Override
+    public void deleteGateway(String gatewayId, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException {
+        final Gateway gateway = getGateway(gatewayId);
+        if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_DELETE_GATEWAY)
+                || gateway.getOwner().equals(authenticatedUser.getUsername())) {
+            gatewayRepository.delete(gateway);
+            return;
+        }
+        throw new NotAuthorizedException(
+                String.format("You are not authorized to delete gateway with id '%s'", gateway.getId()));
     }
 
 }

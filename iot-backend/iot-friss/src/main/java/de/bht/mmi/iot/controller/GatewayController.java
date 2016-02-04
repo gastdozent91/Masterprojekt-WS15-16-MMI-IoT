@@ -30,25 +30,10 @@ public class GatewayController {
     private UserService userService;
 
     // GET
-    /**
-     *
-     * @param ids comma-seperated list of gateway ids as string
-     * @return
-     */
     @RequestMapping(method = RequestMethod.GET)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
-    public Iterable<Gateway> getAllGateways(@RequestParam(value = "ids", required = false) String ids,
-                                            @AuthenticationPrincipal UserDetails authenticatedUser) {
-        if (ids == null) {
-            if (userService.isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
-                return gatewayService.getAll();
-            } else {
-                return gatewayService.getAllByOwner(authenticatedUser.getUsername());
-            }
-        } else {
-            final String[] gatewayIds = ids.split(",");
-            return gatewayService.getAllForIds(gatewayIds);
-        }
+    public Iterable<Gateway> getAllGateways(@AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException {
+        return gatewayService.getAll(authenticatedUser);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -58,33 +43,35 @@ public class GatewayController {
     }
 
     @RequestMapping(value = "/{id}/sensor", method = RequestMethod.GET)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
-    public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id) throws EntityNotFoundException {
-        return sensorService.getAllSensorsByGatewayId(id);
+    public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id,
+                                                  @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        return sensorService.getAllByGateway(id, authenticatedUser);
     }
 
     // POST
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('" + RoleConstants.ROLE_ADMIN + "', '" + RoleConstants.ROLE_CREATE_GATEWAY + "')")
-    public Gateway createGateway(@RequestBody @Validated Gateway gateway) throws EntityNotFoundException {
-        return gatewayService.createGateway(gateway);
+    public Gateway createGateway(@RequestBody @Validated Gateway gateway,
+                                 @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        return gatewayService.saveGateway(gateway, authenticatedUser);
     }
 
     // PUT
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
     public Gateway updateGateway(@PathVariable("id") String id,
                                  @RequestBody @Validated Gateway gateway,
                                  @AuthenticationPrincipal UserDetails authenticatedUser)
             throws NotAuthorizedException, EntityNotFoundException {
-        return gatewayService.updateGateway(id, gateway, authenticatedUser);
+        gateway.setId(id);
+        return gatewayService.saveGateway(gateway, authenticatedUser);
     }
 
     // DELETE
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN)
-    public void deleteGateway(@PathVariable("id") String id) throws EntityNotFoundException {
-        gatewayService.deleteGateway(id);
+    public void deleteGateway(@PathVariable("id") String id, @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        gatewayService.deleteGateway(id, authenticatedUser);
     }
 
 }

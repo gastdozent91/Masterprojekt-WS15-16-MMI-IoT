@@ -11,13 +11,20 @@ public interface ClusterService {
 
     Iterable<Cluster> getAllByOwner(String username);
 
+    Iterable<Cluster> getAll(UserDetails authenticatedUser) throws EntityNotFoundException;
+
+    Iterable<Cluster> getAllReleasedForUser(String username) throws EntityNotFoundException;
+
     Cluster getCluster(String clusterId) throws EntityNotFoundException;
 
-    Cluster createCluster(Cluster cluster) throws EntityNotFoundException;
+    Cluster saveCluster(Cluster cluster) throws EntityNotFoundException;
 
-    Cluster updateCluster(String clusterId, Cluster cluster, UserDetails authenticatedUser)
+    Cluster saveCluster(Cluster cluster, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
 
     void deleteCluster(String clusterId) throws EntityNotFoundException;
+
+    void deleteCluster(String clusterId, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException;
 
 }

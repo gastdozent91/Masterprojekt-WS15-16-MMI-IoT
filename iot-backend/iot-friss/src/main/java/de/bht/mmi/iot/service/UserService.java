@@ -28,10 +28,18 @@ public interface UserService {
 
     void deleteUser(String username) throws EntityNotFoundException;
 
-    User updateUserSensors(String username, List<String> sensorList, UserDetails authenticatedUser)
+    User updateUserReleasedForSensors(String username, List<String> sensorIds, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException;
+
+    User updateUserReleasedForGateways(String username, List<String> gatewayIds, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException;
+
+    User updateUserReleasedForClusters(String username, List<String> clusterIds, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
 
     boolean isRolePresent(UserDetails userDetails, String role);
+
+    boolean isAnyRolePresent(UserDetails userDetails, String... roles);
 
     boolean isUsernameAlreadyInUse(String username);
 

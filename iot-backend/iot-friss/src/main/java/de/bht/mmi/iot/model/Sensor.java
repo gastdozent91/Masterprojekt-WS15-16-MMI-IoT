@@ -113,4 +113,21 @@ public class Sensor {
     public void setTypes(List<String> types) {
         this.types = types;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sensor)) return false;
+
+        Sensor sensor = (Sensor) o;
+
+        return !(id != null ? !id.equals(sensor.id) : sensor.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
 }

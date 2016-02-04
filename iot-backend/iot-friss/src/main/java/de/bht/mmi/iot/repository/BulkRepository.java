@@ -25,8 +25,8 @@ public interface BulkRepository extends PagingAndSortingRepository<Bulk, BulkId>
 
     Page<Bulk> findBySensorIdAndBulkReceivedBetween(
             @Param(DbConstants.ATTRIBUTE_SENSOR_ID) String sensorId,
-            DateTime start,
-            DateTime end,
+            @Param("start") DateTime start,
+            @Param("end") DateTime end,
             Pageable pageable);
 
 }

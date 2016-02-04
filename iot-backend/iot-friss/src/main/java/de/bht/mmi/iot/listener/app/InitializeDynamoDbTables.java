@@ -134,21 +134,21 @@ public class InitializeDynamoDbTables implements ApplicationListener<ContextRefr
         // Gateway
         final List<Gateway> gateways = dummyData.getGateways();
         for (Gateway gateway : gateways) {
-            gatewayService.createGateway(gateway);
+            gatewayService.saveGateway(gateway);
             LOGGER.info(String.format("Gateway '%s' with id '%s' created", gateway.getName(), gateway.getId()));
         }
 
         //Cluster
         final List<Cluster> clusters = dummyData.getClusters();
         for (Cluster cluster : clusters) {
-            clusterService.createCluster(cluster);
+            clusterService.saveCluster(cluster);
             LOGGER.info(String.format("Cluster '%s' with id '%s' created", cluster.getName(), cluster.getId()));
         }
 
         // Sensor
         final List<Sensor> sensors = dummyData.getSensors();
         for (Sensor sensor : sensors) {
-            sensorService.createSensor(sensor);
+            sensorService.saveSensor(sensor);
             LOGGER.info(String.format("Sensor '%s' with id '%s' created", sensor.getName(), sensor.getId()));
         }
 

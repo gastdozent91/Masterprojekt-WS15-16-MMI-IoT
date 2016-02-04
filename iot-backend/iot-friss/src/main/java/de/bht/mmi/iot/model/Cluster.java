@@ -67,4 +67,21 @@ public class Cluster {
     public void setOwner(String owner) {
         this.owner = owner;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cluster)) return false;
+
+        Cluster cluster = (Cluster) o;
+
+        return !(id != null ? !id.equals(cluster.id) : cluster.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
 }
