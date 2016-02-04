@@ -23,14 +23,14 @@
     {
       "id": "914e6e00-8cdd-428e-b418-bee0b248a34c",
       "name": "gateway1",
-      "owner": "admin"
+      "owner": "max"
     }
   ],
   "clusters": [
     {
       "id": "d65776c7-3514-4c3e-a320-00ba5b0b72cd",
       "name": "cluster1",
-      "owner": "admin",
+      "owner": "max",
       "creationDate": "2016-01-31T20:00:40Z"
     }
   ],

@@ -39,4 +39,6 @@ public interface SensorService {
     void deleteSensor(String sensorId, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
 
+    boolean isActive(String id) throws EntityNotFoundException;
+
 }

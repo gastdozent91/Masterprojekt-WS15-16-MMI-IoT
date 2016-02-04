@@ -1,5 +1,6 @@
 package de.bht.mmi.iot.service;
 
+import de.bht.mmi.iot.constants.CacheConstants;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Cluster;
@@ -9,6 +10,7 @@ import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.SensorRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -93,11 +95,13 @@ public class SensorServiceImpl implements SensorService {
         final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
         final List<String> releasedForGatewayIds = user.getReleasedForGateways();
 
+        final boolean isOwner = gateway.getOwner().equals(authenticatedUser.getUsername());
+
         if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_GET_ALL_GATEWAY)
-                || gateway.getOwner().equals(authenticatedUser.getUsername())
+                || isOwner
                 || releasedForGatewayIds.contains(gatewayId)) {
             final Iterable<Sensor> allSensorsFromGateway = getAllByGateway(gatewayId);
-            if (userService.isRolePresent(authenticatedUser, ROLE_GET_ALL_SENSOR)) {
+            if (userService.isRolePresent(authenticatedUser, ROLE_GET_ALL_SENSOR) || isOwner) {
                 return allSensorsFromGateway;
             }
             final Iterable<Sensor> allSensorsReleasedForUser = getAll(authenticatedUser);
@@ -121,11 +125,13 @@ public class SensorServiceImpl implements SensorService {
         final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
         final List<String> releasedForClusters = user.getReleasedForClusters();
 
+        final boolean isOwner = cluster.getOwner().equals(authenticatedUser.getUsername());
+
         if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_GET_ALL_CLUSTER)
-                || cluster.getOwner().equals(authenticatedUser.getUsername())
+                || isOwner
                 || releasedForClusters.contains(clusterId)) {
             final Iterable<Sensor> allSensorsFromCluster = getAllByCluster(clusterId);
-            if (userService.isRolePresent(authenticatedUser, ROLE_GET_ALL_SENSOR)) {
+            if (userService.isRolePresent(authenticatedUser, ROLE_GET_ALL_SENSOR) || isOwner) {
                 return allSensorsFromCluster;
             }
             final Iterable<Sensor> allSensorsReleasedForUser = getAll(authenticatedUser);
@@ -181,6 +187,12 @@ public class SensorServiceImpl implements SensorService {
         }
         throw new NotAuthorizedException(
                 String.format("You are not authorized to delete sensor with id '%s'", sensor.getId()));
+    }
+
+    @Override
+    @Cacheable(CacheConstants.CACHE_SENSOR_ACTIVE)
+    public boolean isActive(String id) throws EntityNotFoundException {
+        return getSensor(id).isActive();
     }
 
 }
