@@ -54,7 +54,7 @@ var Dashboard = React.createClass({
       <div>
         <div>{infoString}</div>
         <div>{withNoCluster + ' sensors are not attached to a cluster'}</div>
-        <div>{active + ' sensors are not active'}</div>
+        <div>{active + ' sensors are active'}</div>
       </div>
     );
   },

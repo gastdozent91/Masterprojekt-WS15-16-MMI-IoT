@@ -47,16 +47,16 @@ var Users = React.createClass({
       <div>
         <div className='row'>
           <div className='large-3 columns'>
-            <b>username</b>
+            <b>Username</b>
           </div>
           <div className='large-3 columns'>
-            <b>firstname</b>
+            <b>Firstname</b>
           </div>
           <div className='large-3 columns'>
-            <b>lastname</b>
+            <b>Lastname</b>
           </div>
           <div className='large-1 columns'>
-            <b>sensorcount</b>
+            <b>Sensors</b>
           </div>
           <div className='large-2 columns' style={{textAlign: 'end'}}>
             <b>Role</b>
@@ -85,10 +85,10 @@ var Users = React.createClass({
             {user.username}
           </div>
           <div className='large-3 columns'>
-            {user.firstname || 'missing'}
+            {user.firstname || 'Not Specified'}
           </div>
           <div className='large-3 columns'>
-            {user.lastname || 'missing'}
+            {user.lastname || 'Not Specified'}
           </div>
           <div className='large-1 columns'>
             0
@@ -119,7 +119,7 @@ var Users = React.createClass({
           <div className='callout'>
             <div className='row'>
               <div className='large-9 columns'>
-                <h5>Userlist</h5>
+                <h5>Overview</h5>
               </div>
               <div className='large-3 columns' style={{textAlign: 'end'}}>
                 <input className='button'

@@ -66,7 +66,7 @@ var Search = React.createClass({
 
   render: function() {
     return (
-      <div className='search-row'
+      <div className='search-row row column'
         onChange={this.handleSearchChange}>
           <input type='text'
             ref='search'
@@ -77,4 +77,3 @@ var Search = React.createClass({
 });
 
 module.exports = Search;
-

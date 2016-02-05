@@ -16,8 +16,8 @@ var SingleCluster = React.createClass({
     return {
       fields:[
         ['id','ID'],
-        'owner',
-        ['creationDate', 'created']
+        ['creationDate', 'Creation Date'],
+        ['owner', 'Owner']
       ],
       addingSensor: false,
       editSensor: false
@@ -50,7 +50,7 @@ var SingleCluster = React.createClass({
       var text = value;
       if(id === 'creationDate'){
         var date = new Date(text);
-        text = date.toLocaleString();
+        text = date.toUTCString();
       }
       return(
         <tr key={caption}>
@@ -67,10 +67,10 @@ var SingleCluster = React.createClass({
       <table style={{width: '100%'}}>
         <thead>
           <tr>
-            <th>name</th>
+            <th>Name</th>
             <th>ID</th>
-            <th>location</th>
-            <th>type</th>
+            <th>Location</th>
+            <th>Type</th>
           </tr>
         </thead>
         <tbody style={{borderWidth: 0}}>
@@ -125,7 +125,7 @@ var SingleCluster = React.createClass({
                     <div className='button'
                       style={{marginRight:0}}
                       onClick={this.handleEditCluster}>
-                      edit
+                      Edit
                   </div>
                 </div>
                 </div>
@@ -138,14 +138,14 @@ var SingleCluster = React.createClass({
               <div className='callout'>
                 <div className='row'>
                   <div className='small-8 columns'>
-                    <h5>attached sensors</h5>
+                    <h5>Attached Sensors</h5>
                   </div>
                   <div className='small-4 columns'
                     style={{textAlign: 'right'}}>
                     <div onClick={this.handleAddSensor}
                       style={{marginRight:0}}
                       className='button'>
-                      Add Sensor
+                      Attach Sensor
                   </div>
                 </div>
                 </div>

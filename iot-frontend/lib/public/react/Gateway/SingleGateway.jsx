@@ -17,8 +17,8 @@ var SingleGateway = React.createClass({
     return {
       fields: [
         ['id', 'ID'],
-        'name',
-        'owner'
+        ['name', 'Name'],
+        ['owner', 'Owner']
       ],
       editSensor: false,
       addSensor: false
@@ -55,10 +55,10 @@ var SingleGateway = React.createClass({
       <table style={{width: '100%'}}>
         <thead>
           <tr>
-            <th>name</th>
+            <th>Name</th>
             <th>ID</th>
-            <th>location</th>
-            <th>type</th>
+            <th>Location</th>
+            <th>Type</th>
           </tr>
         </thead>
         <tbody style={{borderWidth: 0}}>
@@ -114,7 +114,7 @@ var SingleGateway = React.createClass({
                   <div className='button'
                     style={{marginRight:0}}
                     onClick={this.handleEditGateway}>
-                    edit
+                    Edit
                 </div>
               </div>
               </div>
@@ -127,14 +127,14 @@ var SingleGateway = React.createClass({
             <div className='callout'>
               <div className='row'>
                 <div className='small-8 columns'>
-                  <h5>attached sensors</h5>
+                  <h5>Attached Sensors</h5>
                 </div>
                 <div className='small-4 columns'
                   style={{textAlign: 'right'}}>
                   <div className='button'
                     style={{marginRight:0}}
                     onClick={this.handleAddSensor}>
-                    Add Sensor
+                    Attach Sensor
                 </div>
               </div>
               </div>

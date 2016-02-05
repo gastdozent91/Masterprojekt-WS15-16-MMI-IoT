@@ -24,12 +24,12 @@ var SingleSensor = React.createClass({
       cA: null,
       fields: [
         ['id', 'ID'],
-        'location',
-        ['creationDate', 'created'],
-        ['types','sensor types'],
-        'owner',
-        ['attachedGateway', 'attached to gateway'],
-        ['attachedCluster', 'attached to cluster']
+        ['location', 'Location'],
+        ['creationDate', 'Creation Date'],
+        ['types','Sensor Types'],
+        ['owner', 'Owner'],
+        ['attachedGateway', 'Attached Gateway'],
+        ['attachedCluster', 'Attached Cluster']
       ],
       data: [],
       editSensor: false,
@@ -135,7 +135,7 @@ var SingleSensor = React.createClass({
       var text = value;
       if(id === 'creationDate'){
         var date = new Date(text);
-        text = date.toLocaleString();
+        text = date.toUTCString();
       }else if(id === 'types'){
         text = that.props.sensor[field[0]].join(', ');
       }
@@ -178,12 +178,12 @@ var SingleSensor = React.createClass({
                 </div>
                 <div className='small-4 columns' style={{textAlign: 'right', paddingRight: 0}}>
                   <div className='button' onClick={this.handleEditSensor}>
-                    edit
+                    Edit
                   </div>
                   <div className='button alert'
                     style={{marginRight:0}}
                     onClick={this.handleDeleteSensor}>
-                    delete
+                    Delete
                   </div>
                 </div>
               </div>
@@ -197,7 +197,7 @@ var SingleSensor = React.createClass({
           <div className='row column' style={{float:'none'}}>
             <div className='callout'>
               <div style={{textAlign: 'center'}}>
-                <p style={{marginBottom: 0}}>Show live data</p>
+                <p style={{marginBottom: 0}}>Show Live Data</p>
                 <div className="switch large">
                   <input className="switch-input"
                     id="yes-no"

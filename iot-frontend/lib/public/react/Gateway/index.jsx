@@ -97,7 +97,7 @@ var Gateway = React.createClass({
           <div className='callout'>
             <div className='row'>
               <div className='large-9 columns'>
-                <h5>Gatewaylist</h5>
+                <h5>Overview</h5>
               </div>
               <div className='large-3 columns' style={{textAlign: 'end'}}>
                 <input className='button'
