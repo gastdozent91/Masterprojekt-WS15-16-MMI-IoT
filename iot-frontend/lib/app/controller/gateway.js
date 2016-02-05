@@ -54,6 +54,26 @@ me.create = (req, res, next) => {
   });
 };
 
+me.delete = (req, res, next) => {
+  var gatewayToDelete = req.params.id;
+  Model.delete(req.user, gatewayToDelete)
+  .then(result => {
+    res.json(result.status);
+  })
+  .catch(err => {
+    res.json(err);
+  });
+};
+
+me.update = (req, res, next) => {
+  var changedGateway = req.body;
+  Model.update(req.user, changedGateway, (err, result) => {
+    if (err) res.json(err);
+    console.log(result);
+    res.json(result);
+  });
+};
+
 me.sendJson = function(req, res) {
   res.json(req.gateways);
 };

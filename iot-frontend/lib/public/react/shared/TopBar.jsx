@@ -62,7 +62,7 @@ var TopBar = React.createClass({
                 ref='profile'
                 style={{position: 'relative'}}
                 onClick={this.handleProfileClick}>
-                {this.props.user.firstname || 'Admin'}
+                {this.props.user.firstname || 'Max'}
                 <ReactCSSTransitionGroup transitionName='profileinfo'
                   transitionEnterTimeout={200}
                   transitionLeaveTimeout={200}>

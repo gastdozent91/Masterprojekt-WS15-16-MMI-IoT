@@ -135,18 +135,21 @@ app.get('/cluster/:id',
 );
 
 // API
+// get sensors as json
 app.get('/api/sensor',
   login.shouldBeLoggedIn,
   sensor.getAll,
   sensor.sendJson
 );
 
+// get clusters as json
 app.get('/api/cluster',
   login.shouldBeLoggedIn,
   cluster.getAll,
   cluster.sendJson
 );
 
+// get gateways as json
 app.get('/api/gateway',
   login.shouldBeLoggedIn,
   gateway.getAll,
@@ -204,13 +207,13 @@ app.post('/gateway',
 // delete gateway
 app.delete('/gateway',
   login.shouldBeLoggedIn,
-  gateway.create
+  gateway.delete
 );
 
 // update gateway
 app.put('/gateway',
   login.shouldBeLoggedIn,
-  gateway.create
+  gateway.update
 );
 
 // create cluster
@@ -220,15 +223,15 @@ app.post('/cluster',
 );
 
 // delete cluster
-app.post('/cluster',
+app.delete('/cluster',
   login.shouldBeLoggedIn,
-  cluster.create
+  cluster.delete
 );
 
 // update cluster
-app.post('/cluster',
+app.put('/cluster',
   login.shouldBeLoggedIn,
-  cluster.create
+  cluster.update
 );
 
 app.get('/chart',

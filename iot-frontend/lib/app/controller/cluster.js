@@ -54,6 +54,26 @@ me.create = (req, res, next) => {
   });
 };
 
+me.delete = (req, res, next) => {
+  var clusterToDelete = req.params.id;
+  Model.delete(req.user, clusterToDelete)
+  .then(result => {
+    res.json(result.status);
+  })
+  .catch(err => {
+    res.json(err);
+  });
+};
+
+me.update = (req, res, next) => {
+  var changedCluster = req.body;
+  Model.update(req.user, changedCluster, (err, result) => {
+    if (err) res.json(err);
+    console.log(result);
+    res.json(result);
+  });
+};
+
 me.sendJson = function(req, res) {
   res.json(req.clusters);
 };
