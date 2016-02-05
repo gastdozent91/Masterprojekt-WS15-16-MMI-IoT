@@ -6,4 +6,5 @@ class iot_provisioning::params {
     $iot_repo_clone_dir = $system_user_home
     $iot_repo_frontend_subdir = '/iot-frontend'
     $iot_repo_docker_compose_subdir = '/iot-infrastructure'
+    $docker_version = '1.9.1'
 }

@@ -6,8 +6,8 @@ Puppet module for installing and configuring the infrastructure for Masterprojec
 
 Installs:
 * git
-* docker
-* docker-compose
+* docker 1.9.1
+* docker-compose 1.5.1
 * oracle-jdk-8
 
 Affects:
