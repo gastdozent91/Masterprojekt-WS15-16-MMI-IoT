@@ -3,6 +3,7 @@ package de.bht.mmi.iot.service;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Gateway;
+import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
 import org.apache.commons.collections4.CollectionUtils;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static de.bht.mmi.iot.constants.RoleConstants.*;
 
@@ -22,6 +26,9 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SensorService sensorService;
 
     @Override
     public Iterable<Gateway> getAll() {
@@ -99,19 +106,24 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public void deleteGateway(String gatewayId) throws EntityNotFoundException {
         getGateway(gatewayId);
+        final Iterable<Sensor> sensorsAttachedToGateway = sensorService.getAllByGateway(gatewayId);
+        for (Sensor sensor : sensorsAttachedToGateway) {
+            sensor.setAttachedGateway(null);
+        }
         gatewayRepository.delete(gatewayId);
     }
 
     @Override
-    public void deleteGateway(String gatewayId, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException {
+    public void deleteGateway(String gatewayId, UserDetails authenticatedUser) throws EntityNotFoundException,
+            NotAuthorizedException {
         final Gateway gateway = getGateway(gatewayId);
         if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_DELETE_GATEWAY)
                 || gateway.getOwner().equals(authenticatedUser.getUsername())) {
-            gatewayRepository.delete(gateway);
+            deleteGateway(gatewayId);
             return;
         }
         throw new NotAuthorizedException(
-                String.format("You are not authorized to delete gateway with id '%s'", gateway.getId()));
+                String.format("You are not authorized to delete gateway with id '%s'", gatewayId));
     }
 
 }

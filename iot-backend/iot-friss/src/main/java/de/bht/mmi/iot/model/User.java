@@ -170,7 +170,6 @@ public class User implements UserDetails {
         User user = (User) o;
 
         return username.equals(user.username);
-
     }
 
     @Override

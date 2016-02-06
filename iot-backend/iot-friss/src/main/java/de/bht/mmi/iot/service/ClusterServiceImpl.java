@@ -3,6 +3,7 @@ package de.bht.mmi.iot.service;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Cluster;
+import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.ClusterRepository;
 import org.apache.commons.collections4.CollectionUtils;
@@ -24,6 +25,9 @@ public class ClusterServiceImpl implements ClusterService{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SensorService sensorService;
 
     @Override
     public Iterable<Cluster> getAll() {
@@ -96,6 +100,10 @@ public class ClusterServiceImpl implements ClusterService{
     @Override
     public void deleteCluster(String clusterId) throws EntityNotFoundException {
         getCluster(clusterId);
+        final Iterable<Sensor> sensorsAttachedToCluster = sensorService.getAllByCluster(clusterId);
+        for (Sensor sensor : sensorsAttachedToCluster) {
+            sensor.setAttachedCluster(null);
+        }
         clusterRepository.delete(clusterId);
     }
 
@@ -105,11 +113,11 @@ public class ClusterServiceImpl implements ClusterService{
         final Cluster cluster = getCluster(clusterId);
         if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_DELETE_CLUSTER)
                 || cluster.getOwner().equals(authenticatedUser.getUsername())) {
-            clusterRepository.delete(cluster);
+            deleteCluster(clusterId);
             return;
         }
         throw new NotAuthorizedException(
-                String.format("You are not authorized to delete cluster with id '%s'", cluster.getId()));
+                String.format("You are not authorized to delete cluster with id '%s'", clusterId));
     }
 
 }

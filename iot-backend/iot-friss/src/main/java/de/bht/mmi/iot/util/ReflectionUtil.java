@@ -20,8 +20,7 @@ public final class ReflectionUtil {
                 try {
                     fieldValues.add((T) field.get(null));
                 } catch (IllegalAccessException e) {
-                    throw new RuntimeException(String.format("Could not access %s fields",
-                            aClass.getSimpleName()), e);
+                    throw new RuntimeException(String.format("Could not access %s fields", aClass.getSimpleName()), e);
                 }
             }
         }

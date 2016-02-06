@@ -122,7 +122,6 @@ public class Sensor {
         Sensor sensor = (Sensor) o;
 
         return !(id != null ? !id.equals(sensor.id) : sensor.id != null);
-
     }
 
     @Override

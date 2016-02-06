@@ -76,7 +76,6 @@ public class Cluster {
         Cluster cluster = (Cluster) o;
 
         return !(id != null ? !id.equals(cluster.id) : cluster.id != null);
-
     }
 
     @Override

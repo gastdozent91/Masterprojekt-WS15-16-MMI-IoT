@@ -18,9 +18,9 @@ public final class RoleConstants {
 
     public static final String ROLE_DELETE_CLUSTER = "ROLE_DELETE_CLUSTER";
 
-    public static final String ROLE_DELETE_GATEWAY = "ROLE_DELETE_CLUSTER";
+    public static final String ROLE_DELETE_GATEWAY = "ROLE_DELETE_GATEWAY";
 
-    public static final String ROLE_DELETE_SENSOR = "ROLE_DELETE_CLUSTER";
+    public static final String ROLE_DELETE_SENSOR = "ROLE_DELETE_SENSOR";
 
     public static final String ROLE_UPDATE_CLUSTER = "ROLE_UPDATE_CLUSTER";
 

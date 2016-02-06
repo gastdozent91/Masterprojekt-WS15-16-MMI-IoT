@@ -32,4 +32,5 @@ public class BulkId implements Serializable {
     public void setBulkReceived(DateTime bulkReceived) {
         this.bulkReceived = bulkReceived;
     }
+
 }

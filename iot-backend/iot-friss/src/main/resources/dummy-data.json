@@ -5,7 +5,21 @@
       "password": "test123",
       "firstname": "Max",
       "lastname": "Mustermann",
-      "roles": ["ROLE_USER"],
+      "roles": [
+        "ROLE_USER",
+        "ROLE_CREATE_CLUSTER",
+        "ROLE_CREATE_GATEWAY",
+        "ROLE_CREATE_SENSOR",
+        "ROLE_DELETE_CLUSTER",
+        "ROLE_DELETE_GATEWAY",
+        "ROLE_DELETE_SENSOR",
+        "ROLE_UPDATE_CLUSTER",
+        "ROLE_UPDATE_GATEWAY",
+        "ROLE_UPDATE_SENSOR",
+        "ROLE_GET_ALL_CLUSTER",
+        "ROLE_GET_ALL_GATEWAY",
+        "ROLE_GET_ALL_SENSOR"
+      ],
       "releasedForSensors": [
         "aeeae543-af7e-43af-8329-9910d087c6a8",
         "146acbde-e555-48f1-83a3-e23b1ea618ce",

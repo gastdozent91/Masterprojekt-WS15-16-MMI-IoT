@@ -59,7 +59,6 @@ public class Gateway {
         Gateway gateway = (Gateway) o;
 
         return !(id != null ? !id.equals(gateway.id) : gateway.id != null);
-
     }
 
     @Override
