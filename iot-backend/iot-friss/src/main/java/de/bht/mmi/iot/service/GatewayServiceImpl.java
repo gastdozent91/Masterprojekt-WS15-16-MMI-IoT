@@ -109,6 +109,7 @@ public class GatewayServiceImpl implements GatewayService {
         final Iterable<Sensor> sensorsAttachedToGateway = sensorService.getAllByGateway(gatewayId);
         for (Sensor sensor : sensorsAttachedToGateway) {
             sensor.setAttachedGateway(null);
+            sensorService.saveSensor(sensor);
         }
         gatewayRepository.delete(gatewayId);
     }

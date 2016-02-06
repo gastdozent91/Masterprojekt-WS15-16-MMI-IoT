@@ -147,8 +147,12 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor saveSensor(Sensor sensor) throws EntityNotFoundException {
         userService.loadUserByUsername(sensor.getOwner());
-        clusterService.getCluster(sensor.getAttachedCluster());
-        gatewayService.getGateway(sensor.getAttachedGateway());
+        if (sensor.getAttachedCluster() != null) {
+            clusterService.getCluster(sensor.getAttachedCluster());
+        }
+        if (sensor.getAttachedGateway() != null) {
+            gatewayService.getGateway(sensor.getAttachedGateway());
+        }
         return sensorRepository.save(sensor);
     }
 

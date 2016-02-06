@@ -25,8 +25,16 @@ public class GlobalRestControllerExceptionHandler {
         final HttpStatus resStatusCode = resStatus != null ? resStatus.value() : DEFAULT_EXCEPTION_STATUS_CODE;
 
         final ErrorInfo errorInfo = ErrorInfo.createInstance(req.getRequestURL().toString(), e);
-        LOGGER.warn(String.format("%s, %s", e.getClass().getSimpleName(), errorInfo.toString()));
+        LOGGER.warn("{}, {}", e.getClass().getSimpleName(), errorInfo.toString());
         return new ResponseEntity<>(errorInfo, resStatusCode);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public @ResponseBody ResponseEntity<ErrorInfo> handleException(
+            HttpServletRequest req, Exception e) {
+        final ErrorInfo errorInfo = ErrorInfo.createInstance(req.getRequestURL().toString(), e);
+        LOGGER.warn("{}, {}", e.getClass().getSimpleName(), errorInfo.toString());
+        return new ResponseEntity<>(errorInfo, DEFAULT_EXCEPTION_STATUS_CODE);
     }
 
 }
