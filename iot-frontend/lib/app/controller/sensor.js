@@ -75,7 +75,11 @@ me.render = function(req, res) {
   if (req.sensor) {
     console.log('single sensor');
     out = {
-      user: {firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
       sensor: req.sensor
     };
     var sensor = new SingleSensor(out);
@@ -85,7 +89,11 @@ me.render = function(req, res) {
   } else {
     console.log('multi sensor');
     out = {
-      user: {firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
       sensors: req.sensors
     };
     var sensors = new Sensor(out);

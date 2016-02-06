@@ -96,7 +96,11 @@ me.render = (req, res) => {
     , body;
   if (req.userToCheck) {
     out = {
-      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
       userToCheck: req.userToCheck,
       sensors: req.sensors || []
     };
@@ -105,7 +109,11 @@ me.render = (req, res) => {
     res.render('user', {body: body, reactData: out});
   } else {
     out = {
-      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
       users: req.users
     };
     var users = new Users(out);

@@ -8,7 +8,11 @@ module.exports = me = {};
 
 me.render = function(req, res) {
   var out = {
-    user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
     sensors: req.sensors || [],
     gateways: req.gateways || [],
     clusters: req.clusters || []
