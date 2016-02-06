@@ -111,6 +111,7 @@ app.get('/users',
 app.get('/user/:username',
   login.shouldBeLoggedIn,
   user.getOne,
+  user.getSensors,
   user.render
 );
 
@@ -163,13 +164,13 @@ app.post('/user',
 );
 
 // delete user
-app.delete('/user',
+app.delete('/user/:username',
   login.shouldBeLoggedIn,
   user.delete
 );
 
 // update user
-app.put('/user',
+app.put('/user/:username',
   login.shouldBeLoggedIn,
   user.update
 );

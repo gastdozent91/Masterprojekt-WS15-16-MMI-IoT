@@ -16,10 +16,10 @@ me.getAll = (req, res, next) => {
   Model.getAll(req.user)
   .then(sensors => {
     req.sensors = sensors;
-    next();
+    return next();
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
@@ -27,29 +27,33 @@ me.getOne = (req, res, next) => {
   Model.getOne(req.user, req.params.id)
   .then(sensor => {
     req.sensor = sensor;
-    next();
+    return next();
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
 me.create = (req, res, next) => {
   Model.create(req.user, req.body)
   .then(result => {
-    res.json(result.status);
+    return res.json(result.status);
   })
   .catch(err => {
-    res.json(err.status);
+    return res.json(err.status);
   });
 };
 
 me.update = (req, res, next) => {
   var changedSensor = req.body;
-  Model.update(req.user, changedSensor, (err, result) => {
+  Model.update(req.user, changedSensor)
+  .then(result => {
     if (err) res.json(err);
     console.log(result);
-    res.json(result);
+    return res.json(result);
+  })
+  .catch(err => {
+   return res.json(err.status);
   });
 };
 
@@ -57,10 +61,10 @@ me.delete = (req, res, next) => {
   var sensorToDelete = req.params.id;
   Model.delete(req.user, sensorToDelete)
   .then(result => {
-    res.json(result.status);
+    return res.json(result.status);
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 

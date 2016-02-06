@@ -32,15 +32,15 @@ me.getOne = (user, username) => {
   });
 };
 
-me.update = (user, userToUpdate) => {
+me.update = (user, username, userToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/user/' + userToUpdate.username)
+      .put(endpoint + '/user/' + username)
       .send(userToUpdate)
       .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
-        resolve(res);
+        resolve(res.statusCode);
       });
   });
 };
@@ -52,7 +52,7 @@ me.delete = (user, userToDelete) => {
       .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
-        resolve(res);
+        resolve(res.statusCode);
       });
   });
 };
@@ -71,10 +71,18 @@ me.create = (user, userToCreate) => {
 };
 
 me.getSensors = (user, userWithSensors) => {
+  var username, password;
+  if (userWithSensors) {
+    username = userWithSensors.username;
+    password = userWithSensors.password;
+  } else {
+    username = user.username;
+    password = user.password;
+  }
   return new Bluebird((resolve, reject) => {
     request
-      .get(endpoint + '/user/' + userWithSensors + '/sensor')
-      .auth(user.username, user.password)
+      .get(endpoint + '/sensor')
+      .auth(username, password)
       .end((err, res) => {
         if (err) reject(err);
         resolve(res);

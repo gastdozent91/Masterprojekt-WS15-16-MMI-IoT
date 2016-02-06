@@ -61,13 +61,15 @@ var NewUser = React.createClass({
         this.state.firstname &&
         this.state.lastname &&
         this.state.password) {
-      var role = this.state.isAdmin ? 'ROLE_ADMIN' : 'ROLE_USER';
+      var role = this.state.isAdmin
+        ? ['ROLE_USER', 'ROLE_ADMIN']
+        : ['ROLE_USER'];
       var json = {
         username: this.state.username,
         firstname: this.state.firstname,
         lastname: this.state.lastname,
         password: this.state.password,
-        roles: [role]
+        roles: role
       };
       request
         .post('/user')
@@ -77,7 +79,7 @@ var NewUser = React.createClass({
           //TODO: add warning
           //res.body === statuscode
           console.log(res);
-          that.props.handleNew();
+          window.location.pathname = '/users';
         });
     }
   },

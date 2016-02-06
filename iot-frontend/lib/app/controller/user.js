@@ -17,13 +17,12 @@ var isAdmin = function(user) {
 me.getAll = (req, res, next) => {
   Model.getAll(req.user)
   .then(users => {
-    console.log(users);
     req.users = users;
-    next();
+    return next();
     //res.json(users);
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
@@ -31,55 +30,52 @@ me.getOne = (req, res, next) => {
   Model.getOne(req.user, req.params.username)
   .then(user => {
     req.userToCheck = user;
-    next();
+    return next();
     //res.json(users);
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
 me.update = (req, res, next) => {
-  var changedUser = req.user;
-  changedUser.firstname = 'Ray';
-  changedUser.roles = req.user.roles.values;
-  Model.update(req.user, changedUser, (err, result) => {
-    if (err) res.json(err);
-    res.json(result);
+  Model.update(req.user, req.params.username, req.body)
+  .then(result => {
+    return res.json(result);
+  })
+  .catch(err => {
+    return res.json(err);
   });
 };
 
 me.delete = (req, res, next) => {
-  var userToDelete = 'ray';
-  Model.delete(req.user, userToDelete)
+  Model.delete(req.user, req.params.username)
   .then(result => {
-    res.json(result.status);
+    return res.json(result);
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
 me.create = (req, res, next) => {
   Model.create(req.user, req.body)
   .then(result => {
-    res.json(result.status);
+    return res.json(result.status);
   })
   .catch(err => {
-    res.json(err.status);
+    return res.json(err.status);
   });
 };
 
 me.getSensors = (req, res, next) => {
-  if (isAdmin(req.user)) next();
-  var userWithSensors = req.user.username;
-  Model.getSensors(req.user, userWithSensors)
+  Model.getSensors(req.user, req.userToCheck)
   .then(result => {
     req.sensors = result.body;
-    next();
+    return next();
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
@@ -88,10 +84,10 @@ me.setSensors = (req, res, next) => {
   var sensors = [];
   Model.setSensors(req.user, userWithSensors, sensors)
   .then(result => {
-    res.json(result);
+    return res.json(result);
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
@@ -101,7 +97,8 @@ me.render = (req, res) => {
   if (req.userToCheck) {
     out = {
       user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
-      userToCheck: req.userToCheck
+      userToCheck: req.userToCheck,
+      sensors: req.sensors || []
     };
     var user = new SingleUser(out);
     body = ReactDOM.renderToStaticMarkup(user);

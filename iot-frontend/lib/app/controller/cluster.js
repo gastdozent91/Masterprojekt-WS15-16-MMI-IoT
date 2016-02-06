@@ -14,10 +14,10 @@ me.getAll = (req, res, next) => {
   Model.getAll(req.user)
   .then(clusters => {
     req.clusters = clusters;
-    next();
+    return next();
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
@@ -25,10 +25,10 @@ me.getOne = (req, res, next) => {
   Model.getOne(req.user, req.params.id)
   .then(cluster => {
     req.cluster = cluster;
-    next();
+    return next();
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
@@ -37,20 +37,20 @@ me.getSensors = (req, res, next) => {
   .then(sensors => {
     req.sensors = sensors;
     //delete req.cluster.sensorList;
-    next();
+    return next();
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
 me.create = (req, res, next) => {
   Model.create(req.user, req.body)
   .then(result => {
-    res.json(result.status);
+    return res.json(result.status);
   })
   .catch(err => {
-    res.json(err.status);
+    return res.json(err.status);
   });
 };
 
@@ -58,19 +58,23 @@ me.delete = (req, res, next) => {
   var clusterToDelete = req.params.id;
   Model.delete(req.user, clusterToDelete)
   .then(result => {
-    res.json(result.status);
+    return res.json(result.status);
   })
   .catch(err => {
-    res.json(err);
+    return res.json(err);
   });
 };
 
 me.update = (req, res, next) => {
   var changedCluster = req.body;
-  Model.update(req.user, changedCluster, (err, result) => {
+  Model.update(req.user, changedCluster)
+  .then(result => {
     if (err) res.json(err);
     console.log(result);
-    res.json(result);
+    return res.json(result);
+  })
+  .catch(err => {
+    return res.json(err);
   });
 };
 
