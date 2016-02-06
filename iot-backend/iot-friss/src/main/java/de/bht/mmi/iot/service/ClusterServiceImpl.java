@@ -103,6 +103,7 @@ public class ClusterServiceImpl implements ClusterService{
         final Iterable<Sensor> sensorsAttachedToCluster = sensorService.getAllByCluster(clusterId);
         for (Sensor sensor : sensorsAttachedToCluster) {
             sensor.setAttachedCluster(null);
+            sensorService.saveSensor(sensor);
         }
         clusterRepository.delete(clusterId);
     }
