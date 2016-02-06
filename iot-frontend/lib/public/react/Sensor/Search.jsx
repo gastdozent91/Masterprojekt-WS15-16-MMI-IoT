@@ -78,10 +78,9 @@ var Search = React.createClass({
         if (bool) return true;
         bool = sensor.name.toLowerCase().indexOf(input) > -1;
         if (bool) return true;
-        //bool = sensor.attachedGateway.toLowerCase().indexOf(input) > -1;
-        //if (bool) return true;
-        //bool = sensor.sensorType.toLowerCase().indexOf(input) > -1;
-        //if (bool) return true;
+        var typeString = sensor.types.join(',');
+        bool = typeString.toLowerCase().indexOf(input) > -1;
+        if (bool) return true;
       });
       this.props.setSensors(sensors);
     }
