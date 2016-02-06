@@ -57,17 +57,14 @@ var Search = React.createClass({
           value = dic.location;
           bool = sensor.location.toLowerCase().indexOf(value) > -1;
         }
-        //if (bool && checkType) {
-          //value = dic.type;
-          //bool = sensor.sensorType.toLowerCase().indexOf(value) > -1;
-        //}
-        //if (bool && checkGateway) {
-          //value = dic.gateway;
-          //bool = sensor.attachedGateway.toLowerCase().indexOf(value) > -1;
-        //}
         if (bool && checkName) {
-          value = dic.gateway;
+          value = dic.name;
           bool = sensor.name.toLowerCase().indexOf(value) > -1;
+        }
+        if (bool && checkType) {
+          value = dic.type;
+          var typesString = sensor.types.join(',');
+          bool = typesString.toLowerCase().indexOf(value) > -1;
         }
         return bool;
       });
