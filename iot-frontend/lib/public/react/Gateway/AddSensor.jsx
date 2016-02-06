@@ -7,7 +7,6 @@ var AddSensor = React.createClass({
   propTypes: {
     cancelCallback: React.PropTypes.func,
     gateway: React.PropTypes.object,
-    sensors: React.PropTypes.array
   },
 
   getInitialState: function() {

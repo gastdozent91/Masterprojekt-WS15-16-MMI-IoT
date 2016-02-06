@@ -1,4 +1,5 @@
 var React = require('react')
+  , _ = require('underscore')
   , request = require('superagent');
 
 var AddSensor = React.createClass({
@@ -6,13 +7,13 @@ var AddSensor = React.createClass({
   propTypes: {
     cancelCallback: React.PropTypes.func,
     cluster: React.PropTypes.object,
-    sensors: React.PropTypes.array
   },
 
   getInitialState: function() {
     this.handleSensors();
     return {
-      sensors: []
+      sensors: [],
+      checkedSensors: {}
     };
   },
 
@@ -22,16 +23,19 @@ var AddSensor = React.createClass({
       .get('/api/sensor')
       .end(function(err, res) {
         if (err) return console.log(err);
-
-        that.setState({sensors: res.body});
+        var checkedSensors = {};
+        res.body.map(function(sensor) {
+          var isChecked = sensor.attachedCluster === that.props.cluster.id;
+          checkedSensors[sensor.id] = isChecked;
+        });
+        that.setState({sensors: res.body, checkedSensors: checkedSensors});
       });
   },
 
-  handleRowClick:function(ref){
-    var that = this;
-    return function(){
-      that.refs[ref].checked = !that.refs[ref].checked;
-    };
+  handleChange: function(id) {
+    var checkedSensors = _.clone(this.state.checkedSensors);
+    checkedSensors[id] = !checkedSensors[id];
+    this.setState({checkedSensors: checkedSensors});
   },
 
   handleSaveClick: function(){
@@ -41,17 +45,14 @@ var AddSensor = React.createClass({
       var json = sensor;
       if(that.refs['check' + sensor.id].checked){
         json.attachedCluster = that.props.cluster.id;
-      }else{
-        json.attachedCluster = null;
-      }
         request
           .put('/sensor/' + sensor.id)
           .send(json)
           .end(function(err, res){
             if(err) return;
-
-            console.log(res);
+            window.location.pathname = '/cluster/' + that.props.cluster.id;
           });
+      }
     });
   },
 
@@ -61,8 +62,14 @@ var AddSensor = React.createClass({
     return this.state.sensors.map(function(sensor){
       var ty = sensor.types || [];
       return(
-        <tr className='selectable-row' key={sensor.id} onClick={that.handleRowClick('check' + sensor.id)}>
-          <td valign='middle'><input ref={'check' + sensor.id} type='checkbox' checked={sensor.attachedCluster === that.props.cluster.id ? 'checked' : null}></input></td>
+        <tr className='selectable-row'
+          key={sensor.id}>
+          <td valign='middle'>
+            <input ref={'check' + sensor.id}
+              type='checkbox'
+              onChange={that.handleChange.bind(that, sensor.id)}
+              checked={that.state.checkedSensors[sensor.id]} />
+          </td>
           <td>{sensor.name}</td>
           <td>{sensor.id}</td>
           <td>{sensor.location}</td>
