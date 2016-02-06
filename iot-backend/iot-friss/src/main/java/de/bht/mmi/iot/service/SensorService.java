@@ -19,6 +19,8 @@ public interface SensorService {
 
     Iterable<Sensor> getAllByOwner(String username) throws EntityNotFoundException;
 
+    Iterable<Sensor> getAllByOwner(String username, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
+
     Iterable<Sensor> getAllByGateway(String gatewayId) throws EntityNotFoundException;
 
     Iterable<Sensor> getAllByGateway(String gatewayId, UserDetails authenticatedUser)

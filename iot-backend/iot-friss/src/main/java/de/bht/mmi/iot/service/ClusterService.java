@@ -9,7 +9,9 @@ public interface ClusterService {
 
     Iterable<Cluster> getAll();
 
-    Iterable<Cluster> getAllByOwner(String username);
+    Iterable<Cluster> getAllByOwner(String username) throws EntityNotFoundException;
+
+    Iterable<Cluster> getAllByOwner(String username, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
 
     Iterable<Cluster> getAll(UserDetails authenticatedUser) throws EntityNotFoundException;
 

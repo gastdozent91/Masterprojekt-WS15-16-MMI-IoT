@@ -86,6 +86,18 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    public Iterable<Sensor> getAllByOwner(String username, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        userService.loadUserByUsername(username);
+        if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_GET_ALL_SENSOR)
+                || username.equals(authenticatedUser.getUsername())) {
+            return getAllByOwner(username);
+        }
+        throw new NotAuthorizedException(
+                String.format("You are not authorized to get all sensors for owner '%s'", username));
+    }
+
+    @Override
     public Iterable<Sensor> getAllByGateway(String gatewayId) throws EntityNotFoundException {
         gatewayService.getGateway(gatewayId);
         return sensorRepository.findByAttachedGateway(gatewayId);

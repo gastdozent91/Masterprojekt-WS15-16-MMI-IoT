@@ -23,9 +23,14 @@ public class SensorController {
 
     // GET
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Sensor> getAllSensor(@AuthenticationPrincipal UserDetails authenticatedUser)
-            throws EntityNotFoundException {
-        return sensorService.getAll(authenticatedUser);
+    public Iterable<Sensor> getAllSensor(@RequestParam(value = "owner", required = false) String owner,
+                                         @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        if (owner == null) {
+            return sensorService.getAll(authenticatedUser);
+        } else {
+            return sensorService.getAllByOwner(owner, authenticatedUser);
+        }
     }
 
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)

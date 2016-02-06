@@ -15,7 +15,9 @@ public interface GatewayService {
 
     Iterable<Gateway> getAllReleasedForUser(String username) throws EntityNotFoundException;
 
-    Iterable<Gateway> getAllByOwner(String username);
+    Iterable<Gateway> getAllByOwner(String username) throws EntityNotFoundException;
+
+    Iterable<Gateway> getAllByOwner(String username, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
 
     Gateway getGateway(String gatewayId) throws EntityNotFoundException;
 

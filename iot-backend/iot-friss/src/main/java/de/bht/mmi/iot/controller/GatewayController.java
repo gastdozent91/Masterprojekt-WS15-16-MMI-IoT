@@ -31,9 +31,14 @@ public class GatewayController {
 
     // GET
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Gateway> getAllGateways(@AuthenticationPrincipal UserDetails authenticatedUser)
-            throws EntityNotFoundException {
-        return gatewayService.getAll(authenticatedUser);
+    public Iterable<Gateway> getAllGateways(@RequestParam(value = "owner", required = false) String owner,
+                                            @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        if (owner == null) {
+            return gatewayService.getAll(authenticatedUser);
+        } else {
+            return gatewayService.getAllByOwner(owner, authenticatedUser);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

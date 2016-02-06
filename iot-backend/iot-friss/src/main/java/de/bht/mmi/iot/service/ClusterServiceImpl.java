@@ -18,7 +18,7 @@ import java.util.Set;
 import static de.bht.mmi.iot.constants.RoleConstants.*;
 
 @Service
-public class ClusterServiceImpl implements ClusterService{
+public class ClusterServiceImpl implements ClusterService {
 
     @Autowired
     private ClusterRepository clusterRepository;
@@ -55,8 +55,21 @@ public class ClusterServiceImpl implements ClusterService{
     }
 
     @Override
-    public Iterable<Cluster> getAllByOwner(String username) {
+    public Iterable<Cluster> getAllByOwner(String username) throws EntityNotFoundException {
+        userService.loadUserByUsername(username);
         return clusterRepository.findAllByOwner(username);
+    }
+
+    @Override
+    public Iterable<Cluster> getAllByOwner(String username, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        userService.loadUserByUsername(username);
+        if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_GET_ALL_CLUSTER)
+                || username.equals(authenticatedUser.getUsername())) {
+            return getAllByOwner(username);
+        }
+        throw new NotAuthorizedException(
+                String.format("You are not authorized to get all clusters for owner '%s'", username));
     }
 
     @Override

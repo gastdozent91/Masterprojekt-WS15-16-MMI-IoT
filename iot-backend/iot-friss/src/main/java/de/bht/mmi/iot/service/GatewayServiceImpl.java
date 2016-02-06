@@ -6,6 +6,7 @@ import de.bht.mmi.iot.model.Gateway;
 import de.bht.mmi.iot.model.Sensor;
 import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.GatewayRepository;
+import de.bht.mmi.iot.repository.SensorRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,9 @@ public class GatewayServiceImpl implements GatewayService {
 
     @Autowired
     private SensorService sensorService;
+
+    @Autowired
+    private SensorRepository sensorRepository;
 
     @Override
     public Iterable<Gateway> getAll() {
@@ -61,8 +65,20 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public Iterable<Gateway> getAllByOwner(String username) {
+    public Iterable<Gateway> getAllByOwner(String username) throws EntityNotFoundException {
+        userService.loadUserByUsername(username);
         return gatewayRepository.findAllByOwner(username);
+    }
+
+    @Override
+    public Iterable<Gateway> getAllByOwner(String username, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException {
+        userService.loadUserByUsername(username);
+        if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_GET_ALL_GATEWAY)
+                || username.equals(authenticatedUser.getUsername())) {
+            return getAllByOwner(username);
+        }
+        throw new NotAuthorizedException(
+                String.format("You are not authorized to get all gateways for owner '%s'", username));
     }
 
     @Override
@@ -111,6 +127,7 @@ public class GatewayServiceImpl implements GatewayService {
             sensor.setAttachedGateway(null);
             sensorService.saveSensor(sensor);
         }
+        sensorRepository.save(sensorsAttachedToGateway);
         gatewayRepository.delete(gatewayId);
     }
 

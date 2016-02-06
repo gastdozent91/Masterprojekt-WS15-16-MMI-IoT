@@ -31,8 +31,14 @@ public class ClusterController {
 
     // GET
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Cluster> getAllCluster(@AuthenticationPrincipal UserDetails authenticatedUser) throws EntityNotFoundException {
-        return clusterService.getAll(authenticatedUser);
+    public Iterable<Cluster> getAllCluster(@RequestParam(value = "owner", required = false) String owner,
+                                           @AuthenticationPrincipal UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException {
+        if (owner == null) {
+            return clusterService.getAll(authenticatedUser);
+        } else {
+            return clusterService.getAllByOwner(owner, authenticatedUser);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

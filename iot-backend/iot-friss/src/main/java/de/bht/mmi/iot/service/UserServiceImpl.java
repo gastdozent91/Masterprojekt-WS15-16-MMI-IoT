@@ -5,6 +5,8 @@ import de.bht.mmi.iot.exception.EntityExistsException;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.User;
+import de.bht.mmi.iot.repository.ClusterRepository;
+import de.bht.mmi.iot.repository.GatewayRepository;
 import de.bht.mmi.iot.repository.SensorRepository;
 import de.bht.mmi.iot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,21 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private SensorRepository sensorRepository;
+
+    @Autowired
+    private SensorService sensorService;
+
+    @Autowired
+    private GatewayRepository gatewayRepository;
+
+    @Autowired
+    private GatewayService gatewayService;
+
+    @Autowired
+    private ClusterRepository clusterRepository;
+
+    @Autowired
+    private ClusterService clusterService;
 
     @Override
     public Iterable<User> getAll() {
@@ -85,6 +102,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String username) throws EntityNotFoundException {
         loadUserByUsername(username);
+        sensorRepository.delete(sensorService.getAllByOwner(username));
+        gatewayRepository.delete(gatewayService.getAllByOwner(username));
+        clusterRepository.delete(clusterService.getAllByOwner(username));
         userRepository.delete(username);
     }
 
