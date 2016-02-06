@@ -4,22 +4,18 @@ var React = require('react')
 var NewGateway = React.createClass({
 
   propTypes: {
+    user: React.PropTypes.object,
     handleNew: React.PropTypes.func
   },
 
   getInitialState: function() {
     return {
       name: '',
-      fields: [
-        {name: 'name', func: this.handleNameChange, placeholder: 'gateway1'}
-      ]
     };
   },
 
-  handleNameChange: function() {
-    var input = this.refs.name.value;
-    console.log('name', input);
-    this.setState({name: input});
+  handleChange: function() {
+    this.setState({name: this.refs.name.value});
   },
 
   handleCancel: function() {
@@ -30,7 +26,8 @@ var NewGateway = React.createClass({
     var that = this;
     if (this.state.name) {
       var json = {
-        name: this.state.name
+        name: this.state.name,
+        owner: this.props.user.username
       };
       request
         .post('/gateway')
@@ -40,28 +37,9 @@ var NewGateway = React.createClass({
           //TODO: add warning
           //res.body === statuscode
           console.log(res);
-          that.props.handleNew();
+          window.location.pathname = '/gateways';
         });
     }
-  },
-
-  renderFields: function() {
-    return this.state.fields.map(function(field) {
-      return (
-        <div className='row'
-          key={field.name}
-          onChange={field.func}>
-          <div className='large-4 columns'>
-            {field.name}
-          </div>
-          <div className='large-8 columns'>
-            <input type='text'
-              placeholder={field.placeholder}
-              ref={field.name} />
-          </div>
-        </div>
-      );
-    });
   },
 
   render: function() {
@@ -69,7 +47,17 @@ var NewGateway = React.createClass({
       <div className='row'>
         <div className='large-8 large-centered columns'>
           <h2>Add a Gateway</h2>
-          {this.renderFields()}
+          <div className='row'>
+            <div className='large-4 columns'>
+              Name
+            </div>
+            <div className='large-8 columns'>
+              <input type='text'
+                placeholder='cool gateway name'
+                onChange={this.handleChange}
+                ref='name' />
+            </div>
+          </div>
           <div className='row column' style={{textAlign: 'end'}}>
             <input type='button'
               className='button'
@@ -89,4 +77,3 @@ var NewGateway = React.createClass({
 });
 
 module.exports = NewGateway;
-

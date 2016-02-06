@@ -44,10 +44,10 @@ me.getSensors = (user, id) => {
   });
 };
 
-me.update = (user, gatewayToUpdate) => {
+me.update = (user, id, gatewayToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/gateway/' + gatewayToUpdate.username)
+      .put(endpoint + '/gateway/' + id)
       .send(gatewayToUpdate)
       .auth(user.username, user.password)
       .end((err, res) => {
@@ -64,7 +64,7 @@ me.delete = (user, gatewayToDelete) => {
       .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
-        resolve(res);
+        resolve(res.statusCode);
       });
   });
 };

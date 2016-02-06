@@ -55,10 +55,9 @@ me.create = (req, res, next) => {
 };
 
 me.delete = (req, res, next) => {
-  var gatewayToDelete = req.params.id;
-  Model.delete(req.user, gatewayToDelete)
+  Model.delete(req.user, req.params.id)
   .then(result => {
-    return res.json(result.status);
+    return res.json(result);
   })
   .catch(err => {
     return res.json(err);
@@ -66,8 +65,7 @@ me.delete = (req, res, next) => {
 };
 
 me.update = (req, res, next) => {
-  var changedGateway = req.body;
-  Model.update(req.user, changedGateway)
+  Model.update(req.user, req.params.id, req.body)
   .then(resutl => {
     if (err) res.json(err);
     console.log(result);
@@ -87,7 +85,11 @@ me.render = function(req, res) {
     , body;
   if (req.gateway) {
     out = {
-      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
       gateway: req.gateway,
       sensors: req.sensors
     };
@@ -96,7 +98,11 @@ me.render = function(req, res) {
     res.render('gateway', {body: body, reactData: out});
   } else {
     out = {
-      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
       gateways: req.gateways
     };
     var gateways = new Gateway(out);

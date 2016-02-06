@@ -10,22 +10,29 @@ var EditGateway = React.createClass({
 
   getInitialState: function() {
     return {
-      value: this.props.gateway.name
+      name: ''
     };
   },
 
   handleSaveClick: function(){
-    //TODO send new data to backend
-    var json = this.props.gateway;
-    json.name = this.refs.name.value;
-
-    console.log(json);
-    this.props.cancelCallback();
+    var that = this;
+    if (this.state.name) {
+      var json = {
+        name: this.state.name,
+        owner: this.props.gateway.owner
+      };
+      request.put('/gateway/' + this.props.gateway.id)
+      .send(json)
+      .end(function(err, res) {
+        if (err) return console.log(err);
+        window.location.pathname = '/gateways';
+      });
+    }
   },
 
-  handleNameChange: function(event){
+  handleChange: function(){
     this.setState({
-      value: event.target.value
+      name: this.refs.name.value
     });
   },
 
@@ -39,7 +46,11 @@ var EditGateway = React.createClass({
               name
             </div>
             <div className='small-8 column'>
-              <input type='text' value={this.state.value} ref='name' onChange={this.handleNameChange}/>
+              <input type='text'
+                value={this.state.name}
+                ref='name'
+                placeholder={this.props.gateway.name}
+                onChange={this.handleChange}/>
             </div>
           </div>
           <div className='row columns' style={{marginTop: 25, textAlign: 'right'}}>

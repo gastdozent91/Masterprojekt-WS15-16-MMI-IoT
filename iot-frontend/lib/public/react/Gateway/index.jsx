@@ -115,7 +115,8 @@ var Gateway = React.createClass({
         ? <div className='new-gateway-container'>
             <div className='row column' style={{float: 'none'}}>
               <div className='callout'>
-                <NewGateway handleNew={this.handleNew}/>
+                <NewGateway handleNew={this.handleNew}
+                  user={this.props.user}/>
               </div>
             </div>
           </div>

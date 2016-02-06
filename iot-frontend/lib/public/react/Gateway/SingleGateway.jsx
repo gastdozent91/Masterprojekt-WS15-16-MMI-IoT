@@ -2,6 +2,7 @@ var React = require('react')
   , TopBar = require('../shared/TopBar');
 
 var EditGateway = require('./EditGateway')
+  , DeleteGateway = require('./DeleteGateway')
   , AddSensor = require('./AddSensor');
 
 var SingleGateway = React.createClass({
@@ -20,9 +21,28 @@ var SingleGateway = React.createClass({
         ['name', 'Name'],
         ['owner', 'Owner']
       ],
-      editSensor: false,
+      editGateway: false,
+      deleteSensor: false,
       addSensor: false
     };
+  },
+
+  handleClickOnSensor: function(id){
+    return function() {
+      window.location = '/sensor/' + id;
+    }
+  },
+
+  handleEditGateway: function(){
+    this.setState({editGateway : !this.state.editGateway});
+  },
+
+  handleDeleteGateway: function(){
+    this.setState({deleteGateway : !this.state.deleteGateway});
+  },
+
+  handleAddSensor: function(){
+    this.setState({addSensor: !this.state.addSensor})
   },
 
   renderFields: function(){
@@ -82,23 +102,9 @@ var SingleGateway = React.createClass({
     );
   },
 
-  handleClickOnSensor: function(id){
-    return function() {
-      window.location = '/sensor/' + id;
-    }
-  },
-
-  handleEditGateway: function(){
-    this.setState({editSensor : !this.state.editSensor});
-  },
-
-  handleAddSensor: function(){
-    this.setState({addSensor: !this.state.addSensor})
-  },
-
   render: function() {
     console.log(this.props.gateway);
-    var displayStyle = this.state.editSensor || this.state.addSensor ? 'block' : 'none';
+    var displayStyle = this.state.editGateway || this.state.addSensor || this.state.deleteGateway ? 'block' : 'none';
     return (
       <div>
         <TopBar user={this.props.user} activePage='gateways'/>
@@ -112,9 +118,13 @@ var SingleGateway = React.createClass({
                 <div className='small-4 columns'
                   style={{textAlign: 'right'}}>
                   <div className='button'
-                    style={{marginRight:0}}
                     onClick={this.handleEditGateway}>
                     Edit
+                </div>
+                <div className='button alert'
+                  style={{marginRight:0}}
+                  onClick={this.handleDeleteGateway}>
+                  Delete
                 </div>
               </div>
               </div>
@@ -143,8 +153,21 @@ var SingleGateway = React.createClass({
           </div>
         </div>
 
-        {this.state.addSensor ? <AddSensor cancelCallback={this.handleAddSensor} gateway={this.props.gateway}/> : null}
-        {this.state.editSensor ? <EditGateway cancelCallback={this.handleEditGateway} gateway={this.props.gateway}/> : null}
+        {this.state.addSensor
+          ? <AddSensor cancelCallback={this.handleAddSensor}
+            gateway={this.props.gateway}/>
+          : null
+        }
+        {this.state.deleteGateway
+          ? <DeleteGateway cancelCallback={this.handleDeleteGateway}
+            gatewayToDelete={this.props.gateway}/>
+          : null
+        }
+        {this.state.editGateway
+          ? <EditGateway cancelCallback={this.handleEditGateway}
+            gateway={this.props.gateway}/>
+          : null
+        }
         <div className='background-area' style={{display: displayStyle}}></div>
       </div>
     );

@@ -1,11 +1,11 @@
 var React = require('react')
   , request = require('superagent');
 
-var DeleteCluster = React.createClass({
+var DeleteGateway = React.createClass({
 
   propTypes: {
     cancelCallback: React.PropTypes.func,
-    clusterToDelete: React.PropTypes.object
+    gatewayToDelete: React.PropTypes.object
   },
 
   getInitialState: function() {
@@ -14,11 +14,11 @@ var DeleteCluster = React.createClass({
   },
 
   handleSaveClick: function(){
-    request.delete('/cluster/' + this.props.clusterToDelete.id)
+    request.delete('/gateway/' + this.props.gatewayToDelete.id)
       .end(function(err, res) {
         console.log(err, res);
         if (res.statusCode === 200) {
-          window.location.pathname = '/clusters';
+          window.location.pathname = '/gateways';
         }
       });
   },
@@ -27,7 +27,7 @@ var DeleteCluster = React.createClass({
     return (
       <div className='iot-modal callout'>
         <h2 id='modalTitle'>
-          Delete Cluster: {this.props.clusterToDelete.name} ?
+          Delete Gateway: {this.props.gatewayToDelete.name} ?
         </h2>
         <div className="body">
           <div className='row columns'
@@ -50,4 +50,4 @@ var DeleteCluster = React.createClass({
 
 });
 
-module.exports = DeleteCluster;
+module.exports = DeleteGateway;

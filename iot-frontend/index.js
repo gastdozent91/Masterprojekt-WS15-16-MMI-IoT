@@ -206,13 +206,13 @@ app.post('/gateway',
 );
 
 // delete gateway
-app.delete('/gateway',
+app.delete('/gateway/:id',
   login.shouldBeLoggedIn,
   gateway.delete
 );
 
 // update gateway
-app.put('/gateway',
+app.put('/gateway/:id',
   login.shouldBeLoggedIn,
   gateway.update
 );
