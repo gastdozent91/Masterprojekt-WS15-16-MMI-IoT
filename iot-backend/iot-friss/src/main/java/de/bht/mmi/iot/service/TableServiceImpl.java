@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 
+import static de.bht.mmi.iot.constants.DbConstants.*;
+
 @Service
 public class TableServiceImpl implements TableService {
 
@@ -79,10 +81,12 @@ public class TableServiceImpl implements TableService {
                 DbConstants.TABLENAME_BULK, createTableResult.getTableDescription().getTableStatus()));
     }
 
+    @Override
     public List<String> getTableNames() {
         return DbConstants.getAllTableNames();
     }
 
+    @Override
     public void deleteTable(String tableName) {
         if (Tables.doesTableExist(dynamoDB, tableName)) {
             final DeleteTableResult deleteTableResult = dynamoDB.deleteTable(tableName);
@@ -96,8 +100,32 @@ public class TableServiceImpl implements TableService {
         return String.format("Table '%s' status: %s", tableName, status);
     }
 
+    @Override
     public boolean doesTableExists(String tableName) {
         return Tables.doesTableExist(dynamoDB, tableName);
+    }
+
+    @Override
+    public void createTableForName(String tableName) {
+        switch (tableName) {
+            case TABLENAME_USER:
+                createUserTable();
+                break;
+            case TABLENAME_SENSOR:
+                createSensorTable();
+                break;
+            case TABLENAME_GATEWAY:
+                createGatewayTable();
+                break;
+            case TABLENAME_CLUSTER:
+                createClusterTable();
+                break;
+            case TABLENAME_BULK:
+                createBulkTable();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Table name '%s' is unknown", tableName));
+        }
     }
 
 }

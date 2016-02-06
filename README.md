@@ -5,8 +5,8 @@
 # Become root
 $ sudo -i or su -
 
-# Install puppet
-$ apt-get install puppet
+$ apt-get update && apt-get upgrade
+$ apt-get install puppet curl
 
 # Install iot module
 $ puppet module install maasch-iot_provisioning

@@ -20,4 +20,6 @@ public interface TableService {
 
     boolean doesTableExists(String tableName);
 
+    void createTableForName(String tableName);
+
 }

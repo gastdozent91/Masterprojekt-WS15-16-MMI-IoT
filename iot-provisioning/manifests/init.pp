@@ -58,10 +58,10 @@ class iot_provisioning (
     }
     class { 'git': } ~>
     class { 'docker':
+        version => $docker_version,
         docker_users => [ $system_username ],
         socket_group => 'docker'
-    } ~>
-    class { 'docker_compose': }
+    }
 
     contain 'iot_provisioning::install'
     contain 'iot_provisioning::config'

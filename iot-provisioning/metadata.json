@@ -1,6 +1,6 @@
 {
   "name": "maasch-iot_provisioning",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "maasch",
   "summary": "Infrastructure for Masterproject (MI) Beuth - Hoefig WS15/16",
   "license": "BSD 2-Clause license",
@@ -22,7 +22,7 @@
     },
     {
       "name": "puppetlabs-git",
-      "version_requirement": ">= 0.4.0"
+      "version_requirement": "0.4.0"
     },
     {
       "name": "puppetlabs-vcsrepo",
@@ -30,15 +30,15 @@
     },
     {
       "name": "garethr-docker",
-      "version_requirement": ">= 4.1.1"
+      "version_requirement": "5.0.0"
     },
     {
       "name": "garystafford-docker_compose",
-      "version_requirement": ">= 0.2.2"
+      "version_requirement": "0.2.2"
     },
     {
       "name": "tylerwalts-jdk_oracle",
-      "version_requirement": ">= 1.4.0"
+      "version_requirement": "1.4.0"
     }
   ]
 }
