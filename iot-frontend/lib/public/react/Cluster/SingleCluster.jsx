@@ -2,7 +2,8 @@ var React = require('react')
   , TopBar = require('../shared/TopBar');
 
 var AddSensor = require('./AddSensor')
-  , EditCluster = require('./EditCluster');
+  , EditCluster = require('./EditCluster')
+  , DeleteCluster = require('./DeleteCluster');
 
 var SingleCluster = React.createClass({
 
@@ -20,7 +21,8 @@ var SingleCluster = React.createClass({
         ['owner', 'Owner']
       ],
       addingSensor: false,
-      editSensor: false
+      editCluster: false,
+      deleteCluster: false
     };
   },
 
@@ -29,7 +31,11 @@ var SingleCluster = React.createClass({
   },
 
   handleEditCluster: function(){
-    this.setState({editSensor: !this.state.editSensor});
+    this.setState({editCluster: !this.state.editCluster});
+  },
+
+  handleDeleteCluster: function(){
+    this.setState({deleteCluster: !this.state.deleteCluster});
   },
 
   renderFields: function(){
@@ -109,7 +115,7 @@ var SingleCluster = React.createClass({
   },
 
   render: function() {
-    var displayStyle = this.state.addingSensor || this.state.editSensor ? 'block' : 'none';
+    var displayStyle = this.state.addingSensor || this.state.editCluster || this.state.deleteCluster? 'block' : 'none';
     return (
       <div>
         <TopBar user={this.props.user} activePage='clusters'/>
@@ -123,17 +129,21 @@ var SingleCluster = React.createClass({
                   <div className='small-4 columns'
                     style={{textAlign: 'right'}}>
                     <div className='button'
-                      style={{marginRight:0}}
                       onClick={this.handleEditCluster}>
                       Edit
                   </div>
+                  <div className='button alert'
+                    style={{marginRight:0}}
+                    onClick={this.handleDeleteCluster}>
+                    Delete
+                  </div>
                 </div>
-                </div>
-                <table style={{width: '100%'}}>
-                  <tbody style={{borderWidth: 0}}>
-                    {this.renderFields()}
-                  </tbody>
-                </table>
+              </div>
+              <table style={{width: '100%'}}>
+                <tbody style={{borderWidth: 0}}>
+                  {this.renderFields()}
+                </tbody>
+              </table>
               </div>
               <div className='callout'>
                 <div className='row'>
@@ -154,8 +164,21 @@ var SingleCluster = React.createClass({
             </div>
           </div>
 
-          {this.state.addingSensor ? <AddSensor cancelCallback={this.handleAddSensor} cluster={this.props.cluster}/> : null}
-          {this.state.editSensor ? <EditCluster cancelCallback={this.handleEditCluster} cluster={this.props.cluster}/> : null}
+          {this.state.addingSensor
+            ? <AddSensor cancelCallback={this.handleAddSensor}
+              cluster={this.props.cluster}/> 
+            : null
+          }
+          {this.state.deleteCluster
+            ? <DeleteCluster cancelCallback={this.handleDeleteCluster}
+              clusterToDelete={this.props.cluster}/>
+            : null
+          }
+          {this.state.editSensor
+            ? <EditCluster cancelCallback={this.handleEditCluster}
+              cluster={this.props.cluster}/>
+            : null
+          }
           <div className='background-area' style={{display: displayStyle}}></div>
         </div>
     );

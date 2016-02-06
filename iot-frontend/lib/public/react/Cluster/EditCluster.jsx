@@ -10,22 +10,30 @@ var EditCluster = React.createClass({
 
   getInitialState: function() {
     return {
-      value: this.props.cluster.name
+      name: ''
     };
   },
 
   handleSaveClick: function(){
-    //TODO send new data to backend
-    var json = this.props.cluster;
-    json.name = this.refs.name.value;
-
-    console.log(json);
-    this.props.cancelCallback();
+    var that = this;
+    if (this.state.name) {
+      var json = {
+        name: this.state.name,
+        owner: this.props.cluster.owner,
+        creationDate: this.props.cluster.creationDate
+      };
+      request.put('/cluster/' + this.props.cluster.id)
+      .send(json)
+      .end(function(err, res) {
+        if (err) return console.log(err);
+        window.location.pathname = '/cluster/' + that.props.cluster.id;
+      });
+    }
   },
 
-  handleNameChange: function(event){
+  handleNameChange: function(){
     this.setState({
-      value: event.target.value
+      name: this.refs.name.value
     });
   },
 
@@ -39,13 +47,25 @@ var EditCluster = React.createClass({
               name
             </div>
             <div className='small-8 column'>
-              <input type='text' value={this.state.value} ref='name' onChange={this.handleNameChange}/>
+              <input type='text'
+                value={this.state.name}
+                placeholder={this.props.cluster.name}
+                ref='name'
+                onChange={this.handleNameChange}/>
             </div>
           </div>
-          <div className='row columns' style={{marginTop: 25, textAlign: 'right'}}>
+          <div className='row columns'
+            style={{marginTop: 25, textAlign: 'right'}}>
             <div className='small-12 column'>
-              <div className='button alert' onClick={this.props.cancelCallback}>cancel</div>
-              <div className='button' onClick={this.handleSaveClick}>save</div></div>
+              <div className='button alert'
+                onClick={this.props.cancelCallback}>
+                cancel
+              </div>
+              <div className='button'
+                onClick={this.handleSaveClick}>
+                save
+              </div>
+            </div>
           </div>
         </div>
       </div>

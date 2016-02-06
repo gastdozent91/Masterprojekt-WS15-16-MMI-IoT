@@ -155,10 +155,10 @@ var SingleUser = React.createClass({
           ? <EditUser cancelCallback={this.handleEditUser}
             userToEdit={this.props.userToCheck}/>
           : null}
-          {this.state.deleteUser
-            ? <DeleteUser cancelCallback={this.handleDeleteUser}
-              userToDelete={this.props.userToCheck}/>
-            : null}
+        {this.state.deleteUser
+          ? <DeleteUser cancelCallback={this.handleDeleteUser}
+            userToDelete={this.props.userToCheck}/>
+          : null}
         <div className='background-area' style={{display: displayStyle}}></div>
       </div>
     );

@@ -47,7 +47,7 @@ me.getSensors = (req, res, next) => {
 me.create = (req, res, next) => {
   Model.create(req.user, req.body)
   .then(result => {
-    return res.json(result.status);
+    return res.json(result);
   })
   .catch(err => {
     return res.json(err.status);
@@ -55,8 +55,7 @@ me.create = (req, res, next) => {
 };
 
 me.delete = (req, res, next) => {
-  var clusterToDelete = req.params.id;
-  Model.delete(req.user, clusterToDelete)
+  Model.delete(req.user, req.params.id)
   .then(result => {
     return res.json(result.status);
   })
@@ -66,11 +65,9 @@ me.delete = (req, res, next) => {
 };
 
 me.update = (req, res, next) => {
-  var changedCluster = req.body;
-  Model.update(req.user, changedCluster)
+  Model.update(req.user, req.params.id, req.body)
   .then(result => {
     if (err) res.json(err);
-    console.log(result);
     return res.json(result);
   })
   .catch(err => {
@@ -87,7 +84,11 @@ me.render = function(req, res) {
     , body;
   if (req.cluster) {
     out = {
-      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
       cluster: req.cluster,
       sensors: req.sensors
     };
@@ -97,7 +98,11 @@ me.render = function(req, res) {
     res.render('cluster', {body: body, reactData: out});
   } else {
     out = {
-      user: { firstname: req.user.firstname, isAdmin: req.isAdmin},
+      user: {
+        firstname: req.user.firstname,
+        username: req.user.username,
+        isAdmin: req.isAdmin
+      },
       clusters: req.clusters
     };
     var clusters = new Cluster(out);

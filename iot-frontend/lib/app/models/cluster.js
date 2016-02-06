@@ -45,15 +45,15 @@ me.getSensors = (user, id) => {
   });
 };
 
-me.update = (user, clusterToUpdate) => {
+me.update = (user, id, clusterToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/cluster/' + clusterToUpdate.username)
+      .put(endpoint + '/cluster/' + id)
       .send(clusterToUpdate)
       .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
-        resolve(res);
+        resolve(res.statusCode);
       });
   });
 };
@@ -78,7 +78,7 @@ me.create = (user, clusterToCreate) => {
       .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
-        resolve(res);
+        resolve(res.statusCode);
       });
   });
 };

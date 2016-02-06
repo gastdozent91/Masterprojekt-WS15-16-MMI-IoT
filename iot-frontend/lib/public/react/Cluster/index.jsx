@@ -115,7 +115,8 @@ var Cluster = React.createClass({
         ? <div className='new-cluster-container'>
             <div className='row column' style={{float: 'none'}}>
               <div className='callout'>
-                <NewCluster handleNew={this.handleNew}/>
+                <NewCluster handleNew={this.handleNew}
+                  user={this.props.user}/>
               </div>
             </div>
           </div>

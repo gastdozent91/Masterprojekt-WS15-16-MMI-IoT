@@ -224,13 +224,13 @@ app.post('/cluster',
 );
 
 // delete cluster
-app.delete('/cluster',
+app.delete('/cluster/:id',
   login.shouldBeLoggedIn,
   cluster.delete
 );
 
 // update cluster
-app.put('/cluster',
+app.put('/cluster/:id',
   login.shouldBeLoggedIn,
   cluster.update
 );
