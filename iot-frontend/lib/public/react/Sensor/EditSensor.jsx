@@ -16,7 +16,7 @@ var EditSensor = React.createClass({
     sensor.types = sensor.types.join(', ');
     return {
       name: '',
-      types: [],
+      types: '',
       location: '',
       attachedGateway: '',
       attachedCluster: '',
@@ -25,7 +25,9 @@ var EditSensor = React.createClass({
       isActive: false,
       sensor: sensor,
       clusters: [],
-      gateways: []
+      gateways: [],
+      checkedCluster: sensor.attachedCluster,
+      checkedGateway: sensor.attachedGateway
     };
   },
 
@@ -66,8 +68,8 @@ var EditSensor = React.createClass({
       name: this.state.name || this.props.sensor.name,
       types: types,
       location: this.state.location || this.props.sensor.location,
-      attachedGateway: this.state.attachedGateway || this.props.sensor.attachedGateway,
-      attachedCluster: this.state.attachedCluster || this.props.sensor.attachedCluster,
+      attachedGateway: this.state.checkedGateway,
+      attachedCluster: this.state.checkedCluster,
       owner: this.props.sensor.owner,
       creationDate: this.props.sensor.creationDate,
       isActive: true,
@@ -89,6 +91,24 @@ var EditSensor = React.createClass({
       location: this.refs.location.value,
       types: this.refs.types.value
     });
+  },
+
+  changeGateway: function(id) {
+    var checkedGateway = _.clone(this.state.checkGateway);
+    if (checkedGateway === id)
+      checkedGateway = '';
+    else
+      checkedGateway = id;
+    this.setState({checkedGateway: checkedGateway});
+  },
+
+  changeCluster: function(id) {
+    var checkedCluster = _.clone(this.state.checkCluster);
+    if (checkedCluster === id)
+      checkedCluster = '';
+    else
+      checkedCluster = id;
+    this.setState({checkedCluster: checkedCluster});
   },
 
   renderGateways: function(){
@@ -115,7 +135,12 @@ var EditSensor = React.createClass({
   renderGateway: function(gateway){
     return(
       <tr className='selectable-row' key={gateway.id}>
-        <td><input type='radio' style={{margin:0}}></input></td>
+        <td>
+          <input type='radio'
+            onChange={this.changeGateway.bind(this, gateway.id)}
+            checked={this.state.checkedGateway === gateway.id}
+            style={{margin:0}} />
+        </td>
         <td>{gateway.name}</td>
         <td>{gateway.id}</td>
       </tr>
@@ -146,7 +171,12 @@ var EditSensor = React.createClass({
   renderCluster: function(cluster){
     return(
       <tr className='selectable-row' key={cluster.id}>
-        <td><input type='radio' style={{margin:0}}></input></td>
+        <td>
+          <input type='radio'
+            onChange={this.changeCluster.bind(this, cluster.id)}
+            checked={this.state.checkedCluster === cluster.id}
+            style={{margin:0}} />
+        </td>
         <td>{cluster.name}</td>
         <td>{cluster.id}</td>
       </tr>
