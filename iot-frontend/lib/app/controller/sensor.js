@@ -45,11 +45,9 @@ me.create = (req, res, next) => {
 };
 
 me.update = (req, res, next) => {
-  var changedSensor = req.body;
-  Model.update(req.user, changedSensor)
+  Model.update(req.user, req.params.id, req.body)
   .then(result => {
     if (err) res.json(err);
-    console.log(result);
     return res.json(result);
   })
   .catch(err => {
@@ -58,10 +56,9 @@ me.update = (req, res, next) => {
 };
 
 me.delete = (req, res, next) => {
-  var sensorToDelete = req.params.id;
-  Model.delete(req.user, sensorToDelete)
+  Model.delete(req.user, req.params.id)
   .then(result => {
-    return res.json(result.status);
+    return res.json(result);
   })
   .catch(err => {
     return res.json(err);

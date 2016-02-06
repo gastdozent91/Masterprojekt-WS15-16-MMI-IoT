@@ -15,6 +15,14 @@ var EditSensor = React.createClass({
     var sensor = _.clone(this.props.sensor);
     sensor.types = sensor.types.join(', ');
     return {
+      name: '',
+      types: [],
+      location: '',
+      attachedGateway: '',
+      attachedCluster: '',
+      owner: '',
+      creationDate: '',
+      isActive: false,
       sensor: sensor,
       clusters: [],
       gateways: []
@@ -44,46 +52,42 @@ var EditSensor = React.createClass({
   },
 
   handleSaveClick: function(){
-    //TODO send new data to backend
-
-    //TODO clone
-    var json = _.clone(this.state.sensor);
-    var types = json.types.split(',');
-    types = types.map(function(type) {
-      return type.trim();
-    });
-    json.types = types;
-    console.log(json);
-    request.put('/sensor')
+    var that = this;
+    var types;
+    if (this.state.types) {
+      var types = this.state.types.split(',');
+      types = types.map(function(t) {
+        return t.trim();
+      });
+    } else {
+      types = this.props.sensor.types;
+    }
+    var json = {
+      name: this.state.name || this.props.sensor.name,
+      types: types,
+      location: this.state.location || this.props.sensor.location,
+      attachedGateway: this.state.attachedGateway || this.props.sensor.attachedGateway,
+      attachedCluster: this.state.attachedCluster || this.props.sensor.attachedCluster,
+      owner: this.props.sensor.owner,
+      creationDate: this.props.sensor.creationDate,
+      isActive: true,
+    };
+    console.log('old', this.props.sensor);
+    console.log('new', json);
+    //return;
+    request.put('/sensor/' + this.props.sensor.id)
     .send(json)
     .end(function(err, res) {
-      console.log('hallo');
-      console.log(err);
-      console.log(res);
+      if (err) return console.log(err);
+      window.location.pathname = '/sensor/' + that.props.sensor.id;
     });
   },
 
-  handleNameChange: function(event){
-    var sensor = _.clone(this.state.sensor);
-    sensor.name = this.refs.name.value;
+  handleChange: function() {
     this.setState({
-      sensor: sensor
-    });
-  },
-
-  handleLocationChange: function(event){
-    var sensor = _.clone(this.state.sensor);
-    sensor.location = this.refs.location.value;
-    this.setState({
-      sensor: sensor
-    });
-  },
-
-  handleTypesChange: function(event){
-    var sensor = _.clone(this.state.sensor);
-    sensor.types = this.refs.types.value;
-    this.setState({
-      sensor: sensor
+      name: this.refs.name.value,
+      location: this.refs.location.value,
+      types: this.refs.types.value
     });
   },
 
@@ -156,9 +160,12 @@ var EditSensor = React.createClass({
           <div className='small-4 column'>
             name
           </div>
-
           <div className='small-8 column'>
-            <input type='text' value={this.state.sensor.name} ref='name' onChange={this.handleNameChange}/>
+            <input type='text'
+              value={this.state.name}
+              placeholder={this.props.sensor.name}
+              ref='name'
+              onChange={this.handleChange}/>
           </div>
         </div>
         <div className='row columns'>
@@ -166,7 +173,11 @@ var EditSensor = React.createClass({
             location
           </div>
           <div className='small-8 column'>
-            <input type='text' value={this.state.sensor.location} ref='location' onChange={this.handleLocationChange}/>
+            <input type='text'
+              value={this.state.location}
+              placeholder={this.props.sensor.location}
+              ref='location'
+              onChange={this.handleChange}/>
           </div>
         </div>
         <div className='row columns'>
@@ -174,7 +185,11 @@ var EditSensor = React.createClass({
             sensor types
           </div>
           <div className='small-8 column'>
-            <input type='text' value={this.state.sensor.types} ref='types' onChange={this.handleTypesChange}/>
+            <input type='text'
+              value={this.state.types}
+              placeholder={this.props.sensor.types.join(', ')}
+              ref='types'
+              onChange={this.handleChange}/>
           </div>
         </div>
         <div className='row columns'>

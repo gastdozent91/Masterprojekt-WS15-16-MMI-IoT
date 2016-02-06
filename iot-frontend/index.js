@@ -194,7 +194,7 @@ app.delete('/sensor/:id',
 );
 
 // update sensor
-app.put('/sensor',
+app.put('/sensor/:id',
   login.shouldBeLoggedIn,
   sensor.update
 );

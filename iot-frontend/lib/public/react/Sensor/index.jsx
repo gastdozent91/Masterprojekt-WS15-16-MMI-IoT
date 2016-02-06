@@ -8,6 +8,7 @@ var NewSensor = require('./NewSensor')
 var MultipleSensors = React.createClass({
 
   propTypes: {
+    user: React.PropTypes.object,
     sensors: React.PropTypes.array
   },
 

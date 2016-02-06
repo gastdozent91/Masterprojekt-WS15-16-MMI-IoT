@@ -32,10 +32,10 @@ me.getOne = (user, sensorname) => {
   });
 };
 
-me.update = (user, sensorToUpdate) => {
+me.update = (user, id, sensorToUpdate) => {
   return new Bluebird((resolve, reject) => {
     request
-      .put(endpoint + '/sensor/' + sensorToUpdate.id)
+      .put(endpoint + '/sensor/' + id)
       .send(sensorToUpdate)
       .auth(user.username, user.password)
       .end((err, res) => {
@@ -52,7 +52,7 @@ me.delete = (user, sensorToDelete) => {
       .auth(user.username, user.password)
       .end((err, res) => {
         if (err) reject(err);
-        resolve(res);
+        resolve(res.statusCode);
       });
   });
 };

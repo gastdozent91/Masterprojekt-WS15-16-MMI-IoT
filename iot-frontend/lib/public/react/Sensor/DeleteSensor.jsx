@@ -16,7 +16,7 @@ var DeleteSensor = React.createClass({
   handleSaveClick: function(){
     request.delete('/sensor/' + this.props.sensor.id)
       .end(function(err, res) {
-        console.log(err, res);
+        if (err) return console.log(err);
         if (res.statusCode === 200) {
           window.location.pathname = '/sensors';
         }
