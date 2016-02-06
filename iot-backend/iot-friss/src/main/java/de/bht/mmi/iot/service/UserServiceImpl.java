@@ -1,7 +1,6 @@
 package de.bht.mmi.iot.service;
 
 import de.bht.mmi.iot.constants.RoleConstants;
-import de.bht.mmi.iot.dto.UserPutDto;
 import de.bht.mmi.iot.exception.EntityExistsException;
 import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
@@ -12,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,6 +22,19 @@ public class UserServiceImpl implements UserService {
     private SensorRepository sensorRepository;
 
     @Override
+    public Iterable<User> getAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Iterable<User> getAll(UserDetails authenticatedUser) throws NotAuthorizedException {
+        if (!isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
+            throw new NotAuthorizedException("You are not authorized to access all users");
+        }
+        return userRepository.findAll();
+    }
+
+    @Override
     public User loadUserByUsername(String username) throws EntityNotFoundException {
         final User user = userRepository.findOne(username);
         if (user == null) {
@@ -33,60 +42,44 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
     @Override
     public User loadUserByUsername(String username, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
         if (!(isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN) ||
                 authenticatedUser.getUsername().equals(username))) {
-            throw new NotAuthorizedException(String.format("You are not authorzid to access user '%s'", username));
+            throw new NotAuthorizedException(String.format("You are not authorized to access user '%s'", username));
         }
         return loadUserByUsername(username);
     }
 
     @Override
-    public Iterable<User> loadAllUsers() {
-        return userRepository.findAll();
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public User saveUser(@Validated User user) throws EntityExistsException {
+    public User save(User user, UserDetails authenticatedUser) throws NotAuthorizedException, EntityNotFoundException {
+        if (isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
+            return save(user);
+        }
+
+        // Non admin users can only change their password, first name and last name
+        final User oldUser = loadUserByUsername(user.getUsername(), authenticatedUser);
+        oldUser.setPassword(user.getPassword());
+        oldUser.setFirstname(user.getFirstname());
+        oldUser.setLastname(user.getLastname());
+        return save(oldUser);
+    }
+
+    @Override
+    public User saveOnlyIfNotPresent(User user, UserDetails authenticatedUser)
+            throws NotAuthorizedException, EntityExistsException, EntityNotFoundException {
         final String username = user.getUsername();
         if (isUsernameAlreadyInUse(username)) {
-            throw new EntityExistsException(String.format("Username '%s' already in use", username));
+            throw new EntityExistsException(String.format("User with username '%s' already exists", username));
         }
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User updateUser(@Validated User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User updateUser(@Validated User user, UserDetails authenticatedUser) throws NotAuthorizedException {
-        if (!(isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN) ||
-                authenticatedUser.getUsername().equals(user.getUsername()))) {
-            throw new NotAuthorizedException(
-                    String.format("You are not authorzid to update user '%s'", user.getUsername()));
-        }
-        return updateUser(user);
-    }
-
-    @Override
-    public User updateUser(String username, @Validated UserPutDto dto, UserDetails authenticatedUser)
-            throws NotAuthorizedException {
-
-        User user = userRepository.findOne(username);
-        if (user == null) {
-            user = new User(username, dto.getPassword());
-        }
-        user.setPassword(dto.getPassword());
-        user.setFirstname(dto.getFirstname());
-        user.setLastname(dto.getLastname());
-        // TODO: Prevent that admin user leave role ADMIN
-        // TODO: Prevent that user can change their own roles
-        user.setRoles(dto.getRoles());
-        return updateUser(user, authenticatedUser);
+        return save(user, authenticatedUser);
     }
 
     @Override
@@ -96,27 +89,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserReleasedForSensors(String username, List<String> sensorIds, UserDetails authenticatedUser)
+    public void deleteUser(String username, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        final User user = loadUserByUsername(username, authenticatedUser);
-        user.setReleasedForSensors(sensorIds);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User updateUserReleasedForGateways(String username, List<String> gatewayIds, UserDetails authenticatedUser)
-            throws EntityNotFoundException, NotAuthorizedException {
-        final User user = loadUserByUsername(username, authenticatedUser);
-        user.setReleasedForGateways(gatewayIds);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User updateUserReleasedForClusters(String username, List<String> clusterIds, UserDetails authenticatedUser)
-            throws EntityNotFoundException, NotAuthorizedException {
-        final User user = loadUserByUsername(username, authenticatedUser);
-        user.setReleasedForClusters(clusterIds);
-        return userRepository.save(user);
+        if (!isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
+            throw new NotAuthorizedException(String.format("You are not authorized to delete user '%s'", username));
+        }
+        deleteUser(username);
     }
 
     @Override

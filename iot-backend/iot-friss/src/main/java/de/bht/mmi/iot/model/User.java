@@ -28,10 +28,8 @@ public class User implements UserDetails {
     @Size(min = 3)
     private String password;
 
-    @NotNull
     private String firstname;
 
-    @NotNull
     private String lastname;
 
     @NotNull

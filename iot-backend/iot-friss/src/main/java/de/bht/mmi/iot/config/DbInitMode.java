@@ -5,8 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 public enum DbInitMode {
 
     DROP_CREATE("drop-create"),
-    VALIDATE("validate");
-    //CREATE_MISSING("create-missing") Planned
+    VALIDATE("validate"),
+    CREATE_MISSING("create-missing");
 
     private final String propertyValue;
 
