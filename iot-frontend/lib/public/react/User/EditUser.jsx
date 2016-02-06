@@ -14,6 +14,9 @@ var EditUser = React.createClass({
       lastname: '',
       password: '',
       isAdmin: false,
+      releasedForSensors: [],
+      releasedForGateways: [],
+      releasedForClusters: [],
     };
   },
 
@@ -25,10 +28,20 @@ var EditUser = React.createClass({
       ? ['ROLE_USER', 'ROLE_ADMIN']
       : ['ROLE_USER'];
     var json = {
+      username: this.props.userToEdit.username,
       firstname: this.state.firstname || this.props.userToEdit.firstname,
       lastname: this.state.lastname || this.props.userToEdit.lastname,
       password: this.state.password || this.props.userToEdit.password,
-      roles: role
+      roles: role,
+      releasedForSensors: this.props.userToEdit.releasedForSensors.concat(
+        this.state.releasedForSensors
+      ),
+      releasedForGateways: this.props.userToEdit.releasedForGateways.concat(
+        this.state.releasedForGateways
+      ),
+      releasedForClusters: this.props.userToEdit.releasedForClusters.concat(
+        this.state.releasedForClusters
+      ),
     };
     request
       .put('/user/' + this.props.userToEdit.username)
