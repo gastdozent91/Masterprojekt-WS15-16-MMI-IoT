@@ -1,4 +1,5 @@
 var React = require('react')
+  , _ = require('underscore')
   , request = require('superagent');
 
 var AddSensor = React.createClass({
@@ -10,9 +11,11 @@ var AddSensor = React.createClass({
   },
 
   getInitialState: function() {
+    //var that = this;
     this.handleSensors();
     return {
-      sensors: []
+      sensors: [],
+      checkedSensors: {}
     };
   },
 
@@ -22,16 +25,19 @@ var AddSensor = React.createClass({
       .get('/api/sensor')
       .end(function(err, res) {
         if (err) return console.log(err);
-
-        that.setState({sensors: res.body});
+        var checkedSensors = {};
+        res.body.map(function(sensor) {
+          var isChecked = sensor.attachedGateway === that.props.gateway.id;
+          checkedSensors[sensor.id] = isChecked;
+        });
+        that.setState({sensors: res.body, checkedSensors: checkedSensors});
       });
   },
 
-  handleRowClick:function(ref){
-    var that = this;
-    return function(){
-      that.refs[ref].checked = !that.refs[ref].checked;
-    };
+  handleChange: function(id) {
+    var checkedSensors = _.clone(this.state.checkedSensors);
+    checkedSensors[id] = !checkedSensors[id];
+    this.setState({checkedSensors: checkedSensors});
   },
 
   handleSaveClick: function(){
@@ -40,19 +46,16 @@ var AddSensor = React.createClass({
     //TODO clone
     this.state.sensors.map(function(sensor){
       var json = sensor;
-      if(that.refs['check' + sensor.id].checked){
+      if (that.refs['check' + sensor.id].checked) {
         json.attachedGateway = that.props.gateway.id;
-      }else{
-        json.attachedGateway = null;
-      }
         request
           .put('/sensor/' + sensor.id)
           .send(json)
           .end(function(err, res){
             if(err) return;
-
-            console.log(res);
+            window.location.pathname = '/gateway/' + that.props.gateway.id;
           });
+      }
     });
   },
 
@@ -62,8 +65,14 @@ var AddSensor = React.createClass({
     return this.state.sensors.map(function(sensor){
       var ty = sensor.types || [];
       return(
-        <tr className='selectable-row' key={sensor.id} onClick={that.handleRowClick('check' + sensor.id)}>
-          <td valign='middle'><input ref={'check' + sensor.id} type='checkbox' checked={sensor.attachedGateway === that.props.gateway.id ? 'checked' : null}></input></td>
+        <tr className='selectable-row'
+          key={sensor.id}>
+          <td valign='middle'>
+            <input ref={'check' + sensor.id}
+              type='checkbox'
+              onChange={that.handleChange.bind(that, sensor.id)}
+              checked={that.state.checkedSensors[sensor.id]} />
+          </td>
           <td>{sensor.name}</td>
           <td>{sensor.id}</td>
           <td>{sensor.location}</td>

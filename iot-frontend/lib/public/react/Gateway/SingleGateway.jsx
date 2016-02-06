@@ -155,6 +155,7 @@ var SingleGateway = React.createClass({
 
         {this.state.addSensor
           ? <AddSensor cancelCallback={this.handleAddSensor}
+            sensors={this.props.sensors}
             gateway={this.props.gateway}/>
           : null
         }
