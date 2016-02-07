@@ -33,7 +33,7 @@ var Footer = React.createClass({
       <div>
         <p ref='text'
           className={this.state.pClass}>
-          FRISSt das! Eure freundliche Masterprojekt Gruppe.
+          FRISS das! Eure freundliche Masterprojekt Gruppe.
         </p>
       </div>
     );

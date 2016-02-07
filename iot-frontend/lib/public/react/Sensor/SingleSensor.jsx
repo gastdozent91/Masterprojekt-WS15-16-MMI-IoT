@@ -1,6 +1,7 @@
 var React = require('react')
   , Arrow3D = require('../shared/Arrow3D')
   , Graph = require('../shared/Graph')
+  , TestNew = require('../shared/TestNew')
   , rabbit = require('../../js/rabbit')
   , DynamoArrow = require('../shared/DynamoArrow')
   , DynamoGraph = require('../shared/DynamoGraph')
@@ -65,9 +66,10 @@ var SingleSensor = React.createClass({
   },
 
   test: function(body) {
+    if (this.state.myInterval) clearInterval(this.state.myInterval);
     var that = this;
     var max = body.length
-    var hz = Math.floor(1000/max);
+    var hz = Math.floor(1000/max) - 2;
     var i = 0;
     //var myInterval = setInterval(function() {
       //if (i == max) {
@@ -82,16 +84,21 @@ var SingleSensor = React.createClass({
       //i++;
     //}, hz);
     this.setState({data: body}, function() {
+      console.log('neue daten');
       var myInterval = setInterval(function() {
         if (i++ == max - 1) {
           i = 0;
           clearInterval(myInterval);
           return;
         }
+        if (!that.state.data[i]) return;
         var date = that.state.data[i].time;
+        var maxDate = that.state.data[that.state.data.length - 1].time;
         that.setState({
           cQ: that.state.data[i].orientation,
-          cA: {acceleration: that.state.data[i].acceleration, time: date}
+          cA: {value: that.state.data[i].acceleration, time: date},
+          maxDate: {time: maxDate},
+          myInterval: myInterval
         });
       }, hz);
     });
@@ -222,7 +229,7 @@ var SingleSensor = React.createClass({
                 <div className='large-6 columns'>
                   <h5>Acceleration</h5>
                   { this.state.isLive
-                    ? <Graph value={this.state.cA} all={this.state.data}/>
+                    ? <TestNew value={this.state.cA} maxDate={this.state.maxDate}/>
                     : <DynamoGraph />
                   }
                 </div>

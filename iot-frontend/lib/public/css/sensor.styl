@@ -17,6 +17,11 @@
     height 100%
     background rgba(240,240,240,0.7)
 
+  .colording
+    background-color #E83A25
+    content ''
+    width 10px
+
   .blue
     stroke #00f
     fill #00f
@@ -26,3 +31,23 @@
   .green
     stroke #0f0
     fill #0f0
+    /*
+     * d3
+     */
+    path {
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .axis path,
+    .axis line
+      fill none
+      stroke #000
+      shape-rendering crispEdges
+
+    .y.axis path
+      display none
+
+    .y.axis line
+      stroke #777
+      stroke-dasharray 2,2
