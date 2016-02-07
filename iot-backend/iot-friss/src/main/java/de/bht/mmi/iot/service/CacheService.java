@@ -7,7 +7,7 @@ public interface CacheService {
 
     Iterable<String> getAllCacheNames();
 
-    Cache getCache(String cacheName) throws EntityNotFoundException;
+    Cache getOneByCacheName(String cacheName) throws EntityNotFoundException;
 
     void clearOne(String cacheName) throws EntityNotFoundException;
 

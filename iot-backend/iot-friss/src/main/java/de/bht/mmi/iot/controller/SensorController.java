@@ -36,7 +36,7 @@ public class SensorController {
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Sensor getSensor(@PathVariable("id") String id) throws EntityNotFoundException {
-        return sensorService.getSensor(id);
+        return sensorService.getOne(id);
     }
 
     // POST
@@ -45,7 +45,7 @@ public class SensorController {
     public Sensor createSensor(@RequestBody @Validated Sensor sensor,
                                @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        return sensorService.saveSensor(sensor, authenticatedUser);
+        return sensorService.save(sensor, authenticatedUser);
     }
 
     // PUT
@@ -55,14 +55,14 @@ public class SensorController {
                                @AuthenticationPrincipal UserDetails authenticatedUser)
             throws NotAuthorizedException, EntityNotFoundException {
         sensor.setId(id);
-        return sensorService.saveSensor(sensor, authenticatedUser);
+        return sensorService.save(sensor, authenticatedUser);
     }
 
     // DELETE
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     public void deleteSensor(@PathVariable("id") String id, @AuthenticationPrincipal  UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        sensorService.deleteSensor(id, authenticatedUser);
+        sensorService.delete(id, authenticatedUser);
     }
 
 }

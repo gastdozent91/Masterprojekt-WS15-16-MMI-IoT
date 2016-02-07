@@ -82,7 +82,7 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public Gateway getGateway(String gatewayId) throws EntityNotFoundException {
+    public Gateway getOne(String gatewayId) throws EntityNotFoundException {
         Gateway gateway = gatewayRepository.findOne(gatewayId);
         if (gateway != null) {
             return gateway;
@@ -92,13 +92,13 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
-    public Gateway saveGateway(Gateway gateway) throws EntityNotFoundException {
+    public Gateway save(Gateway gateway) throws EntityNotFoundException {
         userService.loadUserByUsername(gateway.getOwner());
         return gatewayRepository.save(gateway);
     }
 
     @Override
-    public Gateway saveGateway(Gateway gateway, UserDetails authenticatedUser)
+    public Gateway save(Gateway gateway, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
 
         Gateway oldGateway = null;
@@ -108,36 +108,36 @@ public class GatewayServiceImpl implements GatewayService {
 
         if (oldGateway == null) {
             if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_CREATE_GATEWAY)) {
-                return saveGateway(gateway);
+                return save(gateway);
             }
         } else {
             if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_UPDATE_GATEWAY)
                     || oldGateway.getOwner().equals(authenticatedUser.getUsername())) {
-                return saveGateway(gateway);
+                return save(gateway);
             }
         }
         throw new NotAuthorizedException("You are not authorized to save/update gateways");
     }
 
     @Override
-    public void deleteGateway(String gatewayId) throws EntityNotFoundException {
-        getGateway(gatewayId);
-        final Iterable<Sensor> sensorsAttachedToGateway = sensorService.getAllByGateway(gatewayId);
+    public void delete(String gatewayId) throws EntityNotFoundException {
+        getOne(gatewayId);
+        final Iterable<Sensor> sensorsAttachedToGateway = sensorService.getAllByGatewayId(gatewayId);
         for (Sensor sensor : sensorsAttachedToGateway) {
             sensor.setAttachedGateway(null);
-            sensorService.saveSensor(sensor);
+            sensorService.save(sensor);
         }
         sensorRepository.save(sensorsAttachedToGateway);
         gatewayRepository.delete(gatewayId);
     }
 
     @Override
-    public void deleteGateway(String gatewayId, UserDetails authenticatedUser) throws EntityNotFoundException,
+    public void delete(String gatewayId, UserDetails authenticatedUser) throws EntityNotFoundException,
             NotAuthorizedException {
-        final Gateway gateway = getGateway(gatewayId);
+        final Gateway gateway = getOne(gatewayId);
         if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_DELETE_GATEWAY)
                 || gateway.getOwner().equals(authenticatedUser.getUsername())) {
-            deleteGateway(gatewayId);
+            delete(gatewayId);
             return;
         }
         throw new NotAuthorizedException(

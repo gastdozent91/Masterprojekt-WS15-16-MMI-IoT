@@ -73,7 +73,7 @@ public class ClusterServiceImpl implements ClusterService {
     }
 
     @Override
-    public Cluster getCluster(String clusterId) throws EntityNotFoundException {
+    public Cluster getOne(String clusterId) throws EntityNotFoundException {
         final Cluster cluster = clusterRepository.findOne(clusterId);
         if (cluster != null) {
             return cluster;
@@ -83,13 +83,13 @@ public class ClusterServiceImpl implements ClusterService {
     }
 
     @Override
-    public Cluster saveCluster(Cluster cluster) throws EntityNotFoundException {
+    public Cluster save(Cluster cluster) throws EntityNotFoundException {
         userService.loadUserByUsername(cluster.getOwner());
         return clusterRepository.save(cluster);
     }
 
     @Override
-    public Cluster saveCluster(Cluster cluster, UserDetails authenticatedUser)
+    public Cluster save(Cluster cluster, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
 
         Cluster oldCluster = null;
@@ -99,35 +99,35 @@ public class ClusterServiceImpl implements ClusterService {
 
         if (oldCluster == null) {
             if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_CREATE_CLUSTER)) {
-                return saveCluster(cluster);
+                return save(cluster);
             }
         } else {
             if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_UPDATE_CLUSTER)
                     || oldCluster.getOwner().equals(authenticatedUser.getUsername())) {
-                return saveCluster(cluster);
+                return save(cluster);
             }
         }
         throw new NotAuthorizedException("You are not authorized to save/update clusters");
     }
 
     @Override
-    public void deleteCluster(String clusterId) throws EntityNotFoundException {
-        getCluster(clusterId);
-        final Iterable<Sensor> sensorsAttachedToCluster = sensorService.getAllByCluster(clusterId);
+    public void delete(String clusterId) throws EntityNotFoundException {
+        getOne(clusterId);
+        final Iterable<Sensor> sensorsAttachedToCluster = sensorService.getAllByClusterId(clusterId);
         for (Sensor sensor : sensorsAttachedToCluster) {
             sensor.setAttachedCluster(null);
-            sensorService.saveSensor(sensor);
+            sensorService.save(sensor);
         }
         clusterRepository.delete(clusterId);
     }
 
     @Override
-    public void deleteCluster(String clusterId, UserDetails authenticatedUser) throws EntityNotFoundException,
+    public void delete(String clusterId, UserDetails authenticatedUser) throws EntityNotFoundException,
             NotAuthorizedException {
-        final Cluster cluster = getCluster(clusterId);
+        final Cluster cluster = getOne(clusterId);
         if (userService.isAnyRolePresent(authenticatedUser, ROLE_ADMIN, ROLE_DELETE_CLUSTER)
                 || cluster.getOwner().equals(authenticatedUser.getUsername())) {
-            deleteCluster(clusterId);
+            delete(clusterId);
             return;
         }
         throw new NotAuthorizedException(

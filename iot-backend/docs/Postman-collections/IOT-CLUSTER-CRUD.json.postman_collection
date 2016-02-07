@@ -48,9 +48,9 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1454792776408,
+			"time": 1454867630327,
 			"name": "GET ALL",
-			"description": "Param \"owner\" not required",
+			"description": "- Parameter 'owner' is optional",
 			"collectionId": "f5aa4d23-faa0-85f8-a583-1525616f3d83",
 			"responses": []
 		},

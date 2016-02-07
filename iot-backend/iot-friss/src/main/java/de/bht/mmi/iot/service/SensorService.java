@@ -13,7 +13,7 @@ public interface SensorService {
 
     Iterable<Sensor> getAll(UserDetails authenticatedUser) throws EntityNotFoundException;
 
-    Sensor getSensor(String sensorId) throws EntityNotFoundException;
+    Sensor getOne(String sensorId) throws EntityNotFoundException;
 
     Iterable<Sensor> getAllReleasedForUser(String username) throws EntityNotFoundException;
 
@@ -21,24 +21,24 @@ public interface SensorService {
 
     Iterable<Sensor> getAllByOwner(String username, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
 
-    Iterable<Sensor> getAllByGateway(String gatewayId) throws EntityNotFoundException;
+    Iterable<Sensor> getAllByGatewayId(String gatewayId) throws EntityNotFoundException;
 
-    Iterable<Sensor> getAllByGateway(String gatewayId, UserDetails authenticatedUser)
+    Iterable<Sensor> getAllByGatewayId(String gatewayId, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
 
-    Iterable<Sensor> getAllByCluster(String clusterId) throws EntityNotFoundException;
+    Iterable<Sensor> getAllByClusterId(String clusterId) throws EntityNotFoundException;
 
-    Iterable<Sensor> getAllByCluster(String clusterId, UserDetails authenticatedUser)
+    Iterable<Sensor> getAllByClusterId(String clusterId, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
 
-    Sensor saveSensor(Sensor sensor) throws EntityNotFoundException;
+    Sensor save(Sensor sensor) throws EntityNotFoundException;
 
-    Sensor saveSensor(Sensor sensor, UserDetails authenticatedUser)
+    Sensor save(Sensor sensor, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
 
-    void deleteSensor(String sensorId) throws EntityNotFoundException;
+    void delete(String sensorId) throws EntityNotFoundException;
 
-    void deleteSensor(String sensorId, UserDetails authenticatedUser)
+    void delete(String sensorId, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
 
     boolean isActive(String id) throws EntityNotFoundException;
