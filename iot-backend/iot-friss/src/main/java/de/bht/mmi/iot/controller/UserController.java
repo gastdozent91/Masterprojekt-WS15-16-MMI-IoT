@@ -55,7 +55,7 @@ public class UserController {
     public void deleteUser(@PathVariable("username") String username,
                            @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        userService.deleteUser(username, authenticatedUser);
+        userService.delete(username, authenticatedUser);
     }
 
 }

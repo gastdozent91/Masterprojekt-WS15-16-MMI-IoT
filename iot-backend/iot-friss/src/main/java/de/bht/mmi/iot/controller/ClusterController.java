@@ -44,14 +44,14 @@ public class ClusterController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
     public Cluster getCluster(@PathVariable("id") String id) throws EntityNotFoundException {
-        return clusterService.getCluster(id);
+        return clusterService.getOne(id);
     }
 
     @RequestMapping(value = "/{id}/sensor", method = RequestMethod.GET)
     public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id,
                                                   @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        return sensorService.getAllByCluster(id,authenticatedUser);
+        return sensorService.getAllByClusterId(id, authenticatedUser);
     }
 
     // POST
@@ -59,7 +59,7 @@ public class ClusterController {
     public Cluster createCluster(@RequestBody @Validated Cluster cluster,
                                  @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        return clusterService.saveCluster(cluster, authenticatedUser);
+        return clusterService.save(cluster, authenticatedUser);
     }
 
     // PUT
@@ -69,14 +69,14 @@ public class ClusterController {
                                  @AuthenticationPrincipal UserDetails authenticatedUser)
             throws NotAuthorizedException, EntityNotFoundException {
         cluster.setId(id);
-        return clusterService.saveCluster(cluster, authenticatedUser);
+        return clusterService.save(cluster, authenticatedUser);
     }
 
     // DELETE
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteCluster(@PathVariable("id") String id, @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        clusterService.deleteCluster(id, authenticatedUser);
+        clusterService.delete(id, authenticatedUser);
     }
 
 }

@@ -17,17 +17,19 @@ public interface GatewayService {
 
     Iterable<Gateway> getAllByOwner(String username) throws EntityNotFoundException;
 
-    Iterable<Gateway> getAllByOwner(String username, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
-
-    Gateway getGateway(String gatewayId) throws EntityNotFoundException;
-
-    Gateway saveGateway(Gateway gateway) throws EntityNotFoundException;
-
-    Gateway saveGateway(Gateway gateway, UserDetails authenticatedUser)
+    Iterable<Gateway> getAllByOwner(String username, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
 
-    void deleteGateway(String gatewayId) throws EntityNotFoundException;
+    Gateway getOne(String gatewayId) throws EntityNotFoundException;
 
-    void deleteGateway(String gatewayId, UserDetails authenticatedUser)
+    Gateway save(Gateway gateway) throws EntityNotFoundException;
+
+    Gateway save(Gateway gateway, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException;
+
+    void delete(String gatewayId) throws EntityNotFoundException;
+
+    void delete(String gatewayId, UserDetails authenticatedUser)
+            throws EntityNotFoundException, NotAuthorizedException;
+
 }

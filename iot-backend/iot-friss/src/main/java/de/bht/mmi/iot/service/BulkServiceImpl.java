@@ -5,7 +5,6 @@ import de.bht.mmi.iot.exception.EntityNotFoundException;
 import de.bht.mmi.iot.exception.NotAuthorizedException;
 import de.bht.mmi.iot.model.Bulk;
 import de.bht.mmi.iot.model.Sensor;
-import de.bht.mmi.iot.model.User;
 import de.bht.mmi.iot.repository.BulkRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.StreamSupport;
 
 @Service
 public class BulkServiceImpl implements BulkService {
@@ -41,7 +42,7 @@ public class BulkServiceImpl implements BulkService {
     public Page<Bulk> findBySensorIdAndBulkReceivedBefore(
             String sensorId, DateTime before, int page, int pageSize, Sort.Direction sortDirection)
             throws EntityNotFoundException {
-        final Sensor sensor = sensorService.getSensor(sensorId);
+        final Sensor sensor = sensorService.getOne(sensorId);
         return bulkRepository.findBySensorIdAndBulkReceivedBefore(
                 sensor.getId(),
                 before,
@@ -52,7 +53,7 @@ public class BulkServiceImpl implements BulkService {
     public Page<Bulk> findBySensorIdAndBulkReceivedAfter(
             String sensorId, DateTime after, int page, int pageSize, Sort.Direction sortDirection)
             throws EntityNotFoundException {
-        final Sensor sensor = sensorService.getSensor(sensorId);
+        final Sensor sensor = sensorService.getOne(sensorId);
         return bulkRepository.findBySensorIdAndBulkReceivedAfter(
                 sensor.getId(),
                 after,
@@ -63,7 +64,7 @@ public class BulkServiceImpl implements BulkService {
     public Page<Bulk> findBySensorIdAndBulkReceivedBetween(
             String sensorId, DateTime start, DateTime end, int page, int pageSize, Sort.Direction sortDirection)
             throws EntityNotFoundException {
-        final Sensor sensor = sensorService.getSensor(sensorId);
+        final Sensor sensor = sensorService.getOne(sensorId);
         return bulkRepository.findBySensorIdAndBulkReceivedBetween(
                 sensor.getId(),
                 start,
@@ -77,13 +78,13 @@ public class BulkServiceImpl implements BulkService {
                                                            UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
         if (!userService.isAnyRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
-            final Sensor sensor = sensorService.getSensor(sensorId);
-            if (!sensor.getOwner().equals(authenticatedUser.getUsername())) {
-                final User user = userService.loadUserByUsername(authenticatedUser.getUsername());
-                if (!user.getReleasedForSensors().contains(sensorId)) {
-                    throw new NotAuthorizedException(
-                            String.format("You are not authorized to access bulks from sensor with id: '%s", sensorId));
-                }
+            final Iterable<Sensor> allSensorsForUser = sensorService.getAll(authenticatedUser);
+            final long numFound = StreamSupport.stream(allSensorsForUser.spliterator(), false)
+                    .filter(sensor -> sensorId.equals(sensor.getId()))
+                    .count();
+            if (numFound == 0) {
+                throw new NotAuthorizedException(
+                        String.format("You are not authorized to access bulks from sensor with id: '%s", sensorId));
             }
         }
         return findBySensorIdAndBulkReceivedBetween(sensorId, start, end, page, pageSize, sortDirection);

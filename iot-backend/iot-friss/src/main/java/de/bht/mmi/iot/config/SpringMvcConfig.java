@@ -25,5 +25,4 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
         converters.add(jacksonMessageConverter);
     }
 
-
 }

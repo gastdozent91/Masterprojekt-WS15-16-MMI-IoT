@@ -44,14 +44,14 @@ public class GatewayController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @PreAuthorize(RoleConstants.HAS_ROLE_ADMIN_OR_USER)
     public Gateway getGateway(@PathVariable("id") String id) throws EntityNotFoundException {
-        return gatewayService.getGateway(id);
+        return gatewayService.getOne(id);
     }
 
     @RequestMapping(value = "/{id}/sensor", method = RequestMethod.GET)
     public Iterable<Sensor> getAllAttachedSensors(@PathVariable("id") String id,
                                                   @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        return sensorService.getAllByGateway(id, authenticatedUser);
+        return sensorService.getAllByGatewayId(id, authenticatedUser);
     }
 
     // POST
@@ -59,7 +59,7 @@ public class GatewayController {
     public Gateway createGateway(@RequestBody @Validated Gateway gateway,
                                  @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        return gatewayService.saveGateway(gateway, authenticatedUser);
+        return gatewayService.save(gateway, authenticatedUser);
     }
 
     // PUT
@@ -69,14 +69,14 @@ public class GatewayController {
                                  @AuthenticationPrincipal UserDetails authenticatedUser)
             throws NotAuthorizedException, EntityNotFoundException {
         gateway.setId(id);
-        return gatewayService.saveGateway(gateway, authenticatedUser);
+        return gatewayService.save(gateway, authenticatedUser);
     }
 
     // DELETE
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteGateway(@PathVariable("id") String id, @AuthenticationPrincipal UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
-        gatewayService.deleteGateway(id, authenticatedUser);
+        gatewayService.delete(id, authenticatedUser);
     }
 
 }
