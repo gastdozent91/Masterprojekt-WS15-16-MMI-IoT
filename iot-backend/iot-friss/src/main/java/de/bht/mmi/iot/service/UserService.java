@@ -21,11 +21,12 @@ public interface UserService {
 
     User save(User user, UserDetails authenticatedUser) throws NotAuthorizedException, EntityNotFoundException;
 
-    User saveOnlyIfNotPresent(User user, UserDetails authenticatedUser) throws NotAuthorizedException, EntityExistsException, EntityNotFoundException;
+    User saveOnlyIfNotPresent(User user, UserDetails authenticatedUser)
+            throws NotAuthorizedException, EntityExistsException, EntityNotFoundException;
 
-    void deleteUser(String username) throws EntityNotFoundException;
+    void delete(String username) throws EntityNotFoundException;
 
-    void deleteUser(String username, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
+    void delete(String username, UserDetails authenticatedUser) throws EntityNotFoundException, NotAuthorizedException;
 
     boolean isRolePresent(UserDetails userDetails, String role);
 

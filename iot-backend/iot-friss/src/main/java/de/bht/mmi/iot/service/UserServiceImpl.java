@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String username) throws EntityNotFoundException {
+    public void delete(String username) throws EntityNotFoundException {
         loadUserByUsername(username);
         sensorRepository.delete(sensorService.getAllByOwner(username));
         gatewayRepository.delete(gatewayService.getAllByOwner(username));
@@ -109,12 +109,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String username, UserDetails authenticatedUser)
+    public void delete(String username, UserDetails authenticatedUser)
             throws EntityNotFoundException, NotAuthorizedException {
         if (!isRolePresent(authenticatedUser, RoleConstants.ROLE_ADMIN)) {
             throw new NotAuthorizedException(String.format("You are not authorized to delete user '%s'", username));
         }
-        deleteUser(username);
+        delete(username);
     }
 
     @Override

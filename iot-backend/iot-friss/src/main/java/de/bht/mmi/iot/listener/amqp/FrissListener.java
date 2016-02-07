@@ -28,7 +28,7 @@ public class FrissListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FrissListener.class);
 
-    private static final TypeReference<List<Measurement>> listOfMeasurementTypeRef =
+    private static final TypeReference<List<Measurement>> LIST_OF_MEASUREMENT_TYPE_REF =
             new TypeReference<List<Measurement>>() {};
 
     @Autowired
@@ -58,7 +58,7 @@ public class FrissListener {
             }
 
             // Create bulk from data and save
-            final List<Measurement> measurements = objectMapper.readValue(data, listOfMeasurementTypeRef);
+            final List<Measurement> measurements = objectMapper.readValue(data, LIST_OF_MEASUREMENT_TYPE_REF);
             final Bulk bulk = new Bulk();
             bulk.setSensorId(routingKey);
             bulk.setBulkReceived(new DateTime(timestamp));

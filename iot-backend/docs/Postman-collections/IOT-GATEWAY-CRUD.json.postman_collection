@@ -126,9 +126,9 @@
 			"tests": "",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1454792855360,
+			"time": 1454867643496,
 			"name": "GET ALL",
-			"description": "Param \"owner\" not required",
+			"description": "- Parameter \"owner\" is optional",
 			"collectionId": "2b87df94-9591-27d0-2486-6088b47c8fd6",
 			"responses": []
 		}
