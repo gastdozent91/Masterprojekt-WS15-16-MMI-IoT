@@ -2,3 +2,4 @@ node_modules/
 build/
 /.idea
 /.vagrant
+config/aws_config.json

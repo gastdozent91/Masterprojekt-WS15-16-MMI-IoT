@@ -3,7 +3,11 @@ var AWS = require('aws-sdk')
 
 module.exports = me = {};
 
-AWS.config.loadFromPath('./config/aws_config.json');
+try {
+  AWS.config.loadFromPath('./config/aws_config.json');
+} catch(e) {
+  AWS.config.loadFromPath('./config/example_aws_config.json');
+}
 
 AWS.config.update({
   region: 'us-west-2',
