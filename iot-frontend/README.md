@@ -3,30 +3,24 @@ See all the data
 
 ## Installation
 
-You need:
-  * node (at least version 4.\*)
-  * dynamoDB
-
-installed on your computer.
+You need a node version at least 4.\* installed on your computer.
 
 ### node
 
-MAC via homebrew
+MacOS: via homebrew
 
 ```
 brew install node
 ```
 
-Linux. I'm just guessing now but:
+Linux: I'm just guessing now but:
 
 ```
-apt-get install nodejs
-apt-get install npm
+sudo apt-get install nodejs
+sudo apt-get install npm
 ```
 
-Maybe you have to `sudo` it. I don't know.
-
-Windows.
+Windows:
 
 I guess going to the website, download a .exe and doubleclick it.
 
@@ -34,27 +28,7 @@ Just in case: http://blog.teamtreehouse.com/install-node-js-npm-windows
 
 ### dynamodb
 
-Download the jar file from here:
-
-http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.JsShell.html
-
-Run the database locally with:
-
-```
-java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
-```
-
-Apparently you need a AWS account for that. No problem you think it's free.
-Well, they still ask you for a credit card. For many people that's a no-go.
-
-You need to make a `~/.aws/credentials` file which looks like this:
-Oh wait! Hey windows users. You need to put it here `%USERPROFILE%\.aws\credentials`:
-
-```
-[default]
-aws_access_key_id = YOUR_ACCESS_KEY_ID
-aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
-```
+In `config/` is an example aws config file. There you can save a config file for production with your credentials. It has to be in this file `config/aws_config.json`
 
 All set? Good. So on `git clone` this repo.
 
@@ -75,8 +49,13 @@ OK. You are almost done. We (I) are using gulp for building our files. So run:
 ```
 gulp
 ```
+This command starts process which is always listening for changes and you have to open a new terminal window to proceed. If you don't like this you also could run:
 
-Now you can run the server with 
+```
+gulp production
+```
+
+Now you can run the server with
 
 ```
 node .
@@ -99,11 +78,6 @@ In your browser you can visit now `localhost:3000` to see our nice project in ac
 
 ## Preview
 
-I still learning the d3.js functionality. It's almost Rocket Science!
+Here is a small preview for the live data from a single sensor.
 
-Here is a newer Screenshot:
-
-![](docs/graph.png)
-
-![](docs/graph_with_lines.png)
-
+![](docs/sensor_preview.png)
