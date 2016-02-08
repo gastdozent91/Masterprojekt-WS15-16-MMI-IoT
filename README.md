@@ -34,7 +34,7 @@ $ puppet apply /etc/puppet/manifests/site.pp
 
 ### NodeJS
 
-TODO: 
+In `iot-frontend/build/` is an example credentials file `example_aws_config.json`. If you need to add aws credentials for using the cloud add a `aws_config.json` file with you credentials. If you save them in this file your credentials will not be uploaded to git.
 
 ### Build WAR
 
