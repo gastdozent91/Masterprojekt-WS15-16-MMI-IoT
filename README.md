@@ -1,18 +1,18 @@
 # Installation Production
 
 ### Puppet
-```sh
+```bash
 # Become root
 $ sudo -i or su -
 
 $ apt-get update && apt-get upgrade
-$ apt-get install puppet curl
+$ apt-get install puppet curl vim
 
 # Install iot module
 $ puppet module install maasch-iot_provisioning
 
 # Create manifest for current node (masterless puppet)
-$ vi /etc/puppet/manifests/site.pp
+$ vim /etc/puppet/manifests/site.pp
 ```
 
 #### Content of site.pp
@@ -22,7 +22,7 @@ node default {
           system_username => 'iot',
           system_user_home => '/home/iot',
           iot_repo => 'https://github.com/TomWieschalla/Masterprojekt-WS15-16-MMI-IoT.git',
-          iot_repo_clone_dir => '/home/iot/iot-app',      
+          iot_repo_clone_dir => '/home/iot/iot-app'
         }
 }
 ```
@@ -39,8 +39,8 @@ In `iot-frontend/build/` is an example credentials file `example_aws_config.json
 ### Build WAR
 
 ```bash
-$ sudo su - ${{system_username}} or su - ${{system_username}}
-$ cd ${{iot_repo_clone_dir}}/iot-backend
+$ sudo su - iot or su - iot
+$ cd /home/iot/iot-app/iot-backend
 $ cp ./docs/resources/example-application-production.properties \
   ./iot-friss/src/main/resources/application-production.properties
 
@@ -51,7 +51,7 @@ $ cp ./docs/resources/example-application-production.properties \
 ```
 
 ```bash
-$ cd ${{iot_repo_clone_dir}}/iot-backend
+$ cd home/iot/iot-app/iot-backend
 $ ./gradlew :iot-friss:war
 ```
 The WAR archive is resided in ./iot-friss/build/libs.
@@ -59,8 +59,10 @@ This directory is mounted as a data volume to the Tomcat Docker container.
 
 ### Docker
 ```bash
-$ sudo su - ${{system_username}} or su - ${{system_username}}
-$ cd ${{iot_repo_clone_dir}}/iot-infrastructure
+# Become iot system user
+$ sudo su - iot or su - iot
+
+$ cd /home/iot/iot-app/iot-infrastructure
 
 # ADVICE
 # -----------------
@@ -74,5 +76,17 @@ $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 # Stop all containers
 $ docker-compose stop
-
 ```
+
+### Access the system
+
+By default the overall system uses the following ports:
+
+| Port  | Subsystem                   |
+| ----- |:---------------------------:|
+| 3000  | NodeJS (Frontend)           |
+| 8000  | DynamoDB                    |
+| 8080  | Tomcat                      |
+| 5672  | RabbitMQ - AMQP             |      
+| 15672 | RabbitMQ - Management Plugin|
+| 15674 | RabbitMQ - Web-Stomp Plugin |
