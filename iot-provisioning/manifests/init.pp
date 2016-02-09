@@ -49,7 +49,9 @@ class iot_provisioning (
   $system_username = $::iot_provisioning::params::system_username,
   $system_user_home = $::iot_provisioning::params::system_user_home,
   $iot_repo = $::iot_provisioning::params::iot_repo,
-  $iot_repo_clone_dir = $::iot_provisioning::params::iot_repo_clone_dir
+  $iot_repo_clone_dir = $::iot_provisioning::params::iot_repo_clone_dir,
+  $docker_version = $::iot_provisioning::params::docker_version,
+  $docker_compose_version = $::iot_provisioning::params::docker_compose_version
 ) inherits iot_provisioning::params {
 
     class { 'jdk_oracle':
@@ -61,6 +63,9 @@ class iot_provisioning (
         version => $docker_version,
         docker_users => [ $system_username ],
         socket_group => 'docker'
+    } ~>
+    class { 'docker_compose':
+      version => $docker_compose_version
     }
 
     contain 'iot_provisioning::install'
