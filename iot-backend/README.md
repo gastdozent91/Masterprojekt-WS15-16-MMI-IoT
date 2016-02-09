@@ -16,13 +16,20 @@ and customize values like credentials.
 
 ## Usage
 
-### Start in local Tomcat
+```bash
+# Start docker containers
+$ cd ../iot-infrastructure
+$ docker-compose up -d
+```
 
-    ./gradlew friss
-    or
-    ./gradlew :iot-friss:tomcatRunWar
+```bash
+# Start java backend in local Tomcat
+$ ./gradlew friss or ./gradlew :iot-friss:tomcatRunWar
+```
 
-### Unit tests
+To run the NodeJS-Frontend please also start the docker containers with docker-compose and follow the instructions in [README.md - iot-frontend](../iot_repo_frontend/README.md).
+
+### Unit test - java backend
 
     ./gradlew :iot-friss:test -i
 
