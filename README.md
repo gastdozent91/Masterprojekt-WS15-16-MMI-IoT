@@ -34,7 +34,10 @@ $ puppet apply /etc/puppet/manifests/site.pp
 
 ### NodeJS
 
-In `iot-frontend/build/` is an example credentials file `example_aws_config.json`. If you need to add aws credentials for using the cloud add a `aws_config.json` file with you credentials. If you save them in this file your credentials will not be uploaded to git.
+In `iot-frontend/build/` is an example credentials file `example_aws_config.json`.
+If you need to add AWS credentials for using the cloud add a `aws_config.json`
+file with you credentials. If you save them in this file your credentials will
+not be uploaded to git.
 
 ### Build WAR
 
@@ -87,6 +90,6 @@ By default the overall system uses the following ports:
 | 3000  | NodeJS (Frontend)           |
 | 8000  | DynamoDB                    |
 | 8080  | Tomcat                      |
-| 5672  | RabbitMQ - AMQP             |      
+| 5672  | RabbitMQ - AMQP             |
 | 15672 | RabbitMQ - Management Plugin|
 | 15674 | RabbitMQ - Web-Stomp Plugin |
