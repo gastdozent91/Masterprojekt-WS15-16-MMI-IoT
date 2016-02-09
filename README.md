@@ -77,8 +77,11 @@ $ cd /home/iot/iot-app/iot-infrastructure
 # Start all containers
 $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
+# View running containers
+$ docker ps
+
 # Stop all containers
-$ docker-compose stop
+$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml stop
 ```
 
 ### Access the system
